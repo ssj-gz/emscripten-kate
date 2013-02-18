@@ -110,7 +110,12 @@ void Results::checkCheckedState()
 
 
 K_PLUGIN_FACTORY(KatePluginSearchFactory, registerPlugin<KatePluginSearch>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KatePluginSearchFactory(KAboutData("katesearch","katesearch",ki18n("Search & Replace"), "0.1", ki18n("Search & replace in files"))))
+#else
+K_EXPORT_STATIC_PLUGIN(KatePluginSearchFactory(KAboutData("katesearch","katesearch",ki18n("Search & Replace"), "0.1", ki18n("Search & replace in files"))), KatePluginSearchFactory)
+#endif
+
 
 KatePluginSearch::KatePluginSearch(QObject* parent, const QList<QVariant>&)
     : Kate::Plugin((Kate::Application*)parent, "kate-search-plugin"),
