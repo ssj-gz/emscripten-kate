@@ -47,8 +47,16 @@ install(TARGETS kateinterfaces ${INSTALL_TARGETS_DEFAULT_ARGS} )
 ########### next target ###############
 
 set(kate_KDEINIT_SRCS katemain.cpp)
+if (EMSCRIPTEN)
+    configure_file(${KDE4_MODULE_DIR}/kde4init_dummy.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/kate_dummy.cpp)
 
-if (WIN32)
+    list(APPEND kate_KDEINIT_SRCS ${CMAKE_CURRENT_BINARY_DIR}/kate_dummy.cpp)
+
+    kde4_add_executable(kate ${kate_KDEINIT_SRCS} )
+
+    target_link_libraries( kate ${QT_QTMAIN_LIBRARY} ${QT_QTGUI_LIBRARY} ${KDE4_KDECORE_LIBS} kateinterfaces )
+
+elseif (WIN32)
     configure_file(${KDE4_MODULE_DIR}/kde4init_dummy.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/kate_dummy.cpp)
 
     list(APPEND kate_KDEINIT_SRCS ${CMAKE_CURRENT_BINARY_DIR}/kate_dummy.cpp)
@@ -60,7 +68,7 @@ if (WIN32)
 
     target_link_libraries( kate ${QT_QTMAIN_LIBRARY} ${QT_QTGUI_LIBRARY} ${KDE4_KDECORE_LIBS} kateinterfaces )
 
-else (WIN32)
+else ()
     kde4_add_kdeinit_executable( kate ${kate_KDEINIT_SRCS})
 
     target_link_libraries(kdeinit_kate ${QT_QTGUI_LIBRARY} ${KDE4_KDECORE_LIBS} kateinterfaces )
@@ -68,7 +76,7 @@ else (WIN32)
     install(TARGETS kdeinit_kate ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
     target_link_libraries( kate kdeinit_kate )
-endif (WIN32)
+endif ()
 
 install(TARGETS kate ${INSTALL_TARGETS_DEFAULT_ARGS})
 
