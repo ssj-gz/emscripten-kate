@@ -36,9 +36,16 @@
 #include <kaboutdata.h>
 
 K_PLUGIN_FACTORY(KateCTagsPluginFactory, registerPlugin<KateCTagsPlugin>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateCTagsPluginFactory(KAboutData("katectags", "kate-ctags-plugin",
                                                   ki18n("CTags Plugin"), "0.2",
                                                   ki18n( "CTags Plugin"))))
+#else
+K_EXPORT_STATIC_PLUGIN(KateCTagsPluginFactory(KAboutData("katectags", "kate-ctags-plugin",
+                                                  ki18n("CTags Plugin"), "0.2",
+                                                  ki18n( "CTags Plugin"))), KateCTagsPluginFactory)
+#endif
+
 
 /******************************************************************/
 KateCTagsPlugin::KateCTagsPlugin(QObject* parent, const QList<QVariant>&):
