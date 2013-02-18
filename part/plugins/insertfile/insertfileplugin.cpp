@@ -39,7 +39,12 @@
 #include <QtCore/QTextStream>
 
 K_PLUGIN_FACTORY( InsertFilePluginFactory, registerPlugin<InsertFilePlugin>(); )
+#ifndef QT_STATICPLUGIN 
 K_EXPORT_PLUGIN( InsertFilePluginFactory( KAboutData( "ktexteditor_insertfile", "ktexteditor_plugins", ki18n("Insert File"), "0.1", ki18n("Insert File"), KAboutData::License_LGPL_V2 ) ) )
+#else 
+K_EXPORT_STATIC_PLUGIN(  InsertFilePluginFactory( KAboutData( "ktexteditor_insertfile", "ktexteditor_plugins", ki18n("Insert File"), "0.1", ki18n("Insert File"), KAboutData::License_LGPL_V2 ) ), InsertFilePluginFactory) 
+#endif 
+
 
 //BEGIN InsertFilePlugin
 InsertFilePlugin::InsertFilePlugin( QObject *parent, const QVariantList& )
