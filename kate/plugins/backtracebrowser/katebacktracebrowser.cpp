@@ -43,7 +43,12 @@
 //END Includes
 
 K_PLUGIN_FACTORY(KateBtBrowserFactory, registerPlugin<KateBtBrowserPlugin>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateBtBrowserFactory(KAboutData("katebacktracebrowserplugin","katebacktracebrowserplugin",ki18n("Backtrace Browser"), "0.1", ki18n("Browsing backtraces"), KAboutData::License_LGPL_V2)) )
+#else
+K_EXPORT_STATIC_PLUGIN(KateBtBrowserFactory(KAboutData("katebacktracebrowserplugin","katebacktracebrowserplugin",ki18n("Backtrace Browser"), "0.1", ki18n("Browsing backtraces"), KAboutData::License_LGPL_V2)), KateBtBrowserFactory)
+#endif
+
 
 
 KateBtBrowserPlugin* KateBtBrowserPlugin::s_self = 0L;
