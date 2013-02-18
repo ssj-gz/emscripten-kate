@@ -43,7 +43,12 @@
 #include <qclipboard.h>
 
 K_PLUGIN_FACTORY(PluginKateTextFilterFactory, registerPlugin<PluginKateTextFilter>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(PluginKateTextFilterFactory("katetextfilter"))
+#else
+K_EXPORT_STATIC_PLUGIN(PluginKateTextFilterFactory("katetextfilter"), PluginKateTextFilterFactory)
+#endif
+
 
 PluginViewKateTextFilter::PluginViewKateTextFilter(PluginKateTextFilter *plugin,
                                                    Kate::MainWindow *mainwindow)
