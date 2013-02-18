@@ -38,7 +38,6 @@
 
 K_PLUGIN_FACTORY( HighlightSelectionPluginFactory, registerPlugin<HighlightSelectionPlugin>(); )
 #ifndef QT_STATICPLUGIN
-K_EXPORT_PLUGIN(KdedCookieServerFactory("kcookiejar"))
 K_EXPORT_PLUGIN( HighlightSelectionPluginFactory( KAboutData( "ktexteditor_insertfile", "ktexteditor_plugins", ki18n("Highlight Selection"), "1.0", ki18n("Highlight Selection"), KAboutData::License_LGPL_V2 ) ) )
 #else
 K_EXPORT_STATIC_PLUGIN( HighlightSelectionPluginFactory( KAboutData( "ktexteditor_insertfile", "ktexteditor_plugins", ki18n("Highlight Selection"), "1.0", ki18n("Highlight Selection"), KAboutData::License_LGPL_V2 ) ), HighlightSelectionPluginFactory)
