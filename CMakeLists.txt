@@ -33,7 +33,9 @@ endif(NOT APPLE)
 configure_file (config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 # enforce build of tests
-set (KDE4_BUILD_TESTS "ON" CACHE "BOOL" "Enable building of tests" FORCE)
+if (NOT EMSCRIPTEN)
+    set (KDE4_BUILD_TESTS "ON" CACHE "BOOL" "Enable building of tests" FORCE)
+endif()
 
 # add some definitions needed
 add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})

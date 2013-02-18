@@ -13,7 +13,9 @@ add_subdirectory( script/data )
 add_subdirectory( plugins )
 
 # tests
-add_subdirectory( tests )
+if (NOT KDE4_BUILD_TESTS)
+    add_subdirectory( tests )
+endif()
 
 # includes
 include_directories(
