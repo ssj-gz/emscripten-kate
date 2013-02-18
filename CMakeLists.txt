@@ -2,7 +2,9 @@
 project (kate)
 
 # shared libs
-set (LIBRARY_TYPE SHARED)
+if (NOT EMSCRIPTEN)
+    set (LIBRARY_TYPE SHARED)
+endif()
 
 # search packages used by KDE
 find_package(KDE4 4.7.0 REQUIRED)
