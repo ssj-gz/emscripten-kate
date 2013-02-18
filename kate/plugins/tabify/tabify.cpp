@@ -35,8 +35,14 @@
 #include <QtGui/QBoxLayout>
 
 K_PLUGIN_FACTORY(TabBarFactory, registerPlugin<TabBarPlugin>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(TabBarFactory(KAboutData("tabifyplugin", "katetabifyplugin",
                               ki18n("TabifyPlugin"), "0.1", ki18n("Tabify Plugin"), KAboutData::License_LGPL_V2)))
+#else
+K_EXPORT_STATIC_PLUGIN(TabBarFactory(KAboutData("tabifyplugin", "katetabifyplugin",
+                              ki18n("TabifyPlugin"), "0.1", ki18n("Tabify Plugin"), KAboutData::License_LGPL_V2)), TabBarFactory)
+#endif
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // TabBarPluginView
