@@ -45,7 +45,12 @@
 #include <kauthorized.h>
 
 K_PLUGIN_FACTORY(KateMailFilesFactory, registerPlugin<KateMailFilesPlugin>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateMailFilesFactory(KAboutData("katemailfilesplugin","katemailfilesplugin",ki18n("Mail Files"), "0.1", ki18n("Support mailing files"), KAboutData::License_LGPL_V2)) )
+#else
+K_EXPORT_STATIC_PLUGIN(KateMailFilesFactory(KAboutData("katemailfilesplugin","katemailfilesplugin",ki18n("Mail Files"), "0.1", ki18n("Support mailing files"), KAboutData::License_LGPL_V2)), KateMailFilesFactory)
+#endif
+
 
 KateMailFilesPlugin::KateMailFilesPlugin( QObject* parent, const QList<QVariant>& ):
     Kate::Plugin ( (Kate::Application*)parent )
