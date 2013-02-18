@@ -62,11 +62,20 @@
 #include <kaboutdata.h>
 
 K_PLUGIN_FACTORY(KateBuildPluginFactory, registerPlugin<KateBuildPlugin>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateBuildPluginFactory(KAboutData("katebuild",
                                                   "katebuild-plugin",
                                                   ki18n("Build Plugin"),
                                                   "0.1",
                                                   ki18n( "Build Plugin"))))
+#else
+K_EXPORT_STATIC_PLUGIN(KateBuildPluginFactory(KAboutData("katebuild",
+                                                  "katebuild-plugin",
+                                                  ki18n("Build Plugin"),
+                                                  "0.1",
+                                                  ki18n( "Build Plugin"))), KateBuildPluginFactory)
+#endif
+
 
 static const QString DefConfigCmd = "cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/usr/local ../";
 static const QString DefConfClean = "";
