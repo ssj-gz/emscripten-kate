@@ -42,7 +42,12 @@
 
 
 K_PLUGIN_FACTORY(KateTabBarExtensionFactory, registerPlugin<KatePluginTabBarExtension>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateTabBarExtensionFactory(KAboutData("katetabbarextension","katetabbarextension",ki18n("TabBarExtension"), "0.1", ki18n("TabBar extension"), KAboutData::License_LGPL_V2)) )
+#else
+K_EXPORT_STATIC_PLUGIN(KateTabBarExtensionFactory(KAboutData("katetabbarextension","katetabbarextension",ki18n("TabBarExtension"), "0.1", ki18n("TabBar extension"), KAboutData::License_LGPL_V2)), KateTabBarExtensionFactory)
+#endif
+
 
 
 //BEGIN PluginView
