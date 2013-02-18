@@ -64,7 +64,12 @@
 #include <QPainter>
 
 K_PLUGIN_FACTORY(KateSymbolViewerFactory, registerPlugin<KatePluginSymbolViewer>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateSymbolViewerFactory(KAboutData("katesymbolviewer","katesymbolviewer",ki18n("SymbolViewer"), "0.1", ki18n("View symbols"), KAboutData::License_LGPL_V2)) )
+#else
+K_EXPORT_STATIC_PLUGIN(KateSymbolViewerFactory(KAboutData("katesymbolviewer","katesymbolviewer",ki18n("SymbolViewer"), "0.1", ki18n("View symbols"), KAboutData::License_LGPL_V2)), KateSymbolViewerFactory)
+#endif
+
 
 
 KatePluginSymbolViewerView::KatePluginSymbolViewerView(Kate::MainWindow *w, KatePluginSymbolViewer *plugin) :
