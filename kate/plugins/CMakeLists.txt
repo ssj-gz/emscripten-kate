@@ -29,7 +29,9 @@ add_subdirectory( kttsd )
 
 add_subdirectory( openheader )
 add_subdirectory( xmltools )
+if (NOT EMSCRIPTEN) # Requires Qt3 support - not sure what the appropriate macro is, though.
 add_subdirectory( xmlcheck )
+endif()
 
 add_subdirectory( snippets )
 
