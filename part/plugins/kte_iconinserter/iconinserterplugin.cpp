@@ -35,7 +35,11 @@
 K_PLUGIN_FACTORY_DEFINITION(IconInserterPluginFactory,
         registerPlugin<IconInserterPlugin>("ktexteditor_iconinserter");
         )
+#ifndef QT_STATICPLUGIN 
 K_EXPORT_PLUGIN(IconInserterPluginFactory(KAboutData ("ktexteditor_iconinserter","ktexteditor_iconinserter", ki18n ("Select an Icon to use it inside the Code"), "0.1", ki18n ("Insert Code for KIcon-Creation"), KAboutData::License_LGPL_V3)))
+#else 
+K_EXPORT_STATIC_PLUGIN( IconInserterPluginFactory(KAboutData ("ktexteditor_iconinserter","ktexteditor_iconinserter", ki18n ("Select an Icon to use it inside the Code"), "0.1", ki18n ("Insert Code for KIcon-Creation"), KAboutData::License_LGPL_V3)), IconInserterPluginFactory) 
+#endif 
 
 
 IconInserterPluginView::IconInserterPluginView(IconInserterPlugin *plugin, KTextEditor::View *view): QObject(plugin),KXMLGUIClient(view),m_view(view)
