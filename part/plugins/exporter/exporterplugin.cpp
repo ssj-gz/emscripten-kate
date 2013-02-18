@@ -28,7 +28,12 @@
 K_PLUGIN_FACTORY_DEFINITION(ExporterPluginFactory,
         registerPlugin<ExporterPlugin>("ktexteditor_exporter");
         )
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(ExporterPluginFactory("ktexteditor_exporter", "ktexteditor_plugins"))
+#else
+K_EXPORT_STATIC_PLUGIN(ExporterPluginFactory("ktexteditor_exporter"), ExporterPluginFactory)
+#endif
+
 
 ExporterPlugin::ExporterPlugin(QObject *parent, const QVariantList &args)
     : KTextEditor::Plugin(parent)
