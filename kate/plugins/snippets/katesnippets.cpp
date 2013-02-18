@@ -36,7 +36,12 @@
 #include <kpluginfactory.h>
 
 K_PLUGIN_FACTORY(KateSnippetsFactory, registerPlugin<KateSnippetsPlugin>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateSnippetsFactory(KAboutData("katesnippets","katesnippetsplugin",ki18n("Snippets"), "0.1", ki18n("Embedded Snippets"), KAboutData::License_LGPL_V2)) )
+#else
+K_EXPORT_STATIC_PLUGIN(KateSnippetsFactory(KAboutData("katesnippets","katesnippetsplugin",ki18n("Snippets"), "0.1", ki18n("Embedded Snippets"), KAboutData::License_LGPL_V2)), KateSnippetsFactory)
+#endif
+
 
 KateSnippetsPlugin::KateSnippetsPlugin( QObject* parent, const QList<QVariant>& ):
     Kate::Plugin ( (Kate::Application*)parent )
