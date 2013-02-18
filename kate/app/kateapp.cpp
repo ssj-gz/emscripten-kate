@@ -123,12 +123,14 @@ void KateApp::initKate ()
   kDebug() << "Setting KATE_PID: '" << getpid() << "'";
   ::setenv( "KATE_PID", QString("%1").arg(getpid()).toLatin1(), 1 );
 
+#ifndef QT_NO_SESSIONMANAGER
   // handle restore different
   if (isSessionRestored())
   {
     restoreKate ();
   }
   else
+#endif
   {
     // let us handle our command line args and co ;)
     // we can exit here if session chooser decides
