@@ -62,8 +62,10 @@ macro_optional_add_subdirectory (kwrite)
 
 # docs
 # need current enough KDELIBS
-if (${KDE_VERSION_MINOR} GREATER 7 OR (${KDE_VERSION_MINOR} EQUAL 7 AND ${KDE_VERSION_RELEASE} GREATER 2))
-    macro_optional_add_subdirectory (doc)
-else (${KDE_VERSION_MINOR} GREATER 7 OR (${KDE_VERSION_MINOR} EQUAL 7 AND ${KDE_VERSION_RELEASE} GREATER 2))
-    message ("Documentation generation skipped, at least kdelibs version 4.7.3 needed for documentation.")
-endif (${KDE_VERSION_MINOR} GREATER 7 OR (${KDE_VERSION_MINOR} EQUAL 7 AND ${KDE_VERSION_RELEASE} GREATER 2))
+if (NOT EMSCRIPTEN)
+    if (${KDE_VERSION_MINOR} GREATER 7 OR (${KDE_VERSION_MINOR} EQUAL 7 AND ${KDE_VERSION_RELEASE} GREATER 2))
+        macro_optional_add_subdirectory (doc)
+    else (${KDE_VERSION_MINOR} GREATER 7 OR (${KDE_VERSION_MINOR} EQUAL 7 AND ${KDE_VERSION_RELEASE} GREATER 2))
+        message ("Documentation generation skipped, at least kdelibs version 4.7.3 needed for documentation.")
+    endif (${KDE_VERSION_MINOR} GREATER 7 OR (${KDE_VERSION_MINOR} EQUAL 7 AND ${KDE_VERSION_RELEASE} GREATER 2))
+endif()
