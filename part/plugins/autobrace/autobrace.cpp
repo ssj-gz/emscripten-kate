@@ -35,7 +35,12 @@ K_PLUGIN_FACTORY_DEFINITION(AutoBracePluginFactory,
         registerPlugin<AutoBracePlugin>("ktexteditor_autobrace");
         registerPlugin<AutoBraceConfig>("ktexteditor_autobrace_config");
         )
+#ifndef QT_STATICPLUGIN 
 K_EXPORT_PLUGIN(AutoBracePluginFactory("ktexteditor_autobrace", "ktexteditor_plugins"))
+#else 
+K_EXPORT_STATIC_PLUGIN( AutoBracePluginFactory("ktexteditor_autobrace", "ktexteditor_plugins"), AutoBracePluginFactory) 
+#endif 
+
 
 AutoBracePlugin::AutoBracePlugin(QObject *parent, const QVariantList &args)
     : KTextEditor::Plugin(parent), m_autoBrackets(true), m_autoQuotations(true)
