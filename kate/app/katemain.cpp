@@ -72,8 +72,15 @@ class KateWaiter : public QObject {
     }
 };
 
-
+#ifdef EMSCRIPTEN
+# ifdef EMSCRIPTEN_NATIVE
+int emscriptenQtSDLMain(int argc, char *argv[])
+# else
+int main(int argc, char *argv[])
+# endif
+#else
 extern "C" KDE_EXPORT int kdemain( int argc, char **argv )
+#endif
 {
   // here we go, construct the Kate version
   QByteArray kateVersion = KateApp::kateVersion().toLatin1();
@@ -380,6 +387,15 @@ extern "C" KDE_EXPORT int kdemain( int argc, char **argv )
   // execute ourself ;)
   return app.exec();
 }
+
+#ifdef EMSCRIPTEN_NATIVE
+#include <QtGui/emscripten-qt-sdl.h>
+int main(int argc, char *argv[])
+{
+        EmscriptenQtSDL::setAttemptedLocalEventLoopCallback(EmscriptenQtSDL::TRIGGER_ASSERT);
+        return EmscriptenQtSDL::run(640, 480, argc, argv);
+}
+#endif
 
 // kate: space-indent on; indent-width 2; replace-tabs on;
 

@@ -48,9 +48,9 @@ install(TARGETS kateinterfaces ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 set(kate_KDEINIT_SRCS katemain.cpp)
 if (EMSCRIPTEN)
-    configure_file(${KDE4_MODULE_DIR}/kde4init_dummy.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/kate_dummy.cpp)
+    #configure_file(${KDE4_MODULE_DIR}/kde4init_dummy.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/kate_dummy.cpp)
 
-    list(APPEND kate_KDEINIT_SRCS ${CMAKE_CURRENT_BINARY_DIR}/kate_dummy.cpp)
+    #list(APPEND kate_KDEINIT_SRCS ${CMAKE_CURRENT_BINARY_DIR}/kate_dummy.cpp)
 
     kde4_add_executable(kate ${kate_KDEINIT_SRCS} )
 
