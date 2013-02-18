@@ -62,11 +62,13 @@ KWriteApp *KWriteApp::self ()
 
 void KWriteApp::init()
 {
+#ifndef QT_NO_SESSIONMANAGER
   if (isSessionRestored())
   {
     KWrite::restore();
   }
   else
+#endif
   {
     bool nav = false;
     int line = 0, column = 0;
