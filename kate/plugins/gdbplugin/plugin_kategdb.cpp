@@ -51,12 +51,22 @@
 
 
 K_PLUGIN_FACTORY(KatePluginGDBFactory, registerPlugin<KatePluginGDB>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KatePluginGDBFactory(
                     KAboutData( "kategdb",
                                 "kategdbplugin",
                                 ki18n( "GDB Integration" ),
                                 "0.1",
                                 ki18n( "Kate GDB Integration" ) ) ) )
+#else
+K_EXPORT_STATIC_PLUGIN(KatePluginGDBFactory(
+                    KAboutData( "kategdb",
+                                "kategdbplugin",
+                                ki18n( "GDB Integration" ),
+                                "0.1",
+                                ki18n( "Kate GDB Integration" ) ) ) , KatePluginGDBFactory)
+#endif
+
 
 KatePluginGDB::KatePluginGDB( QObject* parent, const VariantList& )
 :   Kate::Plugin( (Kate::Application*)parent, "kate-gdb-plugin" )

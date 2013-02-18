@@ -66,7 +66,9 @@ macro_optional_add_subdirectory (part)
 macro_optional_add_subdirectory (kate)
 
 # kwrite, copy from kdebase/apps/kwrite
-macro_optional_add_subdirectory (kwrite)
+if (NOT EMSCRIPTEN)
+    macro_optional_add_subdirectory (kwrite)
+endif()
 
 # docs
 # need current enough KDELIBS
