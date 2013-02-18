@@ -10,6 +10,10 @@ include (KDE4Defaults)
 include (MacroLibrary)
 include (CheckFunctionExists)
 
+if(KDE_PLATFORM_FEATURE_DISABLE_DEPRECATED)
+   set(KDE_NO_DEPRECATED TRUE)
+endif(KDE_PLATFORM_FEATURE_DISABLE_DEPRECATED)
+
 if (NOT EMSCRIPTEN)
     macro_optional_find_package(KActivities 6.1.0)
     macro_log_feature(KActivities_FOUND "KActivities" "Activities interface library" "https://projects.kde.org/projects/kde/kdelibs/kactivities" FALSE "6.1.0" "Required for Activities integration.")
