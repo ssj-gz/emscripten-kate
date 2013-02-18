@@ -31,8 +31,14 @@
 #include <klocale.h>
 
 K_PLUGIN_FACTORY_DEFINITION(KateSQLFactory, registerPlugin<KateSQLPlugin>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateSQLFactory(KAboutData("katesql", "katesql",
                                           ki18n("SQL Plugin"), "0.3", ki18n("Execute query on SQL databases"), KAboutData::License_LGPL_V2)))
+#else
+K_EXPORT_STATIC_PLUGIN(KateSQLFactory(KAboutData("katesql", "katesql",
+                                          ki18n("SQL Plugin"), "0.3", ki18n("Execute query on SQL databases"), KAboutData::License_LGPL_V2)), KateSQLFactory)
+#endif
+
 
 //BEGIN KateSQLPLugin
 KateSQLPlugin::KateSQLPlugin(QObject *parent, const QList<QVariant>&)
