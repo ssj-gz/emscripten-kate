@@ -37,7 +37,12 @@
 #include <kate/mainwindow.h>
 
 K_PLUGIN_FACTORY(KateKttsdFactory, registerPlugin<KateKttsdPlugin>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateKttsdFactory(KAboutData("kate_kttsd","kate_kttsd",ki18n("Jovie Text-to-Speech Plugin"), "0.1", ki18n("Jovie Text-to-Speech Plugin"), KAboutData::License_LGPL_V2)) )
+#else
+K_EXPORT_STATIC_PLUGIN(KateKttsdFactory(KAboutData("kate_kttsd","kate_kttsd",ki18n("Jovie Text-to-Speech Plugin"), "0.1", ki18n("Jovie Text-to-Speech Plugin"), KAboutData::License_LGPL_V2)), KateKttsdFactory)
+#endif
+
 
 KateKttsdPlugin::KateKttsdPlugin(QObject* parent, const QList<QVariant>&)
     : Kate::Plugin ((Kate::Application*)parent)
