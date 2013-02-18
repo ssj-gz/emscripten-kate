@@ -80,7 +80,12 @@
 //BEGIN plugin + factory stuff
 
 K_PLUGIN_FACTORY(KateFileTemplatesFactory, registerPlugin<KateFileTemplates>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(KateFileTemplatesFactory(KAboutData("katefiletemplates","katefiletemplates",ki18n("File Templates"), "0.1", ki18n("Create files from templates"), KAboutData::License_LGPL_V2)) )
+#else
+K_EXPORT_STATIC_PLUGIN(KateFileTemplatesFactory(KAboutData("katefiletemplates","katefiletemplates",ki18n("File Templates"), "0.1", ki18n("Create files from templates"), KAboutData::License_LGPL_V2)), KateFileTemplatesFactory)
+#endif
+
 
 //END
 
