@@ -98,7 +98,12 @@ TODO:
 #include <kpluginfactory.h>
 
 K_PLUGIN_FACTORY(PluginKateXMLToolsFactory, registerPlugin<PluginKateXMLTools>();)
+#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN(PluginKateXMLToolsFactory("katexmltools"))
+#else
+K_EXPORT_STATIC_PLUGIN(PluginKateXMLToolsFactory("katexmltools"), PluginKateXMLToolsFactory)
+#endif
+
 
 using Kate::application;
 
