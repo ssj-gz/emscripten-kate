@@ -13,7 +13,7 @@ add_subdirectory( script/data )
 add_subdirectory( plugins )
 
 # tests
-if (NOT KDE4_BUILD_TESTS)
+if (KDE4_BUILD_TESTS)
     add_subdirectory( tests )
 endif()
 
