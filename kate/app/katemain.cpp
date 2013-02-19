@@ -82,6 +82,8 @@ int main(int argc, char *argv[])
 extern "C" KDE_EXPORT int kdemain( int argc, char **argv )
 #endif
 {
+extern void* dummyForceKateFactoryInstantiate;
+  qDebug() << dummyForceKateFactoryInstantiate;
   // here we go, construct the Kate version
   QByteArray kateVersion = KateApp::kateVersion().toLatin1();
 
@@ -234,6 +236,7 @@ extern "C" KDE_EXPORT int kdemain( int argc, char **argv )
   }
 
          
+#ifndef EMSCRIPTEN
   if (foundRunningService)
   {
     // open given session
@@ -379,13 +382,14 @@ extern "C" KDE_EXPORT int kdemain( int argc, char **argv )
     // this will wait until exiting is emitted by the used instance, if wanted...
     return needToBlock ? app.exec () : 0;
   }
+#endif
 
   // construct the real kate app object ;)
-  KateApp app (args);
-  if (app.shouldExit()) return 0;
+  KateApp *app  = new KateApp(args);
+  if (app->shouldExit()) return 0;
 
   // execute ourself ;)
-  return app.exec();
+  return app->exec();
 }
 
 #ifdef EMSCRIPTEN_NATIVE

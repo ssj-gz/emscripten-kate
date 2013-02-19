@@ -36,21 +36,14 @@ class KateFactory : public KTextEditor::Factory
      * @param parent parent object
      * @param name name of factory
      */
-    KateFactory ( QObject *parent = 0 )
-      : KTextEditor::Factory (parent)
-    {
-      KateGlobal::incRef ();
-    }
+    KateFactory ( QObject *parent = 0 );
 
     /**
      * destructor, release editor
      */
-    virtual ~KateFactory ()
-    {
-      KateGlobal::decRef ();
-    }
+    virtual ~KateFactory ();
 
-    KTextEditor::Editor *editor () { return KateGlobal::self(); }
+    KTextEditor::Editor *editor ();
 
     /**
      * reimplemented create object method
@@ -59,35 +52,9 @@ class KateFactory : public KTextEditor::Factory
      * @param args additional arguments
      * @return constructed part object
      */
-    KParts::Part *createPartObject ( QWidget *parentWidget, QObject *parent, const char *_classname, const QStringList & )
-    {
-      QByteArray classname( _classname );
-
-      // default to the kparts::* behavior of having one single widget() if the user don't requested a pure document
-      bool bWantSingleView = ( classname != "KTextEditor::Document" );
-
-      // does user want browserview?
-      bool bWantBrowserView = ( classname == "Browser/View" );
-
-      // should we be readonly?
-      bool bWantReadOnly = (bWantBrowserView || ( classname == "KParts::ReadOnlyPart" ));
-
-      // set simple mode on for read-only part per default
-      KateGlobal::self ()->setSimpleMode (bWantReadOnly);
-
-      KParts::ReadWritePart *part = new KateDocument (bWantSingleView, bWantBrowserView, bWantReadOnly, parentWidget, parent);
-      part->setReadWrite( !bWantReadOnly );
-
-      return part;
-    }
+    KParts::Part *createPartObject ( QWidget *parentWidget, QObject *parent, const char *_classname, const QStringList & );
 };
 
-#ifndef QT_STATICPLUGIN
 K_EXPORT_PLUGIN( KateFactory )
-#else
-K_EXPORT_STATIC_PLUGIN(KateFactory(), KateFactory)
-#endif
-
-void* dummyForceKateFactoryInstantiate = (void*)&staticKateFactoryInstance;
 
 // kate: space-indent on; indent-width 2; replace-tabs on;
