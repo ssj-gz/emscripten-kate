@@ -39,8 +39,10 @@
 
 #include <KGlobalSettings>
 
+#ifndef EMSCRIPTEN
 #include <KNS3/DownloadDialog>
 #include <knewstuff3/uploaddialog.h>
+#endif
 
 SnippetView::SnippetView(KateSnippetGlobal* plugin, QWidget* parent)
  : QWidget(parent), Ui::SnippetViewBase(), m_plugin(plugin)
@@ -288,6 +290,7 @@ void SnippetView::slotFilterChanged()
 
 void SnippetView::slotGHNS()
 {
+#ifndef EMSCRIPTEN
     KNS3::DownloadDialog dialog("ktexteditor_codesnippets_core.knsrc", this);
     dialog.exec();
     foreach ( const KNS3::Entry& entry, dialog.changedEntries() ) {
@@ -304,10 +307,14 @@ void SnippetView::slotGHNS()
             }
         }
     }
+#else
+    qWarning() << "GHNS not yet supported in Emscripten!";
+#endif
 }
 
 void SnippetView::slotSnippetToGHNS()
 {
+#ifndef EMSCRIPTEN
     QStandardItem* item = currentItem();
     if ( !item)
         return;
@@ -320,6 +327,9 @@ void SnippetView::slotSnippetToGHNS()
     dialog.setUploadFile(KUrl::fromPath(repo->file()));
     dialog.setUploadName(repo->text());
     dialog.exec();
+#else
+    qWarning() << "GHNS not yet supported in Emscripten!";
+#endif
 }
 
 bool SnippetView::eventFilter(QObject* obj, QEvent* e)
