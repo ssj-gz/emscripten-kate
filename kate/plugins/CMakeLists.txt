@@ -37,7 +37,9 @@ add_subdirectory( snippets )
 
 add_subdirectory( tabify )
 
+if (NOT EMSCRIPTEN) # Requires Sqlite support - this is doable,  but I'll omit it for now.
 add_subdirectory( katesql )
+endif()
 
 add_subdirectory( filetree )
 
