@@ -47,6 +47,7 @@ const KateCommandLineScriptHeader& KateCommandLineScript::commandHeader()
   return m_commandHeader;
 }
 
+#include <qdebug.h>
 
 bool KateCommandLineScript::callFunction(const QString& cmd, const QStringList args, QString &errorMessage)
 {
@@ -69,6 +70,7 @@ bool KateCommandLineScript::callFunction(const QString& cmd, const QStringList a
     errorMessage = backtrace(result, i18n("Error calling %1", cmd));
     return false;
   }
+  qDebug() << "Script ran to completion, apparently";
 
   return true;
 }

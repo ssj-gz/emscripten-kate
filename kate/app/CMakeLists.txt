@@ -54,7 +54,11 @@ if (EMSCRIPTEN)
 
     kde4_add_executable(kate ${kate_KDEINIT_SRCS} )
 
+if (EMSCRIPTEN_NATIVE)
     target_link_libraries( kate ${QT_QTMAIN_LIBRARY} ${QT_QTGUI_LIBRARY} ${KDE4_KDECORE_LIBS} katepart kateinterfaces )
+else()
+    target_link_libraries( kate ${QT_QTMAIN_LIBRARY} katepart kateinterfaces )
+endif()
 
 elseif (WIN32)
     configure_file(${KDE4_MODULE_DIR}/kde4init_dummy.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/kate_dummy.cpp)

@@ -93,6 +93,7 @@ void KateScriptActionMenu::cleanup()
   m_actions.clear();
 }
 
+#include <qdebug.h>
 void KateScriptActionMenu::repopulate()
 {
   // if the view is already hooked into the GUI, first remove it
@@ -111,6 +112,7 @@ void KateScriptActionMenu::repopulate()
   QHash<QString, QMenu*> menus;
 
   foreach (KateCommandLineScript* script, scripts) {
+    qDebug() << "Loading script: " << script->url();
 
     const QStringList &cmds = script->cmds();
     foreach (const QString& cmd, cmds) {

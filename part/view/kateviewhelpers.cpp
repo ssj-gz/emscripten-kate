@@ -1074,6 +1074,7 @@ void KateCmdLineEdit::slotReturnPressed ( const QString& text )
           }
           KNotification::beep();
         }
+        qDebug() << "Message was: " << msg;
       }
       else
       {

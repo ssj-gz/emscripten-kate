@@ -98,6 +98,7 @@ KateScript::~KateScript()
 
     // remove data...
     delete m_engine;
+    qDebug() << "Deleted engine: " << m_engine;
     delete m_document;
     delete m_view;
   }
@@ -166,6 +167,7 @@ bool KateScript::load()
 
   // create script engine, register meta types
   m_engine = new QScriptEngine();
+  qDebug() << "Created engine: " << (void*)m_engine;
   qScriptRegisterMetaType (m_engine, cursorToScriptValue, cursorFromScriptValue);
   qScriptRegisterMetaType (m_engine, rangeToScriptValue, rangeFromScriptValue);
 
@@ -186,7 +188,10 @@ bool KateScript::load()
   // register scripts itself
   QScriptValue result = m_engine->evaluate(source, m_url);
   if (hasException(result, m_url))
+  {
+    qDebug() << "JS exception occurred";
     return false;
+  }
 
   // AFTER SCRIPT: set the view/document objects as necessary
   m_engine->globalObject().setProperty("document", m_engine->newQObject(m_document = new KateScriptDocument()));
@@ -194,6 +199,7 @@ bool KateScript::load()
 
   // yip yip!
   m_loadSuccessful = true;
+  qDebug() << "Load successful";
 
   // load i18n catalog if available
   if (!generalHeader().catalog().isEmpty()) {
@@ -209,6 +215,7 @@ bool KateScript::hasException(const QScriptValue& object, const QString& file)
     displayBacktrace(object, i18n("Error loading script %1\n", file));
     m_errorMessage = i18n("Error loading script %1", file);
     delete m_engine;
+    qDebug() << "Deleted engine: " << m_engine;
     m_engine = 0;
     m_loadSuccessful = false;
     return true;
