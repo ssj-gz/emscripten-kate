@@ -114,7 +114,7 @@ bool KateViNormalMode::handleKeypress( const QKeyEvent *e )
     return true;
   }
 
-  if ( keyCode == Qt::Key_Escape ) {
+  if ( keyCode == Qt::Key_Escape || (keyCode == Qt::Key_C && e->modifiers() == Qt::ControlModifier)) {
     m_view->setCaretStyle( KateRenderer::Block, true );
     m_pendingResetIsDueToExit = true;
     reset();
@@ -445,6 +445,7 @@ void KateViNormalMode::resetParser()
   m_keys.clear();
   m_keysVerbatim.clear();
   m_count = 0;
+  m_oneTimeCountOverride = -1;
   m_iscounted = false;
   m_countTemp = 0;
   m_register = QChar::Null;
@@ -544,6 +545,7 @@ void KateViNormalMode::addCurrentPositionToJumpList() {
 bool KateViNormalMode::commandEnterInsertMode()
 {
   m_stickyColumn = -1;
+  m_viInputModeManager->getViInsertMode()->setCount(getCount());
   return startInsertMode();
 }
 
@@ -569,6 +571,7 @@ bool KateViNormalMode::commandEnterInsertModeAppend()
   updateCursor( c );
 
   m_stickyColumn = -1;
+  m_viInputModeManager->getViInsertMode()->setCount(getCount());
   return startInsertMode();
 }
 
@@ -583,6 +586,7 @@ bool KateViNormalMode::commandEnterInsertModeAppendEOL()
   updateCursor( c );
 
   m_stickyColumn = -1;
+  m_viInputModeManager->getViInsertMode()->setCount(getCount());
   return startInsertMode();
 }
 
@@ -598,6 +602,7 @@ bool KateViNormalMode::commandEnterInsertModeBeforeFirstNonBlankInLine()
   updateCursor( cursor );
 
   m_stickyColumn = -1;
+  m_viInputModeManager->getViInsertMode()->setCount(getCount());
   return startInsertMode();
 }
 
@@ -945,12 +950,12 @@ bool KateViNormalMode::commandOpenNewLineUnder()
   c.setColumn( doc()->lineLength( c.line() ) );
   updateCursor( c );
 
-  for ( unsigned int i = 0; i < getCount(); i++ ) {
-    doc()->newLine( m_view );
-  }
+  doc()->newLine( m_view );
 
   m_stickyColumn = -1;
   startInsertMode();
+  m_viInputModeManager->getViInsertMode()->setCount(getCount());
+  m_viInputModeManager->getViInsertMode()->setCountedRepeatsBeginOnNewLine(true);
   m_viewInternal->repaint ();
 
   return true;
@@ -961,9 +966,7 @@ bool KateViNormalMode::commandOpenNewLineOver()
   Cursor c( m_view->cursorPosition() );
 
   if ( c.line() == 0 ) {
-    for (unsigned int i = 0; i < getCount(); i++ ) {
-      doc()->insertLine( 0, QString() );
-    }
+    doc()->newLine( m_view );
     c.setColumn( 0 );
     c.setLine( 0 );
     updateCursor( c );
@@ -971,20 +974,13 @@ bool KateViNormalMode::commandOpenNewLineOver()
     c.setLine( c.line()-1 );
     c.setColumn( getLine( c.line() ).length() );
     updateCursor( c );
-    for ( unsigned int i = 0; i < getCount(); i++ ) {
-        doc()->newLine( m_view );
-    }
-
-    if ( getCount() > 1 ) {
-      c = m_view->cursorPosition();
-      c.setLine( c.line()-(getCount()-1 ) );
-      updateCursor( c );
-    }
-    //c.setLine( c.line()-getCount() );
+    doc()->newLine( m_view );
   }
 
   m_stickyColumn = -1;
   startInsertMode();
+  m_viInputModeManager->getViInsertMode()->setCount(getCount());
+  m_viInputModeManager->getViInsertMode()->setCountedRepeatsBeginOnNewLine(true);
   m_viewInternal->repaint ();
 
   return true;
@@ -1178,32 +1174,38 @@ bool KateViNormalMode::commandYankToEOL()
   return r;
 }
 
-// insert the text in the given register at the cursor position
-// the cursor should end up at the beginning of what was pasted
-bool KateViNormalMode::commandPasteLeaveCursorAtStart()
+// Insert the text in the given register after the cursor position.
+// This is the non-g version of paste, so the cursor will usually
+// end up on the last character of the pasted text, unless the text
+// was multi-line or linewise in which case it will end up
+// on the *first* character of the pasted text(!)
+// If linewise, will paste after the current line.
+bool KateViNormalMode::commandPaste()
 {
-  return paste(true);
+  return paste(AfterCurrentPosition, false);
 }
 
-// insert the text in the given register before the cursor position
-// the cursor should end up at the beginning of what was pasted
-bool KateViNormalMode::commandPasteBeforeLeaveCursorAtStart()
+// As with commandPaste, except that the text is pasted *at* the cursor position
+bool KateViNormalMode::commandPasteBefore()
 {
-  return pasteBefore(true);
+  return paste(AtCurrentPosition, false);
 }
 
-// as with commandPasteLeaveCursorAtStart, but leaves the cursor at the end
-// of what was pasted
-bool KateViNormalMode::commandPasteLeaveCursorAtEnd()
+// As with commandPaste, except that the cursor will generally be placed *after* the
+// last pasted character (assuming the last pasted character is not at  the end of the line).
+// If linewise, cursor will be at the beginning of the line *after* the last line of pasted text,
+// unless that line is the last line of the document; then it will be placed at the beginning of the
+// last line pasted.
+bool KateViNormalMode::commandgPaste()
 {
-  return paste(false);
+  return paste(AfterCurrentPosition, true);
 }
 
-// as with commandPasteBeforeLeaveCursorAtStart, but leaves the cursor at the end
-// of what was pasted
-bool KateViNormalMode::commandPasteBeforeLeaveCursorAtEnd()
+// As with commandgPaste, except that it pastes *at* the current cursor position or, if linewise,
+// at the current line.
+bool KateViNormalMode::commandgPasteBefore()
 {
-  return pasteBefore(false);
+  return paste(AtCurrentPosition, true);
 }
 
 bool KateViNormalMode::commandDeleteChar()
@@ -1485,9 +1487,14 @@ bool KateViNormalMode::commandPrintCharacterCode()
 
 bool KateViNormalMode::commandRepeatLastChange()
 {
+  const int repeatCount = getCount();
   resetParser();
+  if (repeatCount > 1)
+  {
+    m_oneTimeCountOverride = repeatCount;
+  }
   doc()->editStart();
-  m_viInputModeManager->repeatLastChange();
+  m_viInputModeManager->repeatLastChange(repeatCount);
   doc()->editEnd();
 
   return true;
@@ -2065,12 +2072,17 @@ KateViRange KateViNormalMode::motionToChar()
 
   m_stickyColumn = -1;
 
+  const int originalColumn = cursor.column();
   int matchColumn = cursor.column()+ (m_isRepeatedTFcommand ? 2 : 1);
 
   for ( unsigned int i = 0; i < getCount(); i++ ) {
-    matchColumn = line.indexOf( m_keys.right( 1 ), matchColumn );
+    const int lastColumn = matchColumn;
+    matchColumn = line.indexOf( m_keys.right( 1 ), matchColumn + ((i > 0) ? 1 : 0));
     if ( matchColumn == -1 )
+    {
+      matchColumn = (m_isRepeatedTFcommand) ? lastColumn : originalColumn + 1;
       break;
+    }
   }
 
   KateViRange r;
@@ -2088,9 +2100,10 @@ KateViRange KateViNormalMode::motionToCharBackward()
   Cursor cursor ( m_view->cursorPosition() );
   QString line = getLine();
 
+  const int originalColumn = cursor.column();
   m_stickyColumn = -1;
 
-  int matchColumn = -1;
+  int matchColumn = originalColumn - 1;
 
   unsigned int hits = 0;
   int i = cursor.column()- (m_isRepeatedTFcommand ? 2 : 1);
@@ -2801,9 +2814,11 @@ KateViRange KateViNormalMode::textObjectInnerCurlyBracket()
   {
     const bool stuffToDeleteIsAllOnEndLine = innerCurlyBracket.startColumn == doc()->line(innerCurlyBracket.startLine).length() &&
     innerCurlyBracket.endLine == innerCurlyBracket.startLine + 1;
+    const QString textLeadingClosingBracket = doc()->line(innerCurlyBracket.endLine).mid(0, innerCurlyBracket.endColumn + 1);
+    const bool closingBracketHasLeadingNonWhitespace = !textLeadingClosingBracket.trimmed().isEmpty();
     if (stuffToDeleteIsAllOnEndLine)
     {
-      if (innerCurlyBracket.endColumn == -1)
+      if (!closingBracketHasLeadingNonWhitespace)
       {
         // Nothing there to select - abort.
         innerCurlyBracket.valid = false;
@@ -2818,11 +2833,9 @@ KateViRange KateViNormalMode::textObjectInnerCurlyBracket()
     }
     else
     {
-      // The line containing the end bracket is left alone if the end bracket is preceded by whitespace,
+      // The line containing the end bracket is left alone if the end bracket is preceded by just whitespace,
       // else we need to delete everything (i.e. end up with "{}")
-      const QString textLeadingClosingBracket = doc()->line(innerCurlyBracket.endLine).mid(0, innerCurlyBracket.endColumn + 1);
-      const bool hasStuffToDeleteOnEndLine = (!textLeadingClosingBracket.isEmpty() && !textLeadingClosingBracket.trimmed().isEmpty());
-      if (!hasStuffToDeleteOnEndLine)
+      if (!closingBracketHasLeadingNonWhitespace)
       {
         // Shrink the endpoint of the range so that it ends at the end of the line above,
         // leaving the closing bracket on its own line.
@@ -2890,10 +2903,10 @@ void KateViNormalMode::initializeCommands()
   ADDCMD("y", commandYank, NEEDS_MOTION );
   ADDCMD("yy", commandYankLine, 0 );
   ADDCMD("Y", commandYankToEOL, 0 );
-  ADDCMD("p", commandPasteLeaveCursorAtStart, IS_CHANGE );
-  ADDCMD("P", commandPasteBeforeLeaveCursorAtStart, IS_CHANGE );
-  ADDCMD("gp", commandPasteLeaveCursorAtEnd, IS_CHANGE );
-  ADDCMD("gP", commandPasteBeforeLeaveCursorAtEnd, IS_CHANGE );
+  ADDCMD("p", commandPaste, IS_CHANGE );
+  ADDCMD("P", commandPasteBefore, IS_CHANGE );
+  ADDCMD("gp", commandgPaste, IS_CHANGE );
+  ADDCMD("gP", commandgPasteBefore, IS_CHANGE );
   ADDCMD("r.", commandReplaceCharacter, IS_CHANGE | REGEX_PATTERN );
   ADDCMD("R", commandEnterReplaceMode, IS_CHANGE );
   ADDCMD(":", commandSwitchToCmdLine, 0 );
@@ -3098,14 +3111,18 @@ OperationMode KateViNormalMode::getOperationMode() const
   return m;
 }
 
-bool KateViNormalMode::paste(bool leaveCursorAtStart)
+bool KateViNormalMode::paste(PasteLocation pasteLocation, bool isgPaste)
 {
-  Cursor c( m_view->cursorPosition() );
-  Cursor cAfter = c;
+  Cursor pasteAt( m_view->cursorPosition() );
+  Cursor cursorAfterPaste = pasteAt;
   QChar reg = getChosenRegister( m_defaultRegister );
 
   OperationMode m = getRegisterFlag( reg );
   QString textToInsert = getRegisterContent( reg );
+  const bool isTextMultiLine = textToInsert.split("\n").count() > 1;
+
+  // In temporary normal mode, p/P act as gp/gP.
+  isgPaste |= m_viInputModeManager->getTemporaryNormalMode();
 
   if ( textToInsert.isNull() ) {
     error(i18n("Nothing in register %1", reg ));
@@ -3116,64 +3133,49 @@ bool KateViNormalMode::paste(bool leaveCursorAtStart)
     textToInsert = textToInsert.repeated( getCount() ); // FIXME: does this make sense for blocks?
   }
 
+
   if ( m == LineWise ) {
-    textToInsert.chop( 1 ); // remove the last \n
-    c.setColumn( doc()->lineLength( c.line() ) ); // paste after the current line and ...
-    textToInsert.prepend( QChar( '\n' ) ); // ... prepend a \n, so the text starts on a new line
-
-    cAfter.setLine( cAfter.line()+1 );
-    cAfter.setColumn( 0 );
-
-    if (!leaveCursorAtStart)
+    pasteAt.setColumn( 0 );
+    if (pasteLocation == AfterCurrentPosition)
     {
-      cAfter.setLine(cAfter.line() + textToInsert.split("\n").length() - 1);
-    }
+      textToInsert.chop( 1 ); // remove the last \n
+      pasteAt.setColumn( doc()->lineLength( pasteAt.line() ) ); // paste after the current line and ...
+      textToInsert.prepend( QChar( '\n' ) ); // ... prepend a \n, so the text starts on a new line
 
+      cursorAfterPaste.setLine( cursorAfterPaste.line()+1 );
+    }
+    if (isgPaste)
+    {
+      cursorAfterPaste.setLine(cursorAfterPaste.line() + textToInsert.split("\n").length() - 1);
+    }
   } else {
-    if ( getLine( c.line() ).length() > 0 ) {
-      c.setColumn( c.column()+1 );
-    }
-
-    cAfter = c;
-    if (!leaveCursorAtStart)
+    if (pasteLocation == AfterCurrentPosition)
     {
-      cAfter = cursorPosAtEndOfPaste(c, textToInsert);
+      // Move cursor forward one before we paste.  The position after the paste must also
+      // be updated accordingly.
+      if ( getLine( pasteAt.line() ).length() > 0 ) {
+        pasteAt.setColumn( pasteAt.column()+1 );
+      }
+      cursorAfterPaste = pasteAt;
+    }
+    const bool leaveCursorAtStartOfPaste = isTextMultiLine && !isgPaste;
+    if (!leaveCursorAtStartOfPaste)
+    {
+      cursorAfterPaste = cursorPosAtEndOfPaste(pasteAt, textToInsert);
+      if (!isgPaste)
+      {
+        cursorAfterPaste.setColumn(cursorAfterPaste.column() - 1);
+      }
     }
   }
 
-  doc()->insertText( c, textToInsert, m == Block );
+  doc()->insertText( pasteAt, textToInsert, m == Block );
 
-  updateCursor( cAfter );
-
-  return true;
-}
-
-bool KateViNormalMode::pasteBefore(bool leaveCursorAtStart)
-{
-  Cursor c( m_view->cursorPosition() );
-  Cursor cAfter = c;
-  QChar reg = getChosenRegister( m_defaultRegister );
-
-  QString textToInsert = getRegisterContent( reg );
-  OperationMode m = getRegisterFlag( reg );
-
-  if ( getCount() > 1 ) {
-    textToInsert = textToInsert.repeated( getCount() );
-  }
-
-  if ( textToInsert.endsWith('\n') ) { // lines
-    c.setColumn( 0 );
-    cAfter.setColumn( 0 );
-  }
-
-  doc()->insertText( c, textToInsert, m == Block );
-
-  if (!leaveCursorAtStart)
+  if (cursorAfterPaste.line() >= doc()->lines())
   {
-    cAfter = cursorPosAtEndOfPaste(c, textToInsert);
+    cursorAfterPaste.setLine(doc()->lines() - 1);
   }
-
-  updateCursor( cAfter );
+  updateCursor( cursorAfterPaste );
 
   return true;
 }

@@ -39,6 +39,8 @@ KateViInsertMode::KateViInsertMode( KateViInputModeManager *viInputModeManager,
 
   m_blockInsert = None;
   m_eolPos = 0;
+  m_count = 1;
+  m_countedRepeatsBeginOnNewLine = false;
 }
 
 KateViInsertMode::~KateViInsertMode()
@@ -246,6 +248,12 @@ bool KateViInsertMode::commandInsertContentOfRegister(){
 bool KateViInsertMode::commandSwitchToNormalModeForJustOneCommand(){
     m_viInputModeManager->setTemporaryNormalMode(true);
     m_viInputModeManager->changeViMode(NormalMode);
+    const Cursor cursorPos = m_view->cursorPosition();
+    // If we're at end of the line, move the cursor back one step, as in Vim.
+    if (doc()->line(cursorPos.line()).length() == cursorPos.column())
+    {
+      m_view->setCursorPosition(Cursor(cursorPos.line(), cursorPos.column() - 1));
+    }
     m_view->setCaretStyle( KateRenderer::Block, true );
     m_view->updateViModeBarMode();
     m_viewInternal->repaint();
@@ -460,6 +468,19 @@ void KateViInsertMode::leaveInsertMode( bool force )
         }
 
         m_blockInsert = None;
+    }
+    else if (!force)
+    {
+        const QString added = doc()->text(Range(m_viInputModeManager->getMarkPosition('^'), m_view->cursorPosition()));
+
+        if (m_count > 1)
+        {
+            for (unsigned int i = 0; i < m_count - 1; i++)
+            {
+                doc()->insertText( m_view->cursorPosition(), (m_countedRepeatsBeginOnNewLine ? "\n" : "") + added );
+            }
+        }
+        m_countedRepeatsBeginOnNewLine = false;
     }
     startNormalMode();
 }

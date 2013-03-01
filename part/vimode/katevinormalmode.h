@@ -97,11 +97,11 @@ class KATEPART_TESTS_EXPORT KateViNormalMode : public KateViModeBase
     bool commandYankLine();
     bool commandYankToEOL();
 
-    bool commandPasteLeaveCursorAtStart();
-    bool commandPasteBeforeLeaveCursorAtStart();
+    bool commandPaste();
+    bool commandPasteBefore();
 
-    bool commandPasteLeaveCursorAtEnd();
-    bool commandPasteBeforeLeaveCursorAtEnd();
+    bool commandgPaste();
+    bool commandgPasteBefore();
 
     bool commandDeleteChar();
     bool commandDeleteCharBackward();
@@ -278,8 +278,10 @@ class KATEPART_TESTS_EXPORT KateViNormalMode : public KateViModeBase
     virtual void goToPos( const KateViRange &r );
     void executeCommand( const KateViCommand* cmd );
     OperationMode getOperationMode() const;
-    bool paste(bool leaveCursorAtStart);
-    bool pasteBefore(bool leaveCursorAtStart);
+    // The 'current position' is the current cursor position for non-linewise pastes, and the current
+    // line for linewise.
+    enum PasteLocation { AtCurrentPosition, AfterCurrentPosition };
+    bool paste(PasteLocation pasteLocation, bool isgPaste);
     Cursor cursorPosAtEndOfPaste(const Cursor& pasteLocation, const QString& pastedText);
 
     void joinLines(unsigned int from, unsigned int to) const;

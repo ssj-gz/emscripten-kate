@@ -237,7 +237,7 @@ void KateViInputModeManager::storeChangeCommand()
 
 }
 
-void KateViInputModeManager::repeatLastChange()
+void KateViInputModeManager::repeatLastChange(int count)
 {
   m_replayingLastChange = true;
   feedKeyPresses(m_lastChange);

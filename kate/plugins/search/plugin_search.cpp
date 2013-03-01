@@ -158,6 +158,8 @@ KatePluginSearchView::KatePluginSearchView(Kate::MainWindow *mainWin, Kate::Appl
 Kate::XMLGUIClient(KatePluginSearchFactory::componentData()),
 m_kateApp(application),
 m_curResults(0),
+m_searchJustOpened(false),
+m_switchToProjectModeWhenAvailable(false),
 m_projectPluginView(0)
 {
     m_toolView = mainWin->createToolView ("kate_plugin_katesearch",
@@ -177,7 +179,7 @@ m_projectPluginView(0)
     connect(a, SIGNAL(triggered(bool)), this, SLOT(openSearchView()));
     connect(a, SIGNAL(triggered(bool)), this, SLOT(addTab()));
     connect(a, SIGNAL(triggered(bool)), m_ui.displayOptions, SLOT(toggle()));
-    // toggle works her because addTab() sets it to a not pressed
+    // toggle works her because addTab() sets it to not pressed
 
     a = actionCollection()->addAction("go_to_next_match");
     a->setText(i18n("Go to Next Match"));
@@ -198,8 +200,8 @@ m_projectPluginView(0)
     m_ui.currentFolderButton->setIcon(KIcon("view-refresh"));
     m_ui.newTabButton->setIcon(KIcon("tab-new"));
 
-    m_ui.filterCombo->setToolTip(i18n("Comma separated list of file types to search in. example: \"*.cpp,*.h\"\n"
-    "NOTE: Put a minus sign ('-') in front of an element to exclude those files and directories. example: \"*.cpp,*.h,-build*\""));
+    m_ui.filterCombo->setToolTip(i18n("Comma separated list of file types to search in. Example: \"*.cpp,*.h\"\n"));
+    m_ui.excludeCombo->setToolTip(i18n("Comma separated list of files and directories to exclude from the search. Example: \"build*\""));
 
     int padWidth = m_ui.folderLabel->sizeHint().width();
     padWidth = qMax(padWidth, m_ui.filterLabel->sizeHint().width());
@@ -230,6 +232,7 @@ m_projectPluginView(0)
     connect(m_ui.currentFolderButton, SIGNAL(clicked()), this, SLOT(setCurrentFolder()));
 
     connect(m_ui.filterCombo,      SIGNAL(returnPressed()), this, SLOT(startSearch()));
+    connect(m_ui.excludeCombo,     SIGNAL(returnPressed()), this, SLOT(startSearch()));
 
     connect(m_ui.displayOptions,   SIGNAL(toggled(bool)), this, SLOT(toggleOptions(bool)));
     connect(m_ui.searchPlaceCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(searchPlaceChanged()));
@@ -348,9 +351,14 @@ void KatePluginSearchView::openSearchView()
                 selection = selection.left(selection.size() -1);
             }
             if (!selection.isEmpty() && !selection.contains('\n')) {
+                m_ui.searchCombo->blockSignals(true);
                 m_ui.searchCombo->lineEdit()->setText(selection);
+                m_ui.searchCombo->blockSignals(false);
             }
         }
+        m_ui.searchCombo->lineEdit()->selectAll();
+        m_searchJustOpened = true;
+        searchPatternChanged();
     }
 }
 
@@ -378,6 +386,7 @@ void KatePluginSearchView::setSearchString(const QString &pattern)
 void KatePluginSearchView::startSearch()
 {
     mainWindow()->showToolView(m_toolView); // in case we are invoked from the command interface
+    m_switchToProjectModeWhenAvailable = false; // now that we started, don't switch back automatically
 
     if (m_ui.searchCombo->currentText().isEmpty()) {
         // return pressed in the folder combo or filter combo
@@ -387,6 +396,10 @@ void KatePluginSearchView::startSearch()
     if(m_ui.filterCombo->findText(m_ui.filterCombo->currentText()) == -1) {
         m_ui.filterCombo->insertItem(0, m_ui.filterCombo->currentText());
         m_ui.filterCombo->setCurrentIndex(0);
+    }
+    if(m_ui.excludeCombo->findText(m_ui.excludeCombo->currentText()) == -1) {
+        m_ui.excludeCombo->insertItem(0, m_ui.excludeCombo->currentText());
+        m_ui.excludeCombo->setCurrentIndex(0);
     }
     m_curResults = qobject_cast<Results *>(m_ui.resultTabWidget->currentWidget());
     if (!m_curResults) {
@@ -418,23 +431,32 @@ void KatePluginSearchView::startSearch()
                                      m_ui.searchCombo->currentText());
 
     if (m_ui.searchPlaceCombo->currentIndex() ==  0) {
+        m_resultBaseDir.clear();
         m_searchOpenFiles.startSearch(m_kateApp->documentManager()->documents(), reg);
     }
     else if (m_ui.searchPlaceCombo->currentIndex() == 1) {
+        m_resultBaseDir = m_ui.folderRequester->text();
         m_searchFolder.startSearch(m_ui.folderRequester->text(),
                                    m_ui.recursiveCheckBox->isChecked(),
                                    m_ui.hiddenCheckBox->isChecked(),
                                    m_ui.symLinkCheckBox->isChecked(),
                                    m_ui.binaryCheckBox->isChecked(),
                                    m_ui.filterCombo->currentText(),
+                                   m_ui.excludeCombo->currentText(),
                                    reg);
     } else {
         /**
          * init search with file list from current project, if any
          */
+        m_resultBaseDir.clear();
         QStringList files;
-        if (m_projectPluginView)
+        if (m_projectPluginView) {
+            QString projectFile = m_projectPluginView->property ("projectFileName").toString();
+            if (projectFile.endsWith(".kateproject")) {
+                m_resultBaseDir = projectFile.left(projectFile.size() - QString(".kateproject").size());
+            }
             files = m_projectPluginView->property ("projectFiles").toStringList();
+        }
         m_searchProject.startSearch(files, reg);
     }
     m_toolView->setCursor(Qt::WaitCursor);
@@ -492,6 +514,7 @@ void KatePluginSearchView::searchPatternChanged()
     m_curResults->selectAllCB->setChecked(true);
     disconnect(m_curResults->tree, SIGNAL(itemChanged(QTreeWidgetItem*,int)), m_curResults, SLOT(checkCheckedState()));
 
+    m_resultBaseDir.clear();
     m_searchWhileTyping.startSearch(doc, reg);
 }
 
@@ -503,6 +526,7 @@ QTreeWidgetItem * KatePluginSearchView::rootFileItem(const QString &url)
 
     KUrl kurl(url);
     QString path = kurl.isLocalFile() ? kurl.upUrl().path() : kurl.upUrl().url();
+    path.replace(m_resultBaseDir, "");
     QString name = kurl.fileName();
 
     for (int i=0; i<m_curResults->tree->topLevelItemCount(); i++) {
@@ -604,8 +628,8 @@ void KatePluginSearchView::clearMarks()
             QHashIterator<int, KTextEditor::Mark*> i(marks);
             while (i.hasNext()) {
                 i.next();
-                if (i.value()->type == KTextEditor::MarkInterface::markType32) {
-                    iface->removeMark(i.value()->line, i.value()->type);
+                if (i.value()->type & KTextEditor::MarkInterface::markType32) {
+                    iface->removeMark(i.value()->line, KTextEditor::MarkInterface::markType32);
                 }
             }
         }
@@ -625,8 +649,8 @@ void KatePluginSearchView::clearDocMarks(KTextEditor::Document* doc)
         QHashIterator<int, KTextEditor::Mark*> i(marks);
         while (i.hasNext()) {
             i.next();
-            if (i.value()->type == KTextEditor::MarkInterface::markType32) {
-                iface->removeMark(i.value()->line, i.value()->type);
+            if (i.value()->type & KTextEditor::MarkInterface::markType32) {
+                iface->removeMark(i.value()->line, KTextEditor::MarkInterface::markType32);
             }
         }
     }
@@ -672,6 +696,7 @@ void KatePluginSearchView::searchDone()
     indicateMatch(m_curResults->tree->topLevelItemCount() > 0);
     m_curResults = 0;
     m_toolView->unsetCursor();
+    m_searchJustOpened = false;
 }
 
 void KatePluginSearchView::searchWhileTypingDone()
@@ -680,21 +705,18 @@ void KatePluginSearchView::searchWhileTypingDone()
         return;
     }
 
-    if (m_curResults->tree->topLevelItemCount() > 0) {
-        m_curResults->tree->setCurrentItem(m_curResults->tree->topLevelItem(0));
-        m_curResults->setFocus(Qt::OtherFocusReason);
-    }
     m_curResults->tree->resizeColumnToContents(0);
     m_curResults->buttonContainer->setEnabled(true);
 
     connect(m_curResults->tree, SIGNAL(itemChanged(QTreeWidgetItem*,int)), m_curResults, SLOT(checkCheckedState()));
 
-    indicateMatch(m_curResults->tree->topLevelItemCount() > 0);
-    if (m_curResults->tree->topLevelItemCount() > 0) {
+    if (!m_searchJustOpened && (m_curResults->tree->topLevelItemCount() > 0)) {
         itemSelected(m_curResults->tree->topLevelItem(0));
     }
+    indicateMatch(m_curResults->tree->topLevelItemCount() > 0);
     m_curResults = 0;
     m_ui.searchCombo->lineEdit()->setFocus();
+    m_searchJustOpened = false;
 }
 
 void KatePluginSearchView::indicateMatch(bool hasMatch) {
@@ -850,7 +872,14 @@ void KatePluginSearchView::readSessionConfig(KConfigBase* config, const QString&
     m_ui.useRegExp->setChecked(cg.readEntry("UseRegExp", false));
     m_ui.u_expandResults->setChecked(cg.readEntry("ExpandSearchResults", false));
 
-    m_ui.searchPlaceCombo->setCurrentIndex(cg.readEntry("Place", 0));
+    int searchPlaceIndex = cg.readEntry("Place", 0);
+    if ((searchPlaceIndex == 2) && (searchPlaceIndex >= m_ui.searchPlaceCombo->count())) {
+        // handle the case that project mode was selected, butnot yet available
+        m_switchToProjectModeWhenAvailable = true;
+        searchPlaceIndex = 0;
+    }
+    m_ui.searchPlaceCombo->setCurrentIndex(searchPlaceIndex);
+
     m_ui.recursiveCheckBox->setChecked(cg.readEntry("Recursive", true));
     m_ui.hiddenCheckBox->setChecked(cg.readEntry("HiddenFiles", false));
     m_ui.symLinkCheckBox->setChecked(cg.readEntry("FollowSymLink", false));
@@ -861,6 +890,9 @@ void KatePluginSearchView::readSessionConfig(KConfigBase* config, const QString&
     m_ui.filterCombo->clear();
     m_ui.filterCombo->addItems(cg.readEntry("Filters", QStringList()));
     m_ui.filterCombo->setCurrentIndex(cg.readEntry("CurrentFilter", 0));
+    m_ui.excludeCombo->clear();
+    m_ui.excludeCombo->addItems(cg.readEntry("ExcludeFilters", QStringList()));
+    m_ui.excludeCombo->setCurrentIndex(cg.readEntry("CurrentExcludeFilter", 0));
 }
 
 void KatePluginSearchView::writeSessionConfig(KConfigBase* config, const QString& groupPrefix)
@@ -888,10 +920,24 @@ void KatePluginSearchView::writeSessionConfig(KConfigBase* config, const QString
     }
     cg.writeEntry("Filters", filterItems);
     cg.writeEntry("CurrentFilter", m_ui.filterCombo->currentIndex());
+
+    QStringList excludeFilterItems;
+    for (int i=0; i<qMin(m_ui.excludeCombo->count(), 10); i++) {
+        excludeFilterItems << m_ui.excludeCombo->itemText(i);
+    }
+    cg.writeEntry("ExcludeFilters", excludeFilterItems);
+    cg.writeEntry("CurrentExcludeFilter", m_ui.excludeCombo->currentIndex());
 }
 
 void KatePluginSearchView::addTab()
 {
+    if ((sender() != m_ui.newTabButton) &&
+        (m_ui.resultTabWidget->count() >  0) &&
+        m_ui.resultTabWidget->tabText(m_ui.resultTabWidget->currentIndex()).isEmpty())
+    {
+        return;
+    }
+
     Results *res = new Results();
 
     connect(res->tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
@@ -1107,9 +1153,11 @@ void KatePluginSearchView::slotProjectFileNameChanged ()
         if (m_ui.searchPlaceCombo->count() < 3) {
             // add "in Project"
             m_ui.searchPlaceCombo->addItem (SmallIcon("project-open"), i18n("in Project"));
-
-            // switch to search "in Project"
-            setSearchPlace (2);
+            if (m_switchToProjectModeWhenAvailable) {
+                // switch to search "in Project"
+                m_switchToProjectModeWhenAvailable = false;
+                setSearchPlace (2);
+            }
         }
     }
 

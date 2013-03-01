@@ -1447,6 +1447,21 @@ Returns a clone of the range.
 
 <varlistentry>
 <term><synopsis>
+bool Range.isEmpty();
+</synopsis></term>
+<listitem><para>
+Returns <literal>true</literal>, if the start and end cursors are equal.
+</para>
+<para>Example: <function>var empty = range.isEmpty();</function>
+</para>
+<para>
+Since: KDE 4.11
+</para></listitem>
+</varlistentry>
+
+
+<varlistentry>
+<term><synopsis>
 bool Range.isValid();
 </synopsis></term>
 <listitem><para>
@@ -1459,7 +1474,7 @@ Returns <literal>true</literal>, if both start and end cursor are valid, otherwi
 
 <varlistentry>
 <term><synopsis>
-bool Range.invalid();
+Range Range.invalid();
 </synopsis></term>
 <listitem><para>
 Returns the Range from (-1, -1) to (-1, -1).

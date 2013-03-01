@@ -154,9 +154,47 @@ QSize KateScrollBar::sizeHint() const
   return QScrollBar::sizeHint();
 }
 
+int KateScrollBar::minimapYToStdY(int y)
+{
+  // Check if the minimap fills the whole scrollbar
+  if (m_stdGroveRect.height() == m_mapGroveRect.height()){
+    return y;
+  }
+
+  // check if y is on the step up/down
+  if ((y < m_stdGroveRect.top()) || (y > m_stdGroveRect.bottom())) {
+    return y;
+  }
+
+  if (y < m_mapGroveRect.top()) {
+    return m_stdGroveRect.top() + 1;
+  }
+
+  if (y > m_mapGroveRect.bottom()) {
+    return m_stdGroveRect.bottom() - 1;
+  }
+
+  // check for div/0
+  if (m_mapGroveRect.height() == 0) {
+    return y;
+  }
+
+  int newY = (y - m_mapGroveRect.top()) * m_stdGroveRect.height() / m_mapGroveRect.height();
+  newY += m_stdGroveRect.top();
+  return newY;
+}
+
 void KateScrollBar::mousePressEvent(QMouseEvent* e)
 {
-  QScrollBar::mousePressEvent(e);
+  if (m_showMiniMap) {
+    QMouseEvent eMod(QEvent::MouseButtonPress,
+                     QPoint(6, minimapYToStdY(e->pos().y())),
+                     e->button(), e->buttons(), e->modifiers());
+    QScrollBar::mousePressEvent(&eMod);
+  }
+  else {
+    QScrollBar::mousePressEvent(e);
+  }
 
   if (e->button() == Qt::MidButton)
     m_middleMouseDown = true;
@@ -184,12 +222,28 @@ void KateScrollBar::mouseReleaseEvent(QMouseEvent* e)
     QToolTip::hideText();
   }
 
-  QScrollBar::mouseReleaseEvent(e);
+  if (m_showMiniMap) {
+    QMouseEvent eMod(QEvent::MouseButtonRelease,
+                     QPoint(e->pos().x(), minimapYToStdY(e->pos().y())),
+                     e->button(), e->buttons(), e->modifiers());
+    QScrollBar::mouseReleaseEvent(&eMod);
+  }
+  else {
+    QScrollBar::mouseReleaseEvent(e);
+  }
 }
 
 void KateScrollBar::mouseMoveEvent(QMouseEvent* e)
 {
-  QScrollBar::mouseMoveEvent(e);
+  if (m_showMiniMap) {
+    QMouseEvent eMod(QEvent::MouseMove,
+                     QPoint(e->pos().x(), minimapYToStdY(e->pos().y())),
+                     e->button(), e->buttons(), e->modifiers());
+    QScrollBar::mouseMoveEvent(&eMod);
+  }
+  else {
+    QScrollBar::mouseMoveEvent(e);
+  }
 
   if (e->buttons() & (Qt::LeftButton | Qt::MidButton)) {
     redrawMarks();
@@ -224,7 +278,7 @@ const QColor KateScrollBar::charColor(const QVector<int> &attributes, int &attri
   // Query the decorations, that is, things like search highlighting, or the
   // KDevelop DUChain highlighting, for a color to use
   foreach (const QTextLayout::FormatRange& range, decorations) {
-    if (range.start <= x and range.start + range.length > x) {
+    if (range.start <= x && range.start + range.length > x) {
       // If there's a different background color set (search markers, ...)
       // use that, otherwise use the foreground color.
       if ( range.format.hasProperty(QTextFormat::BackgroundBrush) ) {
@@ -272,11 +326,6 @@ void KateScrollBar::updatePixmap()
     return;
   }
 
-  if (!m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)) {
-    // Without style we cannot update the pixmap
-    return;
-  }
-
   // For performance reason, only every n-th line will be drawn if the widget is
   // sufficiently small compared to the amount of lines in the document.
   int docLineCount = m_doc->visibleLines();
@@ -305,8 +354,16 @@ void KateScrollBar::updatePixmap()
   //kDebug(13040) << "l" << lineIncrement << "c" << charIncrement << "d" << lineDivisor;
   //kDebug(13040) << "pixmap" << pixmapLineCount << pixmapLineWidth << "docLines" << m_doc->visibleLines() << "height" << m_grooveHeight;
 
-  QColor backgroundColor = m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)->background().color();
-  QColor defaultTextColor = m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)->foreground().color();
+  QColor backgroundColor;
+  QColor defaultTextColor;
+  if (m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)) {
+    backgroundColor = m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)->background().color();
+    defaultTextColor = m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)->foreground().color();
+  }
+  else {
+    backgroundColor = palette().color(QPalette::Base);
+    defaultTextColor = palette().color(QPalette::Text);
+  }
   QColor modifiedLineColor = m_view->renderer()->config()->modifiedLineColor();
   QColor savedLineColor = m_view->renderer()->config()->savedLineColor();
   // move the modified line color away from the background color
@@ -437,6 +494,7 @@ void KateScrollBar::miniMapPaintEvent(QPaintEvent *e)
 
   int docXMargin = 1;
   QRect grooveRect = style()->subControlRect(QStyle::CC_ScrollBar, &opt, QStyle::SC_ScrollBarGroove, this);
+  m_stdGroveRect = grooveRect;
   if (style()->subControlRect(QStyle::CC_ScrollBar, &opt, QStyle::SC_ScrollBarSubLine, this).height() == 0) {
     int alignMargin = style()->pixelMetric(QStyle::PM_FocusFrameVMargin, &opt, this);
     grooveRect.moveTop(alignMargin);
@@ -449,6 +507,7 @@ void KateScrollBar::miniMapPaintEvent(QPaintEvent *e)
   m_grooveHeight = grooveRect.height();
 
   QRect sliderRect = style()->subControlRect(QStyle::CC_ScrollBar, &opt, QStyle::SC_ScrollBarSlider, this);
+  m_stdSliderRect = sliderRect;
   sliderRect.adjust(docXMargin+1, 1, -(docXMargin+1), -1);
 
   //style()->drawControl(QStyle::CE_ScrollBarAddLine, &opt, &painter, this);
@@ -458,6 +517,7 @@ void KateScrollBar::miniMapPaintEvent(QPaintEvent *e)
   int docHeight = qMin(grooveRect.height(), m_pixmap.height()*2) - 2*docXMargin;
   int yoffset = (grooveRect.height() - docHeight) / 2;
   QRect docRect(QPoint(grooveRect.left()+docXMargin, yoffset+grooveRect.top()), QSize(grooveRect.width()-2*docXMargin, docHeight));
+  m_mapGroveRect = docRect;
 
   // calculate the visible area
   int max = qMax(maximum()+1, 1);
@@ -466,10 +526,20 @@ void KateScrollBar::miniMapPaintEvent(QPaintEvent *e)
   QRect visibleRect = docRect;
   visibleRect.moveTop(visibleStart);
   visibleRect.setHeight(visibleEnd-visibleStart);
+  m_mapSliderRect = visibleRect;
 
   // calculate colors
-  QColor backgroundColor = m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)->background().color();
-  QColor foregroundColor = m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)->foreground().color();
+  QColor backgroundColor;
+  QColor foregroundColor;
+  // TODO KDE5: If HighlightInterface is a View interface, use HighlightInterface::defaultStyle() again.
+  if (m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)) {
+    backgroundColor = m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)->background().color();
+    foregroundColor = m_doc->defaultStyle(KTextEditor::HighlightInterface::dsNormal)->foreground().color();
+  }
+  else {
+    backgroundColor = palette().color(QPalette::Base);
+    foregroundColor = palette().color(QPalette::Text);
+  }
   int backgroundLightness = backgroundColor.lightness();
   int foregroundLightness = foregroundColor.lightness();
   int lighnessDiff = (foregroundLightness - backgroundLightness);

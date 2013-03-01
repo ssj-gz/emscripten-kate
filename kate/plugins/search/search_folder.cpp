@@ -34,6 +34,7 @@ void SearchFolder::startSearch(const QString &folder,
                                bool symlinks,
                                bool binary,
                                const QString &types,
+                               const QString &excludes,
                                const QRegExp &regexp)
 {
     m_cancelSearch = false;
@@ -43,19 +44,14 @@ void SearchFolder::startSearch(const QString &folder,
     m_binary       = binary;
     m_folder       = folder;
     m_regExp       = regexp;
-    m_excludeList.clear();
-
     m_types = types.split(',');
 
-    for (int i=0; i<m_types.size(); i++) {
-      if (m_types[i].startsWith('-')) {
-        m_types[i].remove(0, 1);
-        QRegExp rx(m_types[i]);
+    QStringList tmpExcludes = excludes.split(',');
+    m_excludeList.clear();
+    for (int i=0; i<tmpExcludes.size(); i++) {
+        QRegExp rx(tmpExcludes[i]);
         rx.setPatternSyntax(QRegExp::Wildcard);
         m_excludeList << rx;
-        m_types.removeAt(i);
-        i=0;
-      }
     }
 
     start();
@@ -135,10 +131,11 @@ void SearchFolder::searchFile(const QFileInfo &item)
         if (m_cancelSearch) return;
         column = m_regExp.indexIn(line);
         while (column != -1) {
+            if (m_regExp.cap().isEmpty()) break;
             // limit line length
             if (line.length() > 512) line = line.left(512);
             emit matchFound(item.absoluteFilePath(), i, column, line, m_regExp.matchedLength());
-            column = m_regExp.indexIn(line, column + 1);
+            column = m_regExp.indexIn(line, column + m_regExp.cap().size());
         }
         i++;
     }

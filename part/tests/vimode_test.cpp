@@ -58,8 +58,13 @@ void ViModeTest::BeginTest(const QString& original_text) {
   kate_view->setCursorPosition(Cursor(0,0));
 }
 
-void ViModeTest::FinishTest(const QString& expected_text)
+void ViModeTest::FinishTest(const QString& expected_text, ViModeTest::Expectation expectation, const QString& failureReason)
 {
+  if (expectation == ShouldFail)
+  {
+    QEXPECT_FAIL("", failureReason.toLocal8Bit(), Continue);
+    qDebug() << "Actual text:\n\t" << kate_document->text() << "\nShould be (for this test to pass):\n\t" << expected_text;
+  }
   QCOMPARE(kate_document->text(), expected_text);
 }
 
@@ -106,10 +111,15 @@ void ViModeTest::TestPressKey(QString str) {
     if (key != QString(Qt::Key_Escape))
     {
       key = str[i];
-      if (vi_input_mode_manager->getCurrentViMode() == InsertMode){
-        code = key[0].unicode() - 'a' + Qt::Key_A;
-      } else {
-        code = key[0].unicode() - '0' + Qt::Key_0;
+      code = key[0].unicode();
+      if (keyboard_modifier != Qt::NoModifier)
+      {
+        // Kate Vim mode's internals identifier e.g. CTRL-C by Qt::Key_C plus the control modifier,
+        // so we need to translate e.g. 'c' to Key_C.
+        if (key[0].isLetter())
+        {
+          code = code - 'a' + Qt::Key_A;
+        }
       }
     }
     else {
@@ -147,11 +157,11 @@ void ViModeTest::TestPressKey(QString str) {
  */
 void ViModeTest::DoTest(QString original_text,
     QString command,
-    QString expected_text) {
+    QString expected_text, Expectation expectation, const QString& failureReason) {
 
   BeginTest(original_text);
   TestPressKey(command);
-  FinishTest(expected_text);
+  FinishTest(expected_text, expectation, failureReason);
 }
 
 
@@ -238,6 +248,7 @@ void ViModeTest::VisualModeTests() {
     DoTest("foobar","Vra","aaaaaa");
     DoTest("foo\nbar","jlvklrx","fox\nxxr");
     DoTest("123\n123","l\\ctrl-vljrx","1xx\n1xx");
+    DoTest("a", "r\\ctrl-c", "a");
 
     // Testing "gq"
     DoTest("foo\nbar\nbaz","Vgq","foo\nbar\nbaz");
@@ -276,6 +287,16 @@ void ViModeTest::InsertModeTests() {
   DoTest("foo bar", "wlI\\ctrl-cx", "oo bar");
   DoTest("foo bar", "wli\\ctrl-cx", "foo ar");
   DoTest("foo bar", "wlihello\\ctrl-c", "foo bhelloar");
+  DoTest("", "5ihello\\esc", "hellohellohellohellohello");
+  DoTest("bar", "5ahello\\esc", "bhellohellohellohellohelloar");
+  DoTest("   bar", "5Ihello\\esc", "   hellohellohellohellohellobar");
+  DoTest("bar", "5Ahello\\esc", "barhellohellohellohellohello");
+  DoTest("", "5ihello\\ctrl-c", "hello");
+  DoTest("bar", "5ohello\\esc", "bar\nhello\nhello\nhello\nhello\nhello");
+  DoTest("bar", "5Ohello\\esc", "hello\nhello\nhello\nhello\nhello\nbar");
+  DoTest("foo\nbar", "j5Ohello\\esc", "foo\nhello\nhello\nhello\nhello\nhello\nbar");
+  DoTest("bar", "5ohello\\esc2ixyz\\esc", "bar\nhello\nhello\nhello\nhello\nhellxyzxyzo");
+  DoTest("", "ihello\\esc5.", "hellhellohellohellohellohelloo");
 
   // Testing "Ctrl-w"
   DoTest("foobar", "$i\\ctrl-w", "r");
@@ -303,6 +324,12 @@ void ViModeTest::InsertModeTests() {
   // Test that the text written after the Ctrl-O command completes is treated as
   // an insertion of text (rather than a sequence of commands) when repeated via "."
   DoTest("", "isausage\\ctrl-obugo\\esc.", "ugugoosausage");
+  // 'Step back' on Ctrl-O if at the end of the line
+  DoTest("foo bar baz","A\\ctrl-ox","foo bar ba");
+  // Paste acts as gp when executing in a Ctrl-O
+  DoTest("foo bar baz","yiwea\\ctrl-opd","foo foodbar baz");
+  DoTest("bar","A\\ctrl-o\\ctrl-chx","br", ShouldFail, "Need to return direct to normal (not Insert) mode when aborting temporary normal mode");
+  DoTest("bar","A\\ctrl-o\\eschx","br", ShouldFail, "Need to return direct to normal (not Insert) mode when aborting temporary normal mode");
 
   // Testing "Ctrl-D" "Ctrl-T"
   DoTest("foo", "i\\ctrl-t" , "  foo");
@@ -322,14 +349,6 @@ void ViModeTest::InsertModeTests() {
   DoTest("foo\nbar", "ji\\ctrl-j","foo\n\nbar");
   DoTest("foobar", "A\\ctrl-j","foobar\n" );
   DoTest("foobar", "li\\ctrl-j\\ctrl-cli\\ctrl-j\\ctrl-cli\\ctrl-j\\ctrl-cli\\ctrl-j\\ctrl-cli\\ctrl-j\\ctrl-c","f\no\no\nb\na\nr");
-}
-
-
- // There are written tests that fail.
- // They are disabled in order to be able to check all others working tests.
-void ViModeTest::NormalModeFailingTests()
-{
-
 }
 
 void ViModeTest::NormalModeMotionsTest() {
@@ -537,6 +556,7 @@ void ViModeTest::NormalModeMotionsTest() {
   DoTest( "{foo\nbar\nbaz}", "jdiB", "{}");
   DoTest( "{foo\nbar\n  \t\t }", "jdiB", "{\n  \t\t }");
   DoTest( "{foo\nbar\n  \t\ta}", "jdiB", "{}");
+  DoTest( "\t{\n\t}", "ldiB", "\t{\n\t}");
   // Quick test to see whether inner curly bracket works in visual mode.
   DoTest( "{\nfoo}", "jviBd", "{\n}");
   DoTest( "{\nfoo}", "jvaBd", "");
@@ -597,6 +617,17 @@ void ViModeTest::NormalModeMotionsTest() {
   // Ensure that command backwards works, too - only one test, as any additional ones would
   // just overlap with our previous ones.
   DoTest("aba bar", "lTa,x", "aba ar");
+  // Some tests with counting.
+  DoTest("aba bar", "2tax", "aba ar");
+  // If we can't find 3 further a's, don't move at all...
+  DoTest("aba bar", "3tax", "ba bar");
+  // ... except if we are repeating the last search, in which case stop at the last
+  // one that we do find.
+  DoTest("aba bar", "ta2;x", "aba ar");
+
+  // Don't move if we can't find any matches at all.
+  DoTest("nocapitalc", "lltCx", "noapitalc");
+  DoTest("nocapitalc", "llTCx", "noapitalc");
 }
 
 void ViModeTest::NormalModeCommandsTest() {
@@ -677,9 +708,16 @@ void ViModeTest::NormalModeCommandsTest() {
   // Yank and paste op\ngid into bar i.e. text spanning lines, but not linewise.
   DoTest("fop\ngid\nbar", "lvjyjjgpx", "fop\ngid\nbaop\ngi");
   DoTest("fop\ngid\nbar", "lvjyjjgPx", "fop\ngid\nbop\ngir");
+  DoTest("fop\ngid\nbar", "lvjyjjpx", "fop\ngid\nbap\ngir");
+  DoTest("fop\ngid\nbar", "lvjyjjPx", "fop\ngid\nbp\ngiar");
   // Linewise
   DoTest("fop\ngid\nbar\nhuv", "yjjjgpx", "fop\ngid\nbar\nfop\ngid\nuv");
   DoTest("fop\ngid\nbar\nhuv", "yjjjgPx", "fop\ngid\nfop\ngid\nar\nhuv");
+  DoTest("fop\ngid", "yjjgpx", "fop\ngid\nfop\nid");
+  DoTest("fop\ngid\nbar\nhuv", "yjjjPx", "fop\ngid\nop\ngid\nbar\nhuv");
+
+  DoTest("fop\nbar", "yiwjlpx", "fop\nbafor");
+  DoTest("fop\nbar", "yiwjlPx", "fop\nbfoar");
 }
 
 
@@ -688,12 +726,17 @@ void ViModeTest::NormalModeControlTests() {
   DoTest("150", "101\\ctrl-x", "49");
   DoTest("1", "\\ctrl-x\\ctrl-x\\ctrl-x\\ctrl-x", "-3");
   DoTest("0xabcdef", "1000000\\ctrl-x","0x9c8baf" );
+  DoTest("0x0000f", "\\ctrl-x","0x0000e" );
 
   // Testing "Ctrl-a"
   DoTest("150", "101\\ctrl-a", "251");
   DoTest("1000", "\\ctrl-ax", "100");
   DoTest("-1", "1\\ctrl-a", "0");
   DoTest("-1", "l1\\ctrl-a", "0");
+  DoTest("0x0000f", "\\ctrl-a","0x00010" );
+  DoTest("5", "5\\ctrl-a.","15" );
+  DoTest("5", "5\\ctrl-a2.","12");
+  DoTest("5", "5\\ctrl-a2.10\\ctrl-a","22");
 
   // Testing "Ctrl-r"
   DoTest("foobar", "d3lu\\ctrl-r", "bar");
@@ -878,6 +921,13 @@ void ViModeTest::MappingTests()
   KateGlobal::self()->viInputModeGlobal()->clearMappings(NormalMode);
   KateGlobal::self()->viInputModeGlobal()->addMapping(NormalMode, "'a", "ofoo<esc>");
   DoTest("bar", "5'au", "bar");
+}
+
+// Special area for tests where you want to set breakpoints etc without all the other tests
+// triggering them.  Run with ./vimode_test debuggingTests
+void ViModeTest::debuggingTests()
+{
+
 }
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

@@ -30,15 +30,16 @@ void SearchWhileTyping::startSearch(const KTextEditor::Document *doc, const QReg
 
   maxTime.start();
   for (int line =0; line < doc->lines(); line++) {
-    if (maxTime.elapsed() > 20) {
+    if (maxTime.elapsed() > 50) {
       kDebug() << "Search time exceeded -> stop" << maxTime.elapsed() << line;
       break;
     }
     column = regExp.indexIn(doc->line(line));
     while (column != -1) {
+      if (regExp.cap().isEmpty()) break;
       emit matchFound(doc->url().pathOrUrl(), line, column,
                       doc->line(line), regExp.matchedLength());
-      column = regExp.indexIn(doc->line(line), column + 1);
+      column = regExp.indexIn(doc->line(line), column + regExp.cap().size());
     }
   }
   emit searchDone();

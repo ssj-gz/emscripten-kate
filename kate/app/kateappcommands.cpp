@@ -48,6 +48,7 @@ KateAppCommands::KateAppCommands()
     re_new.setPattern("(v)?new");
     re_split.setPattern("sp(lit)?");
     re_vsplit.setPattern("vs(plit)?");
+    re_only.setPattern("on(ly)?");
 }
 
 KateAppCommands::~KateAppCommands()
@@ -69,8 +70,8 @@ const QStringList& KateAppCommands::cmds()
     if (l.empty()) {
         l << "q" << "qa" << "wq" << "wa" << "wqa" << "x" << "xa" << "new"
           << "vnew" << "e" << "edit" << "enew" << "sp" << "split" << "vs"
-          << "vsplit" << "tabe" << "tabedit" << "tabnew" << "bd" << "bdelete"
-          << "tabc" << "tabclose";
+          << "vsplit" << "only" << "tabe" << "tabedit" << "tabnew" << "bd"
+          << "bdelete" << "tabc" << "tabclose";
     }
 
     return l;
@@ -83,7 +84,7 @@ bool KateAppCommands::exec(KTextEditor::View *view, const QString &cmd, QString 
 
     KateMainWindow *mainWin = KateApp::self()->activeMainWindow();
 
-    if (re_write.exactMatch(command)) {
+    if (re_write.exactMatch(command)) {  //TODO: handle writing to specific file
         if (!re_write.cap(1).isEmpty()) { // [a]ll
             KateDocManager::self()->saveAll();
             msg = i18n("All documents written to disk");
@@ -107,10 +108,14 @@ bool KateAppCommands::exec(KTextEditor::View *view, const QString &cmd, QString 
                 view->document()->documentSave();
             }
 
-            if (KateDocManager::self()->documents() > 1)
-                QTimer::singleShot(0, mainWin, SLOT(slotFileClose()));
-            else
-                QTimer::singleShot(0, mainWin, SLOT(slotFileQuit()));
+            if (mainWin->viewManager()->count() > 1) {
+              QTimer::singleShot(0, mainWin->viewManager(), SLOT(slotCloseCurrentViewSpace()));
+            } else {
+                if (KateDocManager::self()->documents() > 1)
+                  QTimer::singleShot(0, mainWin, SLOT(slotFileClose()));
+                else
+                  QTimer::singleShot(0, mainWin, SLOT(slotFileQuit()));
+            }
         }
     } else if (re_exit.exactMatch(command)) {
         if (!re_exit.cap(1).isEmpty()) { // a[ll]
@@ -134,7 +139,13 @@ bool KateAppCommands::exec(KTextEditor::View *view, const QString &cmd, QString 
             view->document()->documentReload();
         } else {
             KUrl base = mainWin->activeDocumentUrl();
-            KUrl url( base.isValid() ? base : KUrl( QDir::homePath() ), argument );
+            KUrl url;
+            KUrl arg2path(argument);
+            if (base.isValid()) { // first try to use the same path as the current open document has
+              url = KUrl(base.resolved(arg2path));  //resolved handles the case where the args is a relative path, and is the same as using KUrl(args) elsewise
+            } else { // else use the cwd
+              url = KUrl(KUrl(QDir::currentPath() + "/").resolved(arg2path)); // + "/" is needed because of http://lists.qt.nokia.com/public/qt-interest/2011-May/033913.html
+            }
             QFileInfo file( url.toLocalFile() );
             KTextEditor::Document *doc = KateDocManager::self()->findDocument( url );
             if (doc) {
@@ -162,6 +173,8 @@ bool KateAppCommands::exec(KTextEditor::View *view, const QString &cmd, QString 
     }
     else if (re_vsplit.exactMatch(command)) {
         mainWin->viewManager()->slotSplitViewSpaceVert();
+    } else if (re_only.exactMatch(command)) {
+      mainWin->viewManager()->slotCloseOtherViews();
     }
 
     return true;
