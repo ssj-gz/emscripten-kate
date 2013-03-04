@@ -397,7 +397,7 @@ extern void* dummyForceKateFactoryInstantiate;
 int main(int argc, char *argv[])
 {
         EmscriptenQtSDL::setAttemptedLocalEventLoopCallback(EmscriptenQtSDL::TRIGGER_ASSERT);
-        return EmscriptenQtSDL::run(640, 480, argc, argv);
+        return EmscriptenQtSDL::run(800, 600, argc, argv);
 }
 #endif
 
