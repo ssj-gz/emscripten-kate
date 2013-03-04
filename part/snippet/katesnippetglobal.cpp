@@ -60,16 +60,16 @@ KateSnippetGlobal::~KateSnippetGlobal ()
 
 void KateSnippetGlobal::showDialog (KateView *view)
 {
-  KDialog dialog;
-  dialog.setCaption("Snippets");
-  dialog.setButtons(KDialog::Ok);
-  dialog.setDefaultButton(KDialog::Ok);
+  KDialog *dialog = new KDialog;
+  dialog->setCaption("Snippets");
+  dialog->setButtons(KDialog::Ok);
+  dialog->setDefaultButton(KDialog::Ok);
 
-  QWidget *mainWidget = new QWidget (&dialog);
-  dialog.setMainWidget(mainWidget);
+  QWidget *mainWidget = new QWidget (dialog);
+  dialog->setMainWidget(mainWidget);
   QVBoxLayout *layout = new QVBoxLayout(mainWidget);
 
-  KToolBar *topToolbar = new KToolBar (&dialog, "snippetsToolBar");
+  KToolBar *topToolbar = new KToolBar (dialog, "snippetsToolBar");
   topToolbar->setToolButtonStyle (Qt::ToolButtonIconOnly);
   layout->addWidget(topToolbar);
 
@@ -83,8 +83,10 @@ void KateSnippetGlobal::showDialog (KateView *view)
    * set document to work on and trigger dialog
    */
   m_activeViewForDialog = view;
-  dialog.exec();
-  m_activeViewForDialog = 0;
+  dialog->setAttribute(Qt::WA_DeleteOnClose);
+  dialog->show();
+  // TODO - make setting m_activeViewForDialog work correctly now that m_activeViewForDialog is  asynchronous.
+  //m_activeViewForDialog = 0;
 }
 
 QWidget *KateSnippetGlobal::snippetWidget ()
