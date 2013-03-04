@@ -496,10 +496,11 @@ void KateMainWindow::newWindow ()
 void KateMainWindow::slotEditToolbars()
 {
   saveMainWindowSettings(KConfigGroup(KGlobal::config(), "MainWindow"));
-  KEditToolBar dlg( factory() );
+  KEditToolBar *dlg = new KEditToolBar( factory() );
 
-  connect( &dlg, SIGNAL(newToolBarConfig()), this, SLOT(slotNewToolbarConfig()) );
-  dlg.exec();
+  connect( dlg, SIGNAL(newToolBarConfig()), this, SLOT(slotNewToolbarConfig()) );
+  dlg->setAttribute(Qt::WA_DeleteOnClose);
+  dlg->show();
 }
 
 void KateMainWindow::slotNewToolbarConfig()
