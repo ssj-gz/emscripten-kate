@@ -88,6 +88,4 @@ K_EXPORT_PLUGIN( KateFactory )
 K_EXPORT_STATIC_PLUGIN(KateFactory(), KateFactory)
 #endif
 
-void* dummyForceKateFactoryInstantiate = (void*)&staticKateFactoryInstance;
-
 // kate: space-indent on; indent-width 2; replace-tabs on;
