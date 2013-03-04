@@ -407,7 +407,10 @@ void KateViewManager::slotOpenUrlResponse(const QString& urlToOpen)
   KateDocumentInfo docInfo;
   docInfo.openedByUser = true;
 
-  openUrl(urlToOpen, KateDocManager::self()->editor()->defaultEncoding(), false, false, docInfo);
+  KTextEditor::Document *lastID = 0;
+  lastID = openUrl(urlToOpen, KateDocManager::self()->editor()->defaultEncoding(), false, false, docInfo);
+  if (lastID)
+    activateView (lastID);
 }
 #endif
 
