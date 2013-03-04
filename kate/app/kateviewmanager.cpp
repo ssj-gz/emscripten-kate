@@ -62,6 +62,9 @@
 #include <QToolButton>
 #include <QTimer>
 #include <QMenu>
+#ifdef EMSCRIPTEN
+#include <QtGui/asyncdialoghelper.h>
+#endif
 
 //END Includes
 
@@ -247,6 +250,7 @@ void KateViewManager::slotDocumentOpen ()
 
   if (cv)
   {
+#ifndef EMSCRIPTEN
     KEncodingFileDialog::Result r = KEncodingFileDialog::getOpenUrlsAndEncoding(
                                       KateDocManager::self()->editor()->defaultEncoding(),
                                       cv->document()->url().url(),
@@ -261,6 +265,11 @@ void KateViewManager::slotDocumentOpen ()
 
     if (lastID)
       activateView (lastID);
+#else
+    AsyncDialogHelper::getOpenFileName(this, SLOT(slotOpenUrlResponse(const QString&)),
+                                       0,
+                                       i18n("Open File"));
+#endif
   }
 }
 
@@ -391,6 +400,16 @@ void KateViewManager::documentSavedOrUploaded(KTextEditor::Document *doc, bool)
   if (!doc->url().isEmpty())
     m_mainWindow->fileOpenRecent->addUrl( doc->url() );
 }
+
+#ifdef EMSCRIPTEN
+void KateViewManager::slotOpenUrlResponse(const QString& urlToOpen)
+{
+  KateDocumentInfo docInfo;
+  docInfo.openedByUser = true;
+
+  openUrl(urlToOpen, KateDocManager::self()->editor()->defaultEncoding(), false, false, docInfo);
+}
+#endif
 
 bool KateViewManager::createView ( KTextEditor::Document *doc )
 {

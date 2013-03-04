@@ -183,7 +183,9 @@ class KateViewManager : public QSplitter
     void documentDeleted (KTextEditor::Document *doc);
 
     void documentSavedOrUploaded(KTextEditor::Document* document,bool saveAs);
-    
+
+    void slotOpenUrlResponse(const QString& urlToOpen);
+
   public Q_SLOTS:
     /**
      * Splits a KateViewSpace into two in the following steps:
