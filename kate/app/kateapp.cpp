@@ -199,6 +199,7 @@ bool KateApp::startupKate ()
   // oh, no mainwindow, create one, should not happen, but make sure ;)
   if (mainWindows() == 0)
     newMainWindow ();
+  activeMainWindow()->setAutoSaveSettings(false);
 
   // notify about start
 #ifdef Q_WS_X11
@@ -278,7 +279,7 @@ bool KateApp::startupKate ()
   // show the nice tips
   KTipDialog::showTip(activeMainWindow());
 
-  activeMainWindow()->setAutoSaveSettings();
+  activeMainWindow()->setAutoSaveSettings(false);
 
   kDebug() << "KateApplication::init finished successful";
   return true;

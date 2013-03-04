@@ -692,6 +692,7 @@ KateEditConfigTab::~KateEditConfigTab()
 
 void KateEditConfigTab::apply ()
 {
+  qDebug() << "KateEditConfigTab:: apply";
   // try to update the rest of tabs
   editConfigTab->apply();
   navigationConfigTab->apply();
@@ -713,6 +714,7 @@ void KateEditConfigTab::reload ()
 
 void KateEditConfigTab::reset ()
 {
+  qDebug() << "reset";
   editConfigTab->reset();
   navigationConfigTab->reset();
   indentConfigTab->reset();
@@ -800,6 +802,7 @@ KateViewDefaultsConfig::~KateViewDefaultsConfig()
 
 void KateViewDefaultsConfig::apply ()
 {
+  qDebug() << "KateViewDefaultsConfig::apply";
   // nothing changed, no need to apply stuff
   if (!hasChanged())
     return;

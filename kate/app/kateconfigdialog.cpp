@@ -316,6 +316,7 @@ void KateConfigDialog::slotApply()
   // if data changed apply the kate app stuff
   if( m_dataChanged )
   {
+    qDebug() << "data changed";
     KConfigGroup cg = KConfigGroup( config, "General" );
 
     cg.writeEntry("Restore Window Configuration", m_restoreVC->isChecked());
