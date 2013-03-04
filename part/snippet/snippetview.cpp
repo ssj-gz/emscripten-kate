@@ -262,8 +262,10 @@ void SnippetView::slotEditRepo()
     if (!repo)
         return;
 
-    EditRepository dlg(repo, this);
-    dlg.exec();
+    EditRepository *dlg = new EditRepository(repo, this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setModal(true);
+    dlg->show();
 }
 
 void SnippetView::slotRemoveRepo()
