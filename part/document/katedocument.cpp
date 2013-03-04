@@ -86,6 +86,9 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QTextCodec>
 #include <QtCore/QMap>
+#ifdef EMSCRIPTEN
+#include <QtGui/asyncdialoghelper.h>
+#endif
 //END  includes
 
 #if 0
@@ -3855,6 +3858,7 @@ bool KateDocument::documentSave()
 
 bool KateDocument::documentSaveAs()
 {
+#ifndef EMSCRIPTEN
   QWidget *parentWidget(dialogParent());
 
   KEncodingFileDialog::Result res=KEncodingFileDialog::getSaveUrlAndEncoding(config()->encoding(),
@@ -3866,6 +3870,12 @@ bool KateDocument::documentSaveAs()
   setEncoding( res.encoding );
 
   return saveAs( res.URLs.first() );
+#else
+  AsyncDialogHelper::getSaveFileName(this, SLOT(slotSaveUrlResponse(const QString&)),
+                                     0,
+                                     i18n("Save File"));
+  return true;
+#endif
 }
 
 void KateDocument::setWordWrap (bool on)
@@ -4366,6 +4376,15 @@ void KateDocument::slotModOnHdDeleted (const QString &path)
       m_isasking = false;
 
     emit modifiedOnDisk (this, m_modOnHd, m_modOnHdReason);
+  }
+}
+
+void KateDocument::slotSaveUrlResponse(const QString& urlToSaveTo)
+{
+  setEncoding(config()->encoding());
+  if (!urlToSaveTo.isEmpty())
+  {
+    saveAs(urlToSaveTo);
   }
 }
 

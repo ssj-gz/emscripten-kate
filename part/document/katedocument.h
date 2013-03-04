@@ -920,6 +920,8 @@ Q_SIGNALS:
     void slotModOnHdCreated (const QString &path);
     void slotModOnHdDeleted (const QString &path);
 
+    void slotSaveUrlResponse(const QString& urlToSaveTo);
+
   private:
     /**
      * create a MD5 digest of the file, if it is a local file.
