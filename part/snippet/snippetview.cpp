@@ -246,8 +246,10 @@ void SnippetView::slotRemoveSnippet()
 
 void SnippetView::slotAddRepo()
 {
-    EditRepository dlg(0, this);
-    dlg.exec();
+    EditRepository *dlg = new EditRepository(0, this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setModal(true);
+    dlg->show();
 }
 
 void SnippetView::slotEditRepo()
