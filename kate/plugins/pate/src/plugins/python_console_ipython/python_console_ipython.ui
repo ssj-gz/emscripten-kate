@@ -10,14 +10,14 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Same-line comment position</string>
+          <string>Scrollback lines count</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="KIntNumInput" name="commentStartPos">
+        <widget class="KIntNumInput" name="scrollbackLinesCount">
          <property name="value">
-          <number>60</number>
+          <number>1000</number>
          </property>
         </widget>
        </item>
