@@ -711,9 +711,15 @@ void KateMainWindow::showPluginConfigPage(Kate::PluginConfigPageInterface *confi
   if (configpageinterface) {
     dlg->showAppPluginPage(configpageinterface,id);
   }
+#ifndef QT_NO_LOCALEVENTLOOP
   dlg->exec();
 
   delete dlg;
+#else
+  dlg->setAttribute(Qt::WA_DeleteOnClose);
+  connect(dlg, SIGNAL(finished()), m_viewManager, SLOT(reactivateActiveView()));
+  dlg->show();
+#endif
 
   m_viewManager->reactivateActiveView(); // gui (toolbars...) needs to be updated, because
                                          // of possible changes that the configure dialog
