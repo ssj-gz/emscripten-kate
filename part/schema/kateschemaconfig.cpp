@@ -499,7 +499,11 @@ KateSchemaConfigDefaultStylesTab::KateSchemaConfigDefaultStylesTab(KateSchemaCon
 
 KateSchemaConfigDefaultStylesTab::~KateSchemaConfigDefaultStylesTab()
 {
-  qDeleteAll(m_defaultStyleLists);
+  //qDeleteAll(m_defaultStyleLists);
+  for (QHash<QString, KateAttributeList*>::iterator it = m_defaultStyleLists.begin(); it !=m_defaultStyleLists.end(); it++)
+  {
+    delete *it;
+  }
 }
 
 KateAttributeList *KateSchemaConfigDefaultStylesTab::attributeList (const QString &schema)
@@ -542,7 +546,11 @@ void KateSchemaConfigDefaultStylesTab::updateColorPalette(const QColor& textColo
 void KateSchemaConfigDefaultStylesTab::reload ()
 {
   m_defaultStyles->clear ();
-  qDeleteAll(m_defaultStyleLists);
+  //qDeleteAll(m_defaultStyleLists);
+  for (QHash<QString, KateAttributeList*>::iterator it = m_defaultStyleLists.begin(); it !=m_defaultStyleLists.end(); it++)
+  {
+    delete *it;
+  }
   m_defaultStyleLists.clear ();
 
   schemaChanged(m_currentSchema);
