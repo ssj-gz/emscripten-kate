@@ -662,7 +662,9 @@ void KateMainWindow::slotListRecursiveEntries(KIO::Job *job, const KIO::UDSEntry
 
 void KateMainWindow::editKeys()
 {
-  KShortcutsDialog dlg ( KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsAllowed, this );
+  KShortcutsDialog *dlg = new KShortcutsDialog( KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsAllowed, this );
+  dlg->setAttribute(Qt::WA_DeleteOnClose);
+  connect(dlg, SIGNAL(finished()), this, SLOT(slotShortcutConfigureFinished()));
 
   QList<KXMLGUIClient*> clients = guiFactory()->clients();
 
@@ -675,10 +677,13 @@ void KateMainWindow::editKeys()
 //     kDebug(13001)<<client->actionCollection();
 //     kDebug(13001)<<client->componentData().aboutData();
 //     kDebug(13001)<<client->componentData().aboutData()->programName();
-    dlg.addCollection ( client->actionCollection(), client->componentData().aboutData()->programName() );
+    dlg->addCollection ( client->actionCollection(), client->componentData().aboutData()->programName() );
   }
-  dlg.configure();
+  dlg->configure();
+}
 
+void KateMainWindow::slotShortcutConfigureFinished()
+{
   QList<KTextEditor::Document*>  l = KateDocManager::self()->documentList();
   for (int i = 0;i < l.count();i++)
   {

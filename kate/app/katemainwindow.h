@@ -335,6 +335,8 @@ class KateMainWindow : public KateMDI::MainWindow, virtual public KParts::PartBa
     void showPluginConfigPage(Kate::PluginConfigPageInterface *configpageinterface,uint id);
 
     void slotWindowActivated ();
+
+    void slotShortcutConfigureFinished();
     
   protected:
     virtual bool event( QEvent *e );
