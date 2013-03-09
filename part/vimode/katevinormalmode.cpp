@@ -29,6 +29,8 @@
 #include "kateglobal.h"
 #include "katebuffer.h"
 #include "kateviewhelpers.h"
+#include <ktexteditor/attribute.h>
+#include "kateconfig.h"
 
 #include <QApplication>
 #include <QList>
@@ -70,12 +72,27 @@ KateViNormalMode::KateViNormalMode( KateViInputModeManager *viInputModeManager, 
   m_pendingResetIsDueToExit = false;
   m_isRepeatedTFcommand = false;
   resetParser(); // initialise with start configuration
+
+  //  TODO - move this block somewhere where it can be update when the config changes.
+  m_highlightYankAttribute = new KTextEditor::Attribute;
+  const QColor& searchColor = m_view->renderer()->config()->searchHighlightColor();
+  m_highlightYankAttribute->setBackground(searchColor);
+  KTextEditor::Attribute::Ptr mouseInAttribute(new KTextEditor::Attribute());
+  mouseInAttribute->setFontBold(true);
+  m_highlightYankAttribute->setDynamicAttribute (KTextEditor::Attribute::ActivateMouseIn, mouseInAttribute);
+  KTextEditor::Attribute::Ptr caretInAttribute(new KTextEditor::Attribute());
+  caretInAttribute->setFontItalic(true);
+  m_highlightYankAttribute->setDynamicAttribute (KTextEditor::Attribute::ActivateCaretIn, caretInAttribute);
+  m_highlightYankAttribute->dynamicAttribute (KTextEditor::Attribute::ActivateMouseIn)->setBackground(searchColor);
+  m_highlightYankAttribute->dynamicAttribute (KTextEditor::Attribute::ActivateCaretIn)->setBackground(searchColor);
+  m_highlightedYank = NULL;
 }
 
 KateViNormalMode::~KateViNormalMode()
 {
   qDeleteAll( m_commands );
   qDeleteAll( m_motions) ;
+  delete m_highlightedYank;
 }
 
 void KateViNormalMode::mappingTimerTimeOut()
@@ -338,6 +355,8 @@ bool KateViNormalMode::handleKeypress( const QKeyEvent *e )
               kDebug( 13070 ) << "No command given, going to position ("
                 << r.endLine << "," << r.endColumn << ")";
               goToPos( r );
+              delete m_highlightedYank;
+              m_highlightedYank = 0;
               m_viInputModeManager->clearLog();
             } else {
               kDebug( 13070 ) << "Invalid position: (" << r.endLine << "," << r.endColumn << ")";
@@ -1130,6 +1149,17 @@ bool KateViNormalMode::commandYank()
 
   OperationMode m = getOperationMode();
   yankedText = getRange( m_commandRange, m );
+
+  Range yankRange(m_commandRange.startLine, m_commandRange.startColumn, m_commandRange.endLine, m_commandRange.endColumn);
+  delete m_highlightedYank;
+  m_highlightedYank = NULL;
+  m_highlightedYank = m_view->doc()->newMovingRange(yankRange, Kate::TextRange::DoNotExpand);
+  m_highlightedYank->setView(m_view); // show only in this view
+  m_highlightedYank->setAttributeOnlyForViews(true);
+  // use z depth defined in moving ranges interface
+  m_highlightedYank->setZDepth (-10000.0);
+  m_highlightedYank->setAttribute(m_highlightYankAttribute);
+  qDebug() << "Highlighted yank: " << yankRange;
 
   fillRegister( getChosenRegister( '0' ), yankedText, m );
 
