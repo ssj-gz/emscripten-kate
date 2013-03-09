@@ -73,18 +73,7 @@ KateViNormalMode::KateViNormalMode( KateViInputModeManager *viInputModeManager, 
   m_isRepeatedTFcommand = false;
   resetParser(); // initialise with start configuration
 
-  //  TODO - move this block somewhere where it can be update when the config changes.
-  m_highlightYankAttribute = new KTextEditor::Attribute;
-  const QColor& searchColor = m_view->renderer()->config()->searchHighlightColor();
-  m_highlightYankAttribute->setBackground(searchColor);
-  KTextEditor::Attribute::Ptr mouseInAttribute(new KTextEditor::Attribute());
-  mouseInAttribute->setFontBold(true);
-  m_highlightYankAttribute->setDynamicAttribute (KTextEditor::Attribute::ActivateMouseIn, mouseInAttribute);
-  KTextEditor::Attribute::Ptr caretInAttribute(new KTextEditor::Attribute());
-  caretInAttribute->setFontItalic(true);
-  m_highlightYankAttribute->setDynamicAttribute (KTextEditor::Attribute::ActivateCaretIn, caretInAttribute);
-  m_highlightYankAttribute->dynamicAttribute (KTextEditor::Attribute::ActivateMouseIn)->setBackground(searchColor);
-  m_highlightYankAttribute->dynamicAttribute (KTextEditor::Attribute::ActivateCaretIn)->setBackground(searchColor);
+  initYankHighlightAttrib();
   m_highlightedYank = NULL;
 }
 
@@ -131,9 +120,8 @@ bool KateViNormalMode::handleKeypress( const QKeyEvent *e )
     return true;
   }
 
-  delete m_highlightedYank;
-  m_highlightedYank = 0;
- 
+  clearYank();
+
   if ( keyCode == Qt::Key_Escape || (keyCode == Qt::Key_C && e->modifiers() == Qt::ControlModifier)) {
     m_view->setCaretStyle( KateRenderer::Block, true );
     m_pendingResetIsDueToExit = true;
@@ -1151,16 +1139,7 @@ bool KateViNormalMode::commandYank()
   OperationMode m = getOperationMode();
   yankedText = getRange( m_commandRange, m );
 
-  Range yankRange(m_commandRange.startLine, m_commandRange.startColumn, m_commandRange.endLine, m_commandRange.endColumn);
-  delete m_highlightedYank;
-  m_highlightedYank = NULL;
-  m_highlightedYank = m_view->doc()->newMovingRange(yankRange, Kate::TextRange::DoNotExpand);
-  m_highlightedYank->setView(m_view); // show only in this view
-  m_highlightedYank->setAttributeOnlyForViews(true);
-  // use z depth defined in moving ranges interface
-  m_highlightedYank->setZDepth (-10000.0);
-  m_highlightedYank->setAttribute(m_highlightYankAttribute);
-  qDebug() << "Highlighted yank: " << yankRange;
+  highlightYank(m_commandRange);
 
   fillRegister( getChosenRegister( '0' ), yankedText, m );
 
@@ -3356,4 +3335,39 @@ void KateViNormalMode::executeMapping()
     m_viInputModeManager->feedKeyPresses(mappedKeypresses);
   }
   doc()->editEnd();
+}
+
+void KateViNormalMode::initYankHighlightAttrib()
+{
+  // TODO - connect up to config changes.
+  m_highlightYankAttribute = new KTextEditor::Attribute;
+  const QColor& searchColor = m_view->renderer()->config()->searchHighlightColor();
+  m_highlightYankAttribute->setBackground(searchColor);
+  KTextEditor::Attribute::Ptr mouseInAttribute(new KTextEditor::Attribute());
+  mouseInAttribute->setFontBold(true);
+  m_highlightYankAttribute->setDynamicAttribute (KTextEditor::Attribute::ActivateMouseIn, mouseInAttribute);
+  KTextEditor::Attribute::Ptr caretInAttribute(new KTextEditor::Attribute());
+  caretInAttribute->setFontItalic(true);
+  m_highlightYankAttribute->setDynamicAttribute (KTextEditor::Attribute::ActivateCaretIn, caretInAttribute);
+  m_highlightYankAttribute->dynamicAttribute (KTextEditor::Attribute::ActivateMouseIn)->setBackground(searchColor);
+  m_highlightYankAttribute->dynamicAttribute (KTextEditor::Attribute::ActivateCaretIn)->setBackground(searchColor);
+}
+
+void KateViNormalMode::highlightYank(const KateViRange& range)
+{
+  Range yankRange(range.startLine, range.startColumn, range.endLine, range.endColumn);
+  delete m_highlightedYank;
+  m_highlightedYank = NULL;
+  m_highlightedYank = m_view->doc()->newMovingRange(yankRange, Kate::TextRange::DoNotExpand);
+  m_highlightedYank->setView(m_view); // show only in this view
+  m_highlightedYank->setAttributeOnlyForViews(true);
+  // use z depth defined in moving ranges interface
+  m_highlightedYank->setZDepth (-10000.0);
+  m_highlightedYank->setAttribute(m_highlightYankAttribute);
+}
+
+void KateViNormalMode::clearYank()
+{
+  delete m_highlightedYank;
+  m_highlightedYank = 0;
 }
