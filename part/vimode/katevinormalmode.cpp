@@ -131,6 +131,9 @@ bool KateViNormalMode::handleKeypress( const QKeyEvent *e )
     return true;
   }
 
+  delete m_highlightedYank;
+  m_highlightedYank = 0;
+ 
   if ( keyCode == Qt::Key_Escape || (keyCode == Qt::Key_C && e->modifiers() == Qt::ControlModifier)) {
     m_view->setCaretStyle( KateRenderer::Block, true );
     m_pendingResetIsDueToExit = true;
@@ -355,8 +358,6 @@ bool KateViNormalMode::handleKeypress( const QKeyEvent *e )
               kDebug( 13070 ) << "No command given, going to position ("
                 << r.endLine << "," << r.endColumn << ")";
               goToPos( r );
-              delete m_highlightedYank;
-              m_highlightedYank = 0;
               m_viInputModeManager->clearLog();
             } else {
               kDebug( 13070 ) << "Invalid position: (" << r.endLine << "," << r.endColumn << ")";
