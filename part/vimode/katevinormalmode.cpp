@@ -3343,12 +3343,12 @@ void KateViNormalMode::initYankHighlightAttrib()
 {
   // TODO - connect up to config changes.
   m_highlightYankAttribute = new KTextEditor::Attribute;
-  const QColor& searchColor = m_view->renderer()->config()->searchHighlightColor();
-  m_highlightYankAttribute->setBackground(searchColor);
+  const QColor& yankedColor = m_view->renderer()->config()->savedLineColor();
+  m_highlightYankAttribute->setBackground(yankedColor);
   KTextEditor::Attribute::Ptr mouseInAttribute(new KTextEditor::Attribute());
   mouseInAttribute->setFontBold(true);
   m_highlightYankAttribute->setDynamicAttribute (KTextEditor::Attribute::ActivateMouseIn, mouseInAttribute);
-  m_highlightYankAttribute->dynamicAttribute (KTextEditor::Attribute::ActivateMouseIn)->setBackground(searchColor);
+  m_highlightYankAttribute->dynamicAttribute (KTextEditor::Attribute::ActivateMouseIn)->setBackground(yankedColor);
 }
 
 void KateViNormalMode::highlightYank(const KateViRange& range)
