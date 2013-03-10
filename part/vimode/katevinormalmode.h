@@ -344,6 +344,11 @@ class KATEPART_TESTS_EXPORT KateViNormalMode : public KateViModeBase
     bool m_pendingResetIsDueToExit;
 
     Cursor m_currentChangeEndMarker;
+    KTextEditor::Attribute::Ptr m_highlightYankAttribute;
+    KTextEditor::MovingRange* m_highlightedYank;
+    void initYankHighlightAttrib();
+    void highlightYank(const KateViRange& range);
+    void clearYankHighlight();
 private slots:
     void textInserted(KTextEditor::Document* document, KTextEditor::Range range);
     void textRemoved(KTextEditor::Document*,KTextEditor::Range);
