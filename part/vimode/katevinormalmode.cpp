@@ -120,7 +120,7 @@ bool KateViNormalMode::handleKeypress( const QKeyEvent *e )
     return true;
   }
 
-  clearYank();
+  clearYankHighlight();
 
   if ( keyCode == Qt::Key_Escape || (keyCode == Qt::Key_C && e->modifiers() == Qt::ControlModifier)) {
     m_view->setCaretStyle( KateRenderer::Block, true );
@@ -3353,7 +3353,7 @@ void KateViNormalMode::initYankHighlightAttrib()
 
 void KateViNormalMode::highlightYank(const KateViRange& range)
 {
-  clearYank();
+  clearYankHighlight();
   // Work around the fact that both Normal and Visual mode will have their own m_highlightedYank -
   // make Normal's the canonical one.
   KTextEditor::MovingRange** highlightedYank = &(m_viInputModeManager->getViNormalMode()->m_highlightedYank);
@@ -3366,7 +3366,7 @@ void KateViNormalMode::highlightYank(const KateViRange& range)
   (*highlightedYank)->setAttribute(m_highlightYankAttribute);
 }
 
-void KateViNormalMode::clearYank()
+void KateViNormalMode::clearYankHighlight()
 {
   // Work around the fact that both Normal and Visual mode will have their own m_highlightedYank -
   // make Normal's the canonical one.

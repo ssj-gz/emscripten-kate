@@ -345,7 +345,7 @@ class KATEPART_TESTS_EXPORT KateViNormalMode : public KateViModeBase
     KTextEditor::MovingRange* m_highlightedYank;
     void initYankHighlightAttrib();
     void highlightYank(const KateViRange& range);
-    void clearYank();
+    void clearYankHighlight();
 };
 
 #endif
