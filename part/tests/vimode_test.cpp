@@ -301,6 +301,7 @@ void ViModeTest::InsertModeTests() {
   DoTest("foo\nbar", "j5Ohello\\esc", "foo\nhello\nhello\nhello\nhello\nhello\nbar");
   DoTest("bar", "5ohello\\esc2ixyz\\esc", "bar\nhello\nhello\nhello\nhello\nhellxyzxyzo");
   DoTest("", "ihello\\esc5.", "hellhellohellohellohellohelloo");
+  DoTest("foo foo foo", "c3wbar\\esc", "bar");
   DoTest("abc", "lOxyz", "xyz\nabc");
 
   // Testing "Ctrl-w"
@@ -333,8 +334,8 @@ void ViModeTest::InsertModeTests() {
   DoTest("foo bar baz","A\\ctrl-ox","foo bar ba");
   // Paste acts as gp when executing in a Ctrl-O
   DoTest("foo bar baz","yiwea\\ctrl-opd","foo foodbar baz");
-  DoTest("bar","A\\ctrl-o\\ctrl-chx","br", ShouldFail, "Need to return direct to normal (not Insert) mode when aborting temporary normal mode");
-  DoTest("bar","A\\ctrl-o\\eschx","br", ShouldFail, "Need to return direct to normal (not Insert) mode when aborting temporary normal mode");
+  DoTest("bar","A\\ctrl-o\\ctrl-chx","br");
+  DoTest("bar","A\\ctrl-o\\eschx","br");
 
   // Testing "Ctrl-D" "Ctrl-T"
   DoTest("foo", "i\\ctrl-t" , "  foo");
@@ -473,6 +474,10 @@ void ViModeTest::NormalModeMotionsTest() {
   DoTest("FOO{\nBAR}BAZ", "lllgu%", "FOO{\nbar}BAZ");
   DoTest("foo{\nbar}baz", "lllgU%", "foo{\nBAR}baz");
   DoTest("foo{\nbar\n}", "llly%p", "foo{{\nbar\n}\nbar\n}");
+  // Regression bug for test where yanking with % would actually move the cursor.
+  DoTest("a()", "y%x", "()");
+  // Regression test for the bug I added fixing the bug above ;)
+  DoTest("foo(bar)", "y%P", "foo(bar)foo(bar)");
 
   // Testing percentage "<N>%"
   DoTest("10%\n20%\n30%\n40%\n50%\n60%\n70%\n80%\n90%\n100%",
@@ -723,6 +728,37 @@ void ViModeTest::NormalModeCommandsTest() {
 
   DoTest("fop\nbar", "yiwjlpx", "fop\nbafor");
   DoTest("fop\nbar", "yiwjlPx", "fop\nbfoar");
+
+  // Last edit markers.
+  DoTest("foo", "ean\\escgg`.r.", "foo.");
+  DoTest("foo", "ean\\escgg`[r[", "foo[");
+  DoTest("foo", "ean\\escgg`]r]", "foo]");
+  DoTest("foo bar", "ean\\escgg`]r]", "foon]bar");
+  DoTest("", "ibar\\escgg`.r.", "ba.");
+  DoTest("", "ibar\\escgggUiw`.r.", ".AR");
+  DoTest("", "2ibar\\escgg`]r]", "barba]");
+  DoTest("", "2ibar\\escgg`[r[", "[arbar");
+  DoTest("", "3ibar\\escgg`.r.", "barbar.ar"); // Vim is weird.
+  DoTest("", "abar\\esc.gg`]r]", "barba]");
+  DoTest("foo bar", "wgUiwgg`]r]", "foo BA]");
+  DoTest("foo bar", "wgUiwgg`.r.", "foo .AR");
+  DoTest("foo bar", "gUiwgg`]r.", "FO. bar");
+  DoTest("foo bar", "wdiwgg`[r[", "foo[");
+  DoTest("foo bar", "wdiwgg`]r]", "foo]");
+  DoTest("foo bar", "wdiwgg`.r.", "foo.");
+  DoTest("foo bar", "wciwnose\\escgg`.r.", "foo nos.");
+  DoTest("foo bar", "wciwnose\\escgg`[r[", "foo [ose");
+  DoTest("foo bar", "wciwnose\\escgg`]r]", "foo nos]");
+  DoTest("foo", "~ibar\\escgg`[r[", "F[aroo");
+  DoTest("foo bar", "lragg`.r.", "f.o bar");
+  DoTest("foo bar", "lragg`[r[", "f[o bar");
+  DoTest("foo bar", "lragg`]r]", "f]o bar");
+  DoTest("", "ifoo\\ctrl-hbar\\esc`[r[", "[obar");
+  DoTest("", "ifoo\\ctrl-wbar\\esc`[r[", "[ar");
+  DoTest("", "if\\ctrl-hbar\\esc`[r[", "[ar");
+  DoTest("", "5ofoo\\escgg`[r[", "\n[oo\nfoo\nfoo\nfoo\nfoo");
+  DoTest("", "5ofoo\\escgg`]r]", "\nfoo\nfoo\nfoo\nfoo\nfo]");
+  DoTest("", "5ofoo\\escgg`.r.", "\nfoo\nfoo\nfoo\nfoo\n.oo");
 }
 
 

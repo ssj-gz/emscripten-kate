@@ -1,6 +1,6 @@
 /*   Kate search plugin
- *
- * Copyright (C) 2011 by Kåre Särs <kare.sars@iki.fi>
+ * 
+ * Copyright (C) 2011-2013 by Kåre Särs <kare.sars@iki.fi>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,33 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SEARCH_PROJECT_H_
-#define _SEARCH_PROJECT_H_
+#ifndef SearchDiskFiles_h
+#define SearchDiskFiles_h
 
 #include <QThread>
 #include <QRegExp>
 #include <QFileInfo>
-#include <ktexteditor/document.h>
+#include <QVector>
+#include <QMutex>
+#include <QStringList>
 
-class SearchProject: public QThread
+class SearchDiskFiles: public QThread
 {
     Q_OBJECT
 
 public:
-    SearchProject(QObject *parent = 0);
+    SearchDiskFiles(QObject *parent = 0);
+    ~SearchDiskFiles();
 
-    void startSearch(const QStringList &files,
+    void startSearch(const QStringList &iles,
                      const QRegExp &regexp);
     void run();
+
+    bool searching();
+
+private:
+    void searchSingleLineRegExp(const QString &fileName);
+    void searchMultiLineRegExp(const QString &fileName);
 
 public Q_SLOTS:
     void cancelSearch();
@@ -44,11 +53,12 @@ Q_SIGNALS:
     void matchFound(const QString &url, int line, int column,
                     const QString &lineContent, int matchLen);
     void searchDone();
+
 private:
     QRegExp          m_regExp;
-    bool             m_cancelSearch;
     QStringList      m_files;
-
+    bool             m_cancelSearch;
 };
+
 
 #endif

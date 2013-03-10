@@ -25,11 +25,7 @@
 #ifndef PLUGIN_KATEXMLCHECK_H
 #define PLUGIN_KATEXMLCHECK_H
 
-#include <q3listview.h>
-#include <qstring.h>
 #include <QProcess>
-//Added by qt3to4:
-#include <Q3PtrList>
 
 #include <kate/plugin.h>
 #include <kate/application.h>
@@ -39,10 +35,8 @@
 #include <ktexteditor/view.h>
 #include <ktexteditor/document.h>
 
-#include <k3dockwidget.h>
-#include <kiconloader.h>
-#include <QVariantList>
-
+class QTreeWidget;
+class QTreeWidgetItem;
 class KTemporaryFile;
 class KProcess;
 
@@ -59,7 +53,7 @@ public:
 
 public slots:
     bool slotValidate();
-    void slotClicked(Q3ListViewItem *item);
+    void slotClicked(QTreeWidgetItem *item, int column);
     void slotProcExited(int exitCode, QProcess::ExitStatus exitStatus);
     void slotUpdate();
 
@@ -70,7 +64,7 @@ private:
     KProcess *m_proc;
     QString m_proc_stderr;
     QString m_dtdname;
-    Q3ListView *listview;
+    QTreeWidget *listview;
 };
 
 

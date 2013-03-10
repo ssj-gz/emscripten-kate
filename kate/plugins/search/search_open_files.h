@@ -33,15 +33,23 @@ public:
     SearchOpenFiles(QObject *parent = 0);
 
     void startSearch(const QList<KTextEditor::Document*> &list,const QRegExp &regexp);
+    bool searching();
 
 public Q_SLOTS:
     void cancelSearch();
 
+    /// return 0 on success or a line number where we stopped.
+    int searchOpenFile(KTextEditor::Document *doc, const QRegExp &regExp, int startLine);
+
 private Q_SLOTS:
-    void doSearchNextFile();
+    void doSearchNextFile(int startLine);
+
+private:
+    int searchSingleLineRegExp(KTextEditor::Document *doc, const QRegExp &regExp, int startLine);
+    int searchMultiLineRegExp(KTextEditor::Document *doc, const QRegExp &regExp, int startLine);
 
 Q_SIGNALS:
-    void searchNextFile();
+    void searchNextFile(int startLine);
     void matchFound(const QString &url, int line, int column, const QString &lineContent, int matchLen);
     void searchDone();
     
@@ -50,7 +58,8 @@ private:
     int                           m_nextIndex;
     QRegExp                       m_regExp;
     bool                          m_cancelSearch;
-    
+    QString                       m_fullDoc;
+    QVector<int>                  m_lineStart;
 };
 
 
