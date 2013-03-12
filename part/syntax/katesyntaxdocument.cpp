@@ -385,15 +385,12 @@ void KateSyntaxDocument::setupModeList (bool force)
 #ifndef EMSCRIPTEN
     QString Group="Cache "+ *it;
 #else
-    qDebug() << "it: " << *it;
     // There's some awkwardness with native vs non-native versions and absolute paths:
     // trim off everything before the katepart/syntax/*.xml bit when computing the cache
     // group name.
-    QRegExp ignoreLeadingDirs(".*(katepart/syntax/[^/]*.xml)");
-    const bool matches = ignoreLeadingDirs.exactMatch(*it);
-    Q_ASSERT(matches);
-    QString Group="Cache "+ ignoreLeadingDirs.capturedTexts()[1];
-    qDebug() << "it: " << *it << "|Group:" << Group;
+    const int properNameStart = it->lastIndexOf("katepart/");
+    Q_ASSERT(properNameStart != -1);
+    QString Group="Cache "+ it->mid(properNameStart);
 #endif
 
     // Let's go to this group
