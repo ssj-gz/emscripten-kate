@@ -317,7 +317,7 @@ QStringList& KateSyntaxDocument::finddata(const QString& mainGroup, const QStrin
 #ifdef KSD_OVER_VERBOSE
           kDebug(13010)<<"List with attribute name=\""<<type<<"\" found.";
 #endif
-          
+
           QDomNodeList childlist = nodelist1.item(l).toElement().childNodes();
 
           for (int i=0; i<childlist.count(); i++)
@@ -356,9 +356,13 @@ QStringList& KateSyntaxDocument::finddata(const QString& mainGroup, const QStrin
 */
 void KateSyntaxDocument::setupModeList (bool force)
 {
+#ifdef EMSCRIPTEN
+    static bool haveFakedLastModifiedEntries = false;
+#endif
   // If there's something in myModeList the Mode List was already built so, don't do it again
   if (!myModeList.isEmpty())
     return;
+ qDebug() << "setupModeList begins";
 
   // We'll store the ModeList in katesyntaxhighlightingrc
   KConfigGroup generalConfig(m_config, "General");
@@ -387,6 +391,15 @@ void KateSyntaxDocument::setupModeList (bool force)
     KDE_struct_stat sbuf;
     memset (&sbuf, 0, sizeof(sbuf));
     KDE::stat(*it, &sbuf);
+
+#ifdef EMSCRIPTEN
+    // We include a pre-generated cached version which is assured to be correct and up-to-date
+    // on the first run, although the lastModified will not be correct: update it manually.
+    if (!haveFakedLastModifiedEntries)
+    {
+      config.writeEntry("lastModified", int(sbuf.st_mtime));
+    }
+#endif
 
     // If the group exist and we're not forced to read the xml file, let's build myModeList for katesyntax..rc
     if (!force && config.exists() && (sbuf.st_mtime == config.readEntry("lastModified",0)))
@@ -504,6 +517,10 @@ void KateSyntaxDocument::setupModeList (bool force)
 
   // Synchronize with the file katesyntax...rc
   generalConfig.sync();
+ qDebug() << "setupModeList end";
+#ifdef EMSCRIPTEN
+ haveFakedLastModifiedEntries = true;
+#endif
 }
 
 // kate: space-indent on; indent-width 2; replace-tabs on;
