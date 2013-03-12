@@ -40,11 +40,11 @@ KateScriptAction::KateScriptAction(const ScriptActionInfo& info, KateView* view)
   if (!info.icon().isEmpty()) {
     setIcon(KIcon(info.icon()));
   }
-  
+
   if (!info.shortcut().isEmpty()) {
     setShortcut(info.shortcut());
   }
-  
+
   connect(this, SIGNAL(triggered(bool)), this, SLOT(exec()));
 }
 
@@ -71,7 +71,15 @@ KateScriptActionMenu::KateScriptActionMenu(KateView *view, const QString& text)
   : KActionMenu (KIcon("code-context"), text, view)
   , m_view(view)
 {
+#ifndef EMSCRIPTEN
   repopulate();
+#else
+  // We repopulate lazily with Emscripten, as it is slow and adds a long time to
+  // application startup.
+  // Need to add at least one action, as otherwise aboutToShow() will not be called.
+  menu()->addAction(new QAction(QString("Dummy"), this));
+  connect(menu(), SIGNAL(aboutToShow()), this, SLOT(repopulate()));
+#endif
 
   // on script-reload signal, repopulate script menu
   connect(KateGlobal::self()->scriptManager(), SIGNAL(reloaded()),
@@ -99,8 +107,20 @@ void KateScriptActionMenu::repopulate()
   // if the view is already hooked into the GUI, first remove it
   // now and add it later, so that the changes we do here take effect
   KXMLGUIFactory *viewFactory = m_view->factory();
+#ifndef EMSCRIPTEN
   if (viewFactory)
     viewFactory->removeClient(m_view);
+#else
+  static bool initialRepopulationDone = false;
+  if (!initialRepopulationDone)
+  {
+    // Remove the "Dummy" action we added at construction.
+    menu()->removeAction(menu()->actions().first());
+    // Don't repopulate every time we reopen this menu
+    disconnect(menu(), SIGNAL(aboutToShow()), this, SLOT(repopulate()));
+    initialRepopulationDone = false;
+  }
+#endif
 
   // remove existing menu actions
   cleanup();
@@ -132,7 +152,7 @@ void KateScriptActionMenu::repopulate()
           m_menus.append(m);
         }
       }
-      
+
       // create action + add to menu
       KAction* a = new KateScriptAction(info, m_view);
       m->addAction(a);
