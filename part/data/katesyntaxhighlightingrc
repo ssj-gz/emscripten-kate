@@ -1,4 +1,4 @@
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/abap.xml]
+[Cache katepart/syntax/abap.xml]
 author=Marcos Antonio Alvarez Costales (busgosin@hotmail.com)
 extension=*.abap;*.ABAP
 hidden=false
@@ -12,7 +12,7 @@ section=Sources
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/abc.xml]
+[Cache katepart/syntax/abc.xml]
 author=Andrea Primiani (primiani@dag.it)
 extension=*.abc;*.ABC
 hidden=false
@@ -26,7 +26,7 @@ section=Other
 style=
 version=1.10
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/actionscript.xml]
+[Cache katepart/syntax/actionscript.xml]
 author=Aaron Miller (armantic101@gmail.com)
 extension=*.as
 hidden=false
@@ -40,7 +40,7 @@ section=Sources
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ada.xml]
+[Cache katepart/syntax/ada.xml]
 author=
 extension=*.adb;*.ads;*.ada;*.a
 hidden=false
@@ -54,7 +54,7 @@ section=Sources
 style=
 version=1.07
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ahdl.xml]
+[Cache katepart/syntax/ahdl.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=*.ahdl;*.tdf
 hidden=false
@@ -68,7 +68,7 @@ section=Hardware
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ahk.xml]
+[Cache katepart/syntax/ahk.xml]
 author=
 extension=*.ahk;*.iahk
 hidden=false
@@ -82,7 +82,7 @@ section=Scripts
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/alert.xml]
+[Cache katepart/syntax/alert.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=
 hidden=true
@@ -96,7 +96,7 @@ section=Other
 style=
 version=1.08
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/alert_indent.xml]
+[Cache katepart/syntax/alert_indent.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=
 hidden=true
@@ -110,7 +110,7 @@ section=Other
 style=
 version=1.08
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ample.xml]
+[Cache katepart/syntax/ample.xml]
 author=Christian Parg (cparg@gmx.de)
 extension=*.ample;*.menu;*.startup
 hidden=false
@@ -124,7 +124,7 @@ section=Scripts
 style=
 version=0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ansforth94.xml]
+[Cache katepart/syntax/ansforth94.xml]
 author=Mark Corbin (mark@dibsco.co.uk)
 extension=*.4th;*.4TH;*.f;*.F;*.frt;*.FRT;*.fs;*.FS;*.fth;*.FTH;*.seq;*.SEQ
 hidden=false
@@ -138,7 +138,7 @@ section=Sources
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ansic89.xml]
+[Cache katepart/syntax/ansic89.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=*.c;*.C;*.h
 hidden=false
@@ -152,7 +152,7 @@ section=Sources
 style=
 version=1.10
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ansys.xml]
+[Cache katepart/syntax/ansys.xml]
 author=Giovanni Bacci (giovanni@castellodilari.it)
 extension=*.ans
 hidden=false
@@ -166,7 +166,7 @@ section=Scientific
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/apache.xml]
+[Cache katepart/syntax/apache.xml]
 author=Jan Janssen (medhefgo@googlemail.com)
 extension=httpd.conf;httpd2.conf;apache.conf;apache2.conf;.htaccess*;.htpasswd*
 hidden=false
@@ -180,7 +180,7 @@ section=Configuration
 style=
 version=1.11
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/asm-avr.xml]
+[Cache katepart/syntax/asm-avr.xml]
 author=Roland Nagy
 extension=*.asm;*.ASM;*.asm-avr
 hidden=false
@@ -194,7 +194,7 @@ section=Assembler
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/asm-dsp56k.xml]
+[Cache katepart/syntax/asm-dsp56k.xml]
 author=Miro Kropacek (miro.kropacek@gmail.com)
 extension=*.asm;*.inc;*.ASM;*.INC
 hidden=false
@@ -208,7 +208,7 @@ section=Assembler
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/asm-m68k.xml]
+[Cache katepart/syntax/asm-m68k.xml]
 author=Miro Kropacek (miro.kropacek@gmail.com)
 extension=*.s;*.i;*.S;*.I
 hidden=false
@@ -222,7 +222,7 @@ section=Assembler
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/asm6502.xml]
+[Cache katepart/syntax/asm6502.xml]
 author=
 extension=*.asm
 hidden=false
@@ -236,7 +236,7 @@ section=Assembler
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/asn1.xml]
+[Cache katepart/syntax/asn1.xml]
 author=Philippe Rigault
 extension=*.asn;*.asn1
 hidden=false
@@ -250,7 +250,7 @@ section=Markup
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/asp.xml]
+[Cache katepart/syntax/asp.xml]
 author=Antonio Salazar (savedfastcool@gmail.com)
 extension=*.asp;
 hidden=false
@@ -264,7 +264,7 @@ section=Markup
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/asterisk.xml]
+[Cache katepart/syntax/asterisk.xml]
 author=UNGAR Didier
 extension=*asterisk/*.conf
 hidden=false
@@ -278,7 +278,7 @@ section=Configuration
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/awk.xml]
+[Cache katepart/syntax/awk.xml]
 author=
 extension=*.awk
 hidden=false
@@ -292,7 +292,7 @@ section=Scripts
 style=
 version=0.92
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/bash.xml]
+[Cache katepart/syntax/bash.xml]
 author=Wilbert Berendsen (wilbert@kde.nl)
 extension=*.sh;*.bash;*.ebuild;*.eclass;.bashrc;.bash_profile;.bash_login;.profile
 hidden=false
@@ -306,7 +306,7 @@ section=Scripts
 style=
 version=2.17
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/bibtex.xml]
+[Cache katepart/syntax/bibtex.xml]
 author=Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)
 extension=*.bib
 hidden=false
@@ -320,7 +320,7 @@ section=Markup
 style=
 version=1.17
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/bmethod.xml]
+[Cache katepart/syntax/bmethod.xml]
 author=Ivo Anjo (knuckles@gmail.com)
 extension=*.mch;*.imp;*.ref
 hidden=false
@@ -334,7 +334,7 @@ section=Scientific
 style=
 version=0.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/boo.xml]
+[Cache katepart/syntax/boo.xml]
 author=Marc Dassonneville
 extension=*.boo
 hidden=false
@@ -348,7 +348,7 @@ section=Sources
 style=
 version=0.91
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/c.xml]
+[Cache katepart/syntax/c.xml]
 author=
 extension=*.c;*.C;*.h
 hidden=false
@@ -362,7 +362,7 @@ section=Sources
 style=
 version=1.44
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ccss.xml]
+[Cache katepart/syntax/ccss.xml]
 author=Massimiliano Torromeo
 extension=*.ccss
 hidden=false
@@ -376,7 +376,7 @@ section=Markup
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/cg.xml]
+[Cache katepart/syntax/cg.xml]
 author=Florian Schanda (florian.schanda@schanda.de)
 extension=*.cg;*.cgfx
 hidden=false
@@ -390,7 +390,7 @@ section=Sources
 style=
 version=1.11
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/cgis.xml]
+[Cache katepart/syntax/cgis.xml]
 author=
 extension=*.cgis
 hidden=false
@@ -404,7 +404,7 @@ section=Sources
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/changelog.xml]
+[Cache katepart/syntax/changelog.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=ChangeLog
 hidden=false
@@ -418,7 +418,7 @@ section=Other
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/chicken.xml]
+[Cache katepart/syntax/chicken.xml]
 author=Dominik Haumann (dhdev@gmx.de) [modified for Chicken by Nick Zarczynski (jacktradespublic@gmail.com)]
 extension=*.chicken;*.scm;*.ss;*.scheme;*.meta
 hidden=false
@@ -432,7 +432,7 @@ section=Scripts
 style=
 version=1.12
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/cisco.xml]
+[Cache katepart/syntax/cisco.xml]
 author=Raphaël GRAPINET
 extension=*.cis
 hidden=false
@@ -446,7 +446,7 @@ section=Configuration
 style=
 version=1.10
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/clipper.xml]
+[Cache katepart/syntax/clipper.xml]
 author=Andrey Cherepanov (sibskull@mail.ru)
 extension=*.prg;*.PRG;*.ch
 hidden=false
@@ -460,7 +460,7 @@ section=Sources
 style=
 version=1.05
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/clojure.xml]
+[Cache katepart/syntax/clojure.xml]
 author=Dominik Haumann [lisp] modified for clojure by Caspar Hasenclever
 extension=*.clj
 hidden=false
@@ -474,7 +474,7 @@ section=Sources
 style=
 version=2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/cmake.xml]
+[Cache katepart/syntax/cmake.xml]
 author=Alexander Neundorf (neundorf@kde.org)
 extension=CMakeLists.txt;*.cmake;
 hidden=false
@@ -488,7 +488,7 @@ section=Other
 style=
 version=1.14
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/coffee.xml]
+[Cache katepart/syntax/coffee.xml]
 author=Max Shawabkeh (max99x@gmail.com)
 extension=Cakefile;*.coffee;*.coco
 hidden=false
@@ -502,7 +502,7 @@ section=Scripts
 style=
 version=1.4
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/coldfusion.xml]
+[Cache katepart/syntax/coldfusion.xml]
 author=
 extension=*.cfm;*.cfc;*.cfml;*.dbm
 hidden=false
@@ -516,7 +516,7 @@ section=Markup
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/commonlisp.xml]
+[Cache katepart/syntax/commonlisp.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=*.lisp;*.cl;*.lsp
 hidden=false
@@ -530,7 +530,7 @@ section=Sources
 style=
 version=1.05
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/component-pascal.xml]
+[Cache katepart/syntax/component-pascal.xml]
 author=Werner Braun (wb@o3-software.de)
 extension=*.cp;*.bro
 hidden=false
@@ -544,7 +544,7 @@ section=Sources
 style=
 version=1.05
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/context.xml]
+[Cache katepart/syntax/context.xml]
 author=Philipp A. (flying-sheep@web.de)
 extension=*.ctx
 hidden=false
@@ -558,7 +558,7 @@ section=Markup
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/cpp.xml]
+[Cache katepart/syntax/cpp.xml]
 author=
 extension=*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.moc
 hidden=false
@@ -572,7 +572,7 @@ section=Sources
 style=
 version=1.50
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/cpp11.xml]
+[Cache katepart/syntax/cpp11.xml]
 author=Alex Turbov (i.zaufi@gmail.com)
 extension=*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.moc
 hidden=false
@@ -586,7 +586,7 @@ section=Sources
 style=
 version=1.54
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/crk.xml]
+[Cache katepart/syntax/crk.xml]
 author=
 extension=*.crk
 hidden=false
@@ -600,7 +600,7 @@ section=Sources
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/cs.xml]
+[Cache katepart/syntax/cs.xml]
 author=
 extension=*.cs
 hidden=false
@@ -614,7 +614,7 @@ section=Sources
 style=
 version=1.15
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/css-php.xml]
+[Cache katepart/syntax/css-php.xml]
 author=Wilbert Berendsen (wilbert@kde.nl)
 extension=
 hidden=true
@@ -628,7 +628,7 @@ section=Other
 style=
 version=2.06
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/css.xml]
+[Cache katepart/syntax/css.xml]
 author=Wilbert Berendsen (wilbert@kde.nl)
 extension=*.css
 hidden=false
@@ -642,7 +642,7 @@ section=Markup
 style=
 version=2.06
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/cubescript.xml]
+[Cache katepart/syntax/cubescript.xml]
 author=Kevin Meyer
 extension=.cfg
 hidden=false
@@ -656,7 +656,7 @@ section=Scripts
 style=
 version=0.72
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/cue.xml]
+[Cache katepart/syntax/cue.xml]
 author=
 extension=*.cue
 hidden=false
@@ -670,7 +670,7 @@ section=Other
 style=
 version=0.91
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/curry.xml]
+[Cache katepart/syntax/curry.xml]
 author=Björn Peemöller (bjp@informatik.uni-kiel.de)
 extension=*.curry
 hidden=false
@@ -684,7 +684,7 @@ section=Sources
 style=
 version=0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/d.xml]
+[Cache katepart/syntax/d.xml]
 author=Diggory Hardy (diggory.hardy@gmail.com), Aziz Köksal (aziz.koeksal@gmail.com), Jari-Matti Mäkelä (jmjm@iki.fi), Simon J Mackenzie (project.katedxml@smackoz.fastmail.fm)
 extension=*.d;*.D;*.di;*.DI;
 hidden=false
@@ -698,7 +698,7 @@ section=Sources
 style=
 version=1.62
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/debianchangelog.xml]
+[Cache katepart/syntax/debianchangelog.xml]
 author=
 extension=
 hidden=false
@@ -712,7 +712,7 @@ section=Other
 style=
 version=0.66
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/debiancontrol.xml]
+[Cache katepart/syntax/debiancontrol.xml]
 author=
 extension=control
 hidden=false
@@ -726,7 +726,7 @@ section=Other
 style=
 version=0.84
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/desktop.xml]
+[Cache katepart/syntax/desktop.xml]
 author=
 extension=*.desktop;*.kdelnk
 hidden=false
@@ -740,7 +740,7 @@ section=Configuration
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/diff.xml]
+[Cache katepart/syntax/diff.xml]
 author=
 extension=*.diff;*patch
 hidden=false
@@ -754,7 +754,7 @@ section=Other
 style=
 version=1.11
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/djangotemplate.xml]
+[Cache katepart/syntax/djangotemplate.xml]
 author=Matthew Marshall (matthew@matthewmarshall.org)
 extension=*.htm;*.html
 hidden=false
@@ -768,7 +768,7 @@ section=Markup
 style=
 version=1.3
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/dosbat.xml]
+[Cache katepart/syntax/dosbat.xml]
 author=Matthew Woehlke (mw_triad@users.sourceforge.net)
 extension=*.bat
 hidden=false
@@ -782,7 +782,7 @@ section=Scripts
 style=
 version=0.30
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/dot.xml]
+[Cache katepart/syntax/dot.xml]
 author=Postula Loïs (lois.postula@live.be)
 extension=*.dot
 hidden=false
@@ -796,7 +796,7 @@ section=Scientific
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/doxygen.xml]
+[Cache katepart/syntax/doxygen.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=*.dox;*.doxygen
 hidden=false
@@ -810,7 +810,7 @@ section=Markup
 style=
 version=1.33
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/doxygenlua.xml]
+[Cache katepart/syntax/doxygenlua.xml]
 author=Bruno Massa (brmassa@gmail.com)
 extension=*.dox;*.doxygen
 hidden=false
@@ -824,7 +824,7 @@ section=Markup
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/dtd.xml]
+[Cache katepart/syntax/dtd.xml]
 author=Andriy Lesyuk (s-andy@in.if.ua)
 extension=*.dtd
 hidden=false
@@ -838,7 +838,7 @@ section=Markup
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/e.xml]
+[Cache katepart/syntax/e.xml]
 author=
 extension=*.e
 hidden=false
@@ -852,7 +852,7 @@ section=Sources
 style=
 version=0.22
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/eiffel.xml]
+[Cache katepart/syntax/eiffel.xml]
 author=Sebastian Vuorinen
 extension=*.e
 hidden=false
@@ -866,7 +866,7 @@ section=Sources
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/email.xml]
+[Cache katepart/syntax/email.xml]
 author=Carl A Joslin (carl.joslin@joslin.dyndns.org)
 extension=*.eml
 hidden=false
@@ -880,7 +880,7 @@ section=Other
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/erlang.xml]
+[Cache katepart/syntax/erlang.xml]
 author=Bill Ross (bill@emailme.net.au)
 extension=*.erl
 hidden=false
@@ -894,7 +894,7 @@ section=Scripts
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/euphoria.xml]
+[Cache katepart/syntax/euphoria.xml]
 author=Irv Mullins (irvm@ellijay.com)
 extension=*.e;*.ex;*.exw;*.exu
 hidden=false
@@ -908,7 +908,7 @@ section=Scripts
 style=
 version=2.08
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/fasm.xml]
+[Cache katepart/syntax/fasm.xml]
 author=rCX (rCX12@yahoo.com)
 extension=*.asm;*.inc;*.fasm
 hidden=false
@@ -922,7 +922,7 @@ section=Assembler
 style=
 version=0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ferite.xml]
+[Cache katepart/syntax/ferite.xml]
 author=
 extension=*.fe;*.feh
 hidden=false
@@ -936,7 +936,7 @@ section=Scripts
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/fgl-4gl.xml]
+[Cache katepart/syntax/fgl-4gl.xml]
 author=Andrej Falout (andrej@falout.org)
 extension=*.4gl;*.4GL;*.err
 hidden=false
@@ -950,7 +950,7 @@ section=Database
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/fgl-per.xml]
+[Cache katepart/syntax/fgl-per.xml]
 author=Andrej Falout (andrej@falout.org)
 extension=*.per;*.PER;*.per.err
 hidden=false
@@ -964,7 +964,7 @@ section=Database
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/fortran.xml]
+[Cache katepart/syntax/fortran.xml]
 author=Franchin Matteo (fnch@libero.it)
 extension=*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95;
 hidden=false
@@ -978,7 +978,7 @@ section=Sources
 style=
 version=1.13
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/freebasic.xml]
+[Cache katepart/syntax/freebasic.xml]
 author=Chris Neugebauer (chrisjrn@gmail.com)
 extension=*.bas;*.bi;*.BAS;*.BI
 hidden=false
@@ -992,7 +992,7 @@ section=Sources
 style=
 version=0.14
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/fsharp.xml]
+[Cache katepart/syntax/fsharp.xml]
 author=Bas Bossink (bas.bossink@gmail.com)
 extension=*.fs;*.fsi;*.fsx
 hidden=false
@@ -1006,7 +1006,7 @@ section=Sources
 style=
 version=0.0.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/fstab.xml]
+[Cache katepart/syntax/fstab.xml]
 author=Diego Iastrubni (elcuco@kde.org)
 extension=fstab;mtab
 hidden=false
@@ -1020,7 +1020,7 @@ section=Configuration
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/gap.xml]
+[Cache katepart/syntax/gap.xml]
 author=Jose Joao Morais
 extension=*.gd;*.gi;*.g
 hidden=false
@@ -1034,7 +1034,7 @@ section=Scientific
 style=
 version=0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/gcc.xml]
+[Cache katepart/syntax/gcc.xml]
 author=Alex Turbov (i.zaufi@gmail.com)
 extension=*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;
 hidden=true
@@ -1048,7 +1048,7 @@ section=Sources
 style=
 version=0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/gdb.xml]
+[Cache katepart/syntax/gdb.xml]
 author=Milian Wolff (mail@milianw.de)
 extension=*.kcrash;*.crash;*.bt
 hidden=false
@@ -1062,7 +1062,7 @@ section=Other
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/gdl.xml]
+[Cache katepart/syntax/gdl.xml]
 author=
 extension=*.gdl;*.vcg;*.GDL;*.VCG
 hidden=false
@@ -1076,7 +1076,7 @@ section=Scientific
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/gettext.xml]
+[Cache katepart/syntax/gettext.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=*.po;*.pot
 hidden=false
@@ -1090,7 +1090,7 @@ section=Markup
 style=
 version=2.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/glosstex.xml]
+[Cache katepart/syntax/glosstex.xml]
 author=Thomas Braun(braun@physik.fu-berlin.de)
 extension=*.gdf
 hidden=false
@@ -1104,7 +1104,7 @@ section=Markup
 style=
 version=0.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/glsl.xml]
+[Cache katepart/syntax/glsl.xml]
 author=Oliver Richers (o.richers@tu-bs.de)
 extension=*.glsl;*.vert;*.frag;*.geom
 hidden=false
@@ -1118,7 +1118,7 @@ section=Sources
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/gnuassembler.xml]
+[Cache katepart/syntax/gnuassembler.xml]
 author=John Zaitseff (J.Zaitseff@zap.org.au), Roland Pabel (roland@pabel.name), Miquel Sabaté (mikisabate@gmail.com)
 extension=*.s;*.S
 hidden=false
@@ -1132,7 +1132,7 @@ section=Assembler
 style=
 version=1.10
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/go.xml]
+[Cache katepart/syntax/go.xml]
 author=Miquel Sabaté (mikisabate@gmail.com)
 extension=*.go
 hidden=false
@@ -1146,7 +1146,7 @@ section=Sources
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/grammar.xml]
+[Cache katepart/syntax/grammar.xml]
 author=Milian Wolff (mail@milianw.de), Jonathan Schmidt-Dominé (devel@the-user.org)
 extension=*.g
 hidden=false
@@ -1160,7 +1160,7 @@ section=Sources
 style=
 version=0.24
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/haml.xml]
+[Cache katepart/syntax/haml.xml]
 author=Cies Breijs (cies_at_kde_nl)
 extension=*.haml
 hidden=false
@@ -1174,7 +1174,7 @@ section=Markup
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/haskell.xml]
+[Cache katepart/syntax/haskell.xml]
 author=Nicolas Wu (zenzike@gmail.com)
 extension=*.hs
 hidden=false
@@ -1188,7 +1188,7 @@ section=Sources
 style=
 version=2.0.5
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/haxe.xml]
+[Cache katepart/syntax/haxe.xml]
 author=Chad Joan
 extension=*.hx;*.Hx;*.hX;*.HX;
 hidden=false
@@ -1202,7 +1202,7 @@ section=Sources
 style=
 version=0.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/html-php.xml]
+[Cache katepart/syntax/html-php.xml]
 author=Wilbert Berendsen (wilbert@kde.nl)
 extension=*.php;*.php3;*.wml;*.phtml;*.phtm;*.inc
 hidden=false
@@ -1216,7 +1216,7 @@ section=Scripts
 style=
 version=1.99
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/html.xml]
+[Cache katepart/syntax/html.xml]
 author=Wilbert Berendsen (wilbert@kde.nl)
 extension=*.htm;*.html;*.shtml;*.shtm
 hidden=false
@@ -1230,7 +1230,7 @@ section=Markup
 style=
 version=1.99
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/idconsole.xml]
+[Cache katepart/syntax/idconsole.xml]
 author=
 extension=*.cfg
 hidden=false
@@ -1244,7 +1244,7 @@ section=Scripts
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/idl.xml]
+[Cache katepart/syntax/idl.xml]
 author=
 extension=*.idl
 hidden=false
@@ -1258,7 +1258,7 @@ section=Sources
 style=
 version=1.07
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ilerpg.xml]
+[Cache katepart/syntax/ilerpg.xml]
 author=
 extension=QRPG*.*;qrpg*.*
 hidden=false
@@ -1272,7 +1272,7 @@ section=Sources
 style=
 version=1.05
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/inform.xml]
+[Cache katepart/syntax/inform.xml]
 author=Giancarlo Niccolai (giancarlo@niccolai.ws)
 extension=*.inf;*.h
 hidden=false
@@ -1286,7 +1286,7 @@ section=Sources
 style=
 version=1.23
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ini.xml]
+[Cache katepart/syntax/ini.xml]
 author=Jan Janssen (medhefgo@web.de)
 extension=*.ini;*.pls;*.kcfgc
 hidden=false
@@ -1300,7 +1300,7 @@ section=Configuration
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/jam.xml]
+[Cache katepart/syntax/jam.xml]
 author=
 extension=Jam*;*.jam
 hidden=false
@@ -1314,7 +1314,7 @@ section=Other
 style=
 version=0.3
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/java.xml]
+[Cache katepart/syntax/java.xml]
 author=Alfredo Luiz Foltran Fialho (alfoltran@ig.com.br)
 extension=*.java
 hidden=false
@@ -1328,7 +1328,7 @@ section=Sources
 style=
 version=1.21
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/javadoc.xml]
+[Cache katepart/syntax/javadoc.xml]
 author=Alfredo Luiz Foltran Fialho (alfoltran@ig.com.br)
 extension=
 hidden=false
@@ -1342,7 +1342,7 @@ section=Markup
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/javascript-php.xml]
+[Cache katepart/syntax/javascript-php.xml]
 author=Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)
 extension=
 hidden=true
@@ -1356,7 +1356,7 @@ section=Other
 style=
 version=1.20
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/javascript.xml]
+[Cache katepart/syntax/javascript.xml]
 author=Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net)
 extension=*.js;*.kwinscript
 hidden=false
@@ -1370,7 +1370,7 @@ section=Scripts
 style=
 version=1.20
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/json.xml]
+[Cache katepart/syntax/json.xml]
 author=Sebastian Pipping (sebastian@pipping.org)
 extension=*.json
 hidden=false
@@ -1384,7 +1384,7 @@ section=Markup
 style=
 version=1.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/jsp.xml]
+[Cache katepart/syntax/jsp.xml]
 author=Rob Martin (rob@gamepimp.com)
 extension=*.jsp;*.JSP
 hidden=false
@@ -1398,7 +1398,7 @@ section=Markup
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/julia.xml]
+[Cache katepart/syntax/julia.xml]
 author=
 extension=*.jl
 hidden=false
@@ -1412,7 +1412,7 @@ section=Sources
 style=
 version=0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/katetemplate.xml]
+[Cache katepart/syntax/katetemplate.xml]
 author=Anders Lund
 extension=*.katetemplate
 hidden=false
@@ -1426,7 +1426,7 @@ section=Markup
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/kbasic.xml]
+[Cache katepart/syntax/kbasic.xml]
 author=
 extension=*.kbasic
 hidden=false
@@ -1440,7 +1440,7 @@ section=Sources
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/latex.xml]
+[Cache katepart/syntax/latex.xml]
 author=Jeroen Wijnhout (Jeroen.Wijnhout@kdemail.net)+Holger Danielsson (holger.danielsson@versanet.de)+Michel Ludwig (michel.ludwig@kdemail.net)+Thomas Braun (thomas.braun@virtuell-zuhause.de)
 extension=*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.tikz
 hidden=false
@@ -1454,7 +1454,7 @@ section=Markup
 style=
 version=1.52
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ld.xml]
+[Cache katepart/syntax/ld.xml]
 author=Lyle Putnam (lcputnam@gmail.com)
 extension=*.ld
 hidden=false
@@ -1468,7 +1468,7 @@ section=Scripts
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ldif.xml]
+[Cache katepart/syntax/ldif.xml]
 author=Andreas Hochsteger (e9625392@student.tuwien.ac.at)
 extension=*.ldif
 hidden=false
@@ -1482,7 +1482,7 @@ section=Database
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/less.xml]
+[Cache katepart/syntax/less.xml]
 author=from CCS:Wilbert Berendsen (wilbert@kde.nl)
 extension=*.less
 hidden=false
@@ -1496,7 +1496,7 @@ section=Markup
 style=
 version=0.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/lex.xml]
+[Cache katepart/syntax/lex.xml]
 author=Jan Villat (jan.villat@net2000.ch)
 extension=*.l;*.lex;*.flex
 hidden=false
@@ -1510,7 +1510,7 @@ section=Sources
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/lilypond.xml]
+[Cache katepart/syntax/lilypond.xml]
 author=Wilbert Berendsen (info@wilbertberendsen.nl)
 extension=*.ly;*.LY;*.ily;*.ILY;*.lyi;*.LYI
 hidden=false
@@ -1524,7 +1524,7 @@ section=Other
 style=lilypond
 version=3.06
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/literate-curry.xml]
+[Cache katepart/syntax/literate-curry.xml]
 author=Björn Peemöller (bjp@informatik.uni-kiel.de)
 extension=*.lcurry
 hidden=false
@@ -1538,7 +1538,7 @@ section=Sources
 style=
 version=0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/literate-haskell.xml]
+[Cache katepart/syntax/literate-haskell.xml]
 author=Nicolas Wu (zenzike@gmail.com)
 extension=*.lhs
 hidden=false
@@ -1552,7 +1552,7 @@ section=Sources
 style=
 version=2.0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/logtalk.xml]
+[Cache katepart/syntax/logtalk.xml]
 author=Paulo Moura (pmoura@logtalk.org)
 extension=*.lgt;*.config
 hidden=false
@@ -1566,7 +1566,7 @@ section=Sources
 style=
 version=1.51
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/lpc.xml]
+[Cache katepart/syntax/lpc.xml]
 author=Andreas Klauer (Andreas.Klauer@metamorpher.de)
 extension=*.c;*.h;*.inc;*.o
 hidden=false
@@ -1580,7 +1580,7 @@ section=Sources
 style=
 version=0.76
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/lsl.xml]
+[Cache katepart/syntax/lsl.xml]
 author=Rafał Rzepecki
 extension=*.lsl
 hidden=false
@@ -1594,7 +1594,7 @@ section=Scripts
 style=
 version=1.20
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/lua.xml]
+[Cache katepart/syntax/lua.xml]
 author=
 extension=*.lua
 hidden=false
@@ -1608,7 +1608,7 @@ section=Scripts
 style=
 version=1.06
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/m3u.xml]
+[Cache katepart/syntax/m3u.xml]
 author=Jan Janssen (medhefgo@web.de)
 extension=*.m3u
 hidden=false
@@ -1622,7 +1622,7 @@ section=Other
 style=
 version=1.10
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/m4.xml]
+[Cache katepart/syntax/m4.xml]
 author=Jaak Ristioja
 extension=*.m4;
 hidden=false
@@ -1636,7 +1636,7 @@ section=Sources
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/mab.xml]
+[Cache katepart/syntax/mab.xml]
 author=
 extension=*.mab;*.MAB;*.Mab
 hidden=false
@@ -1650,7 +1650,7 @@ section=Markup
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/makefile.xml]
+[Cache katepart/syntax/makefile.xml]
 author=Per Wigren (wigren@home.se)
 extension=GNUmakefile;Makefile;makefile;GNUmakefile.*;Makefile.*;makefile.*
 hidden=false
@@ -1664,7 +1664,7 @@ section=Other
 style=
 version=2.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/mako.xml]
+[Cache katepart/syntax/mako.xml]
 author=Massimiliano Torromeo (massimiliano.torromeo@gmail.com)
 extension=*.mako;*.mak
 hidden=false
@@ -1678,7 +1678,7 @@ section=Markup
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/mandoc.xml]
+[Cache katepart/syntax/mandoc.xml]
 author=Matthew Woehlke (mw_triad@users.sourceforge.net)
 extension=*.1;*.2;*.3;*.4;*.5;*.6;*.7;*.8;*.1m;*.3x;*.tmac
 hidden=false
@@ -1692,7 +1692,7 @@ section=Markup
 style=
 version=0.11
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/markdown.xml]
+[Cache katepart/syntax/markdown.xml]
 author=Darrin Yeager, Claes Holmerson
 extension=*.md;*.mmd;*.markdown
 hidden=false
@@ -1706,7 +1706,7 @@ section=Markup
 style=
 version=1.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/mason.xml]
+[Cache katepart/syntax/mason.xml]
 author=
 extension=*.html;
 hidden=false
@@ -1720,7 +1720,7 @@ section=Scripts
 style=
 version=1.06
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/matlab.xml]
+[Cache katepart/syntax/matlab.xml]
 author=
 extension=*.m;*.M
 hidden=false
@@ -1734,7 +1734,7 @@ section=Scientific
 style=
 version=1.30
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/maxima.xml]
+[Cache katepart/syntax/maxima.xml]
 author=Alexey Beshenov <al@beshenov.ru>
 extension=*.mac;*.MAC;*.dem;*.DEM
 hidden=false
@@ -1748,7 +1748,7 @@ section=Scientific
 style=
 version=0.16
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/mediawiki.xml]
+[Cache katepart/syntax/mediawiki.xml]
 author=
 extension=*.mediawiki
 hidden=false
@@ -1762,7 +1762,7 @@ section=Markup
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/mel.xml]
+[Cache katepart/syntax/mel.xml]
 author=Karl Erlandsen (karlerlandsen@yahoo.com)
 extension=*.mel
 hidden=false
@@ -1776,7 +1776,7 @@ section=Scripts
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/mergetagtext.xml]
+[Cache katepart/syntax/mergetagtext.xml]
 author=Diggory Hardy (diggory.hardy@gmail.com)
 extension=*.mtt;
 hidden=false
@@ -1790,7 +1790,7 @@ section=Configuration
 style=
 version=0.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/metafont.xml]
+[Cache katepart/syntax/metafont.xml]
 author=Yedvilun (yedvilun@gmail.com)
 extension=*.mp;*.mps;*.mpost;*.mf
 hidden=false
@@ -1804,7 +1804,7 @@ section=Markup
 style=
 version=0.9
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/mips.xml]
+[Cache katepart/syntax/mips.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=*.s;
 hidden=false
@@ -1818,7 +1818,7 @@ section=Assembler
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/modelica.xml]
+[Cache katepart/syntax/modelica.xml]
 author=Federico Zenith
 extension=*.mo
 hidden=false
@@ -1832,7 +1832,7 @@ section=Sources
 style=
 version=3.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/modelines.xml]
+[Cache katepart/syntax/modelines.xml]
 author=Alex Turbov (i.zaufi@gmail.com)
 extension=
 hidden=true
@@ -1846,7 +1846,7 @@ section=Other
 style=
 version=0.50
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/modula-2.xml]
+[Cache katepart/syntax/modula-2.xml]
 author=
 extension=*.mod;*.def;*.mi;*.md
 hidden=false
@@ -1860,7 +1860,7 @@ section=Sources
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/monobasic.xml]
+[Cache katepart/syntax/monobasic.xml]
 author=Davide Bettio (davide.bettio@kdemail.net)
 extension=*.vb
 hidden=false
@@ -1874,7 +1874,7 @@ section=Sources
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/mup.xml]
+[Cache katepart/syntax/mup.xml]
 author=Wilbert Berendsen (wilbert@kde.nl)
 extension=*.mup;*.not
 hidden=false
@@ -1888,7 +1888,7 @@ section=Other
 style=
 version=1.06
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/nasm.xml]
+[Cache katepart/syntax/nasm.xml]
 author=Nicola Gigante (nicola.gigante@gmail.com)
 extension=*.asm
 hidden=false
@@ -1902,7 +1902,7 @@ section=Assembler
 style=
 version=1.40
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/nemerle.xml]
+[Cache katepart/syntax/nemerle.xml]
 author=caminoix + Kamil Skalski (Nazgul)
 extension=*.n
 hidden=false
@@ -1916,7 +1916,7 @@ section=Sources
 style=
 version=0.32
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/nesc.xml]
+[Cache katepart/syntax/nesc.xml]
 author=Shakthi Kannan
 extension=*.nc
 hidden=false
@@ -1930,7 +1930,7 @@ section=Sources
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/noweb.xml]
+[Cache katepart/syntax/noweb.xml]
 author=Scott Collins (scc@scottcollins.net)
 extension=*.w;*.nw
 hidden=false
@@ -1944,7 +1944,7 @@ section=Sources
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/objectivec.xml]
+[Cache katepart/syntax/objectivec.xml]
 author=
 extension=*.m;*.h
 hidden=false
@@ -1958,7 +1958,7 @@ section=Sources
 style=
 version=1.07
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/objectivecpp.xml]
+[Cache katepart/syntax/objectivecpp.xml]
 author=Gennady Telegin (gepo@lvk.cs.msu.su
 extension=*.mm;*.M;*.h
 hidden=false
@@ -1972,7 +1972,7 @@ section=Sources
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ocaml.xml]
+[Cache katepart/syntax/ocaml.xml]
 author=Glyn Webster (glyn@wave.co.nz)
 extension=*.ml;*.mli
 hidden=false
@@ -1986,7 +1986,7 @@ section=Sources
 style=
 version=1.05
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/octave.xml]
+[Cache katepart/syntax/octave.xml]
 author=Luis Silvestre and Federico Zenith
 extension=*.octave;*.m;*.M
 hidden=false
@@ -2000,7 +2000,7 @@ section=Scientific
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/oors.xml]
+[Cache katepart/syntax/oors.xml]
 author=Gernot Gebhard (gebhard@cs.uni-sb.de)
 extension=*.oors
 hidden=false
@@ -2014,7 +2014,7 @@ section=Sources
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/opal.xml]
+[Cache katepart/syntax/opal.xml]
 author=Sebastian Pipping (webmaster@hartwork.org)
 extension=*.impl;*.sign
 hidden=false
@@ -2028,7 +2028,7 @@ section=Sources
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/pango.xml]
+[Cache katepart/syntax/pango.xml]
 author=Jonathan Schmidt-Domniné <devel@the-user.org>
 extension=
 hidden=false
@@ -2042,7 +2042,7 @@ section=Markup
 style=
 version=0.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/pascal.xml]
+[Cache katepart/syntax/pascal.xml]
 author=Unnamed people and Liu Sizhuang(oldherl@gmail.com)
 extension=*.pp;*.pas;*.p
 hidden=false
@@ -2056,7 +2056,7 @@ section=Sources
 style=
 version=1.22
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/perl.xml]
+[Cache katepart/syntax/perl.xml]
 author=Anders Lund (anders@alweb.dk)
 extension=*.pl;*.pm
 hidden=false
@@ -2070,7 +2070,7 @@ section=Scripts
 style=
 version=1.26
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/pgn.xml]
+[Cache katepart/syntax/pgn.xml]
 author=Ruben Carlo Benante (dr.beco@gmail.com)
 extension=*.pgn;*.PGN
 hidden=false
@@ -2084,7 +2084,7 @@ section=Other
 style=
 version=2.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/php.xml]
+[Cache katepart/syntax/php.xml]
 author=
 extension=
 hidden=true
@@ -2098,7 +2098,7 @@ section=Scripts
 style=
 version=1.42
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/picsrc.xml]
+[Cache katepart/syntax/picsrc.xml]
 author=Alain GIBAUD (alain.gibaud@univ-valenciennes.fr)
 extension=*.src;*.SRC;*.asm;*.ASM;*.pic;*.PIC
 hidden=false
@@ -2112,7 +2112,7 @@ section=Assembler
 style=
 version=1.07
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/pig.xml]
+[Cache katepart/syntax/pig.xml]
 author=Johannes Schwenk, johannes.schwenk@adition.com
 extension=*.pig
 hidden=false
@@ -2126,7 +2126,7 @@ section=Scripts
 style=
 version=3.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/pike.xml]
+[Cache katepart/syntax/pike.xml]
 author=Paul Pogonyshev
 extension=*.pike
 hidden=false
@@ -2140,7 +2140,7 @@ section=Scripts
 style=
 version=1.07
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/postscript.xml]
+[Cache katepart/syntax/postscript.xml]
 author=
 extension=*.ps;*.ai;*.eps
 hidden=false
@@ -2154,7 +2154,7 @@ section=Markup
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/povray.xml]
+[Cache katepart/syntax/povray.xml]
 author=Christoph Hormann (chris_hormann@gmx.de)
 extension=*.inc;*.pov
 hidden=false
@@ -2168,7 +2168,7 @@ section=Other
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ppd.xml]
+[Cache katepart/syntax/ppd.xml]
 author=Lukas Sommer
 extension=*.ppd
 hidden=false
@@ -2182,7 +2182,7 @@ section=Markup
 style=
 version=0.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/progress.xml]
+[Cache katepart/syntax/progress.xml]
 author=Rares Stanciulescu (rstanciu@operamail.com)
 extension=*.p;*.w;*.i;*.cls;
 hidden=false
@@ -2196,7 +2196,7 @@ section=Database
 style=
 version=1.10
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/prolog.xml]
+[Cache katepart/syntax/prolog.xml]
 author=Torsten Eichstädt (torsten.eichstaedt@web.de)
 extension=*.prolog;*.dcg;*.pro
 hidden=false
@@ -2210,7 +2210,7 @@ section=Sources
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/purebasic.xml]
+[Cache katepart/syntax/purebasic.xml]
 author=Sven Langenkamp (ace@kylixforum.de)
 extension=*.pb
 hidden=false
@@ -2224,7 +2224,7 @@ section=Sources
 style=
 version=3.91
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/python.xml]
+[Cache katepart/syntax/python.xml]
 author=Michael Bueker
 extension=*.py;*.pyw;SConstruct;SConscript
 hidden=false
@@ -2238,7 +2238,7 @@ section=Scripts
 style=python
 version=2.16
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/qmake.xml]
+[Cache katepart/syntax/qmake.xml]
 author=Milian Wolff (mail@milianw.de)
 extension=*.pro;*.pri;*.prf;
 hidden=false
@@ -2252,7 +2252,7 @@ section=Other
 style=
 version=1.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/qml.xml]
+[Cache katepart/syntax/qml.xml]
 author=Milian Wolff (mail@milianw.de)
 extension=*.qml
 hidden=false
@@ -2266,7 +2266,7 @@ section=Scripts
 style=
 version=1.5
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/qt4.xml]
+[Cache katepart/syntax/qt4.xml]
 author=Alex Turbov (i.zaufi@gmail.com)
 extension=*.moc
 hidden=false
@@ -2280,7 +2280,7 @@ section=Sources
 style=
 version=0.10
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/r.xml]
+[Cache katepart/syntax/r.xml]
 author=
 extension=*.R;*.r;*.S;*.s;*.q
 hidden=false
@@ -2294,7 +2294,7 @@ section=Scripts
 style=
 version=2.07
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/rapidq.xml]
+[Cache katepart/syntax/rapidq.xml]
 author=Tiberiu Dragulinescu
 extension=*.rqb
 hidden=false
@@ -2308,7 +2308,7 @@ section=Sources
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/relaxng.xml]
+[Cache katepart/syntax/relaxng.xml]
 author=Thomas Schraitle (tom_schr AT web DOT de)
 extension=*.rng;*.RNG
 hidden=false
@@ -2322,7 +2322,7 @@ section=Markup
 style=
 version=0.8
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/relaxngcompact.xml]
+[Cache katepart/syntax/relaxngcompact.xml]
 author=Rintze Zelle
 extension=*.rnc
 hidden=false
@@ -2336,7 +2336,7 @@ section=Markup
 style=
 version=0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/rest.xml]
+[Cache katepart/syntax/rest.xml]
 author=
 extension=*.rst
 hidden=false
@@ -2350,7 +2350,7 @@ section=Markup
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/restructuredtext.xml]
+[Cache katepart/syntax/restructuredtext.xml]
 author=Massimiliano Torromeo (massimiliano.torromeo@gmail.com)
 extension=*.rst
 hidden=false
@@ -2364,7 +2364,7 @@ section=Markup
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/rexx.xml]
+[Cache katepart/syntax/rexx.xml]
 author=
 extension=*.rex
 hidden=false
@@ -2378,7 +2378,7 @@ section=Scripts
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/rhtml.xml]
+[Cache katepart/syntax/rhtml.xml]
 author=Richard Dale rdale@foton.es
 extension=*.rhtml;*.html.erb
 hidden=false
@@ -2392,7 +2392,7 @@ section=Markup
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/rib.xml]
+[Cache katepart/syntax/rib.xml]
 author=David Williams <david@david-williams.info>
 extension=*.rib
 hidden=false
@@ -2406,7 +2406,7 @@ section=Other
 style=
 version=1.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/roff.xml]
+[Cache katepart/syntax/roff.xml]
 author=Matthew Woehlke (mw_triad@users.sourceforge.net)
 extension=
 hidden=false
@@ -2420,7 +2420,7 @@ section=Markup
 style=
 version=0.11
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/rpmspec.xml]
+[Cache katepart/syntax/rpmspec.xml]
 author=
 extension=*.spec
 hidden=false
@@ -2434,7 +2434,7 @@ section=Other
 style=
 version=2.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/rsiidl.xml]
+[Cache katepart/syntax/rsiidl.xml]
 author=Markus Fraenz (fraenz@linmpi.mpg.de)
 extension=*.pro
 hidden=false
@@ -2448,7 +2448,7 @@ section=Sources
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/ruby.xml]
+[Cache katepart/syntax/ruby.xml]
 author=Stefan Lang (langstefan@gmx.at), Sebastian Vuorinen (sebastian.vuorinen@helsinki.fi), Robin Pedersen (robinpeder@gmail.com), Miquel Sabaté (mikisabate@gmail.com)
 extension=*.rb;*.rjs;*.rxml;*.xml.erb;*.js.erb;*.rake;Rakefile;Gemfile;*.gemspec
 hidden=false
@@ -2462,7 +2462,7 @@ section=Scripts
 style=ruby
 version=1.26
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sather.xml]
+[Cache katepart/syntax/sather.xml]
 author=
 extension=*.sa
 hidden=false
@@ -2476,7 +2476,7 @@ section=Sources
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/scala.xml]
+[Cache katepart/syntax/scala.xml]
 author=Stephane Micheloud (stephane.micheloud@epfl.ch)
 extension=*.scala
 hidden=false
@@ -2490,7 +2490,7 @@ section=Sources
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/scheme.xml]
+[Cache katepart/syntax/scheme.xml]
 author=Dominik Haumann (dhdev@gmx.de)
 extension=*.scm;*.ss;*.scheme;*.guile
 hidden=false
@@ -2504,7 +2504,7 @@ section=Scripts
 style=
 version=1.13
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sci.xml]
+[Cache katepart/syntax/sci.xml]
 author=
 extension=*.sci;*.sce
 hidden=false
@@ -2518,7 +2518,7 @@ section=Scientific
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/scss.xml]
+[Cache katepart/syntax/scss.xml]
 author=Wilbert Berendsen (wilbert@kde.nl)
 extension=*.scss
 hidden=false
@@ -2532,7 +2532,7 @@ section=Markup
 style=
 version=2.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sed.xml]
+[Cache katepart/syntax/sed.xml]
 author=Bart Sas (bart.sas@gmail.com)
 extension=*.sed
 hidden=false
@@ -2546,7 +2546,7 @@ section=Scripts
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sgml.xml]
+[Cache katepart/syntax/sgml.xml]
 author=
 extension=*.sgml
 hidden=false
@@ -2560,7 +2560,7 @@ section=Markup
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sieve.xml]
+[Cache katepart/syntax/sieve.xml]
 author=Petter E. Stokke
 extension=*.siv
 hidden=false
@@ -2574,7 +2574,7 @@ section=Scripts
 style=
 version=1.05
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sisu.xml]
+[Cache katepart/syntax/sisu.xml]
 author=Ralph Amissah (ralph.amissah@gmail.com)
 extension=*.sst;*.ssm;*.ssi;*._sst;*.-sst;
 hidden=false
@@ -2588,7 +2588,7 @@ section=Markup
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sml.xml]
+[Cache katepart/syntax/sml.xml]
 author=Christoph Cullmann (cullmann@kde.org)
 extension=*.sml;*.ml
 hidden=false
@@ -2602,7 +2602,7 @@ section=Sources
 style=
 version=1.06
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/spice.xml]
+[Cache katepart/syntax/spice.xml]
 author=Steven Robson (s.a.robson@sms.ed.ac.uk) and Anders Lund
 extension=*.sp;*.hsp
 hidden=false
@@ -2616,7 +2616,7 @@ section=Hardware
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sql-mysql.xml]
+[Cache katepart/syntax/sql-mysql.xml]
 author=Shane Wright (me@shanewright.co.uk)
 extension=*.sql;*.SQL;*.ddl;*.DDL
 hidden=false
@@ -2630,7 +2630,7 @@ section=Database
 style=
 version=1.15
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sql-postgresql.xml]
+[Cache katepart/syntax/sql-postgresql.xml]
 author=Shane Wright (me@shanewright.co.uk)
 extension=*.sql;*.SQL;*.ddl;*.DDL
 hidden=false
@@ -2644,7 +2644,7 @@ section=Database
 style=
 version=1.12
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/sql.xml]
+[Cache katepart/syntax/sql.xml]
 author=Yury Lebedev (yurylebedev@mail.ru)
 extension=*.sql;*.SQL;*.ddl;*.DDL
 hidden=false
@@ -2658,7 +2658,7 @@ section=Database
 style=
 version=1.16
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/stata.xml]
+[Cache katepart/syntax/stata.xml]
 author=Larry Radbill (Larry.Radbill gmail com)
 extension=*.do; *.ado; *.doh; *.DO; *.ADO; *.DOH
 hidden=false
@@ -2672,7 +2672,7 @@ section=Sources
 style=
 version=2.00
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/systemc.xml]
+[Cache katepart/syntax/systemc.xml]
 author=Joseph Wenninger (jowenn@kde.org)
 extension=*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.moc
 hidden=false
@@ -2686,7 +2686,7 @@ section=Hardware
 style=
 version=0.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/systemverilog.xml]
+[Cache katepart/syntax/systemverilog.xml]
 author=Sean O'Boyle (seanoboyle@intelligentdv.com)
 extension=*.sv;*.svh
 hidden=false
@@ -2700,7 +2700,7 @@ section=Hardware
 style=
 version=1.50
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/tads3.xml]
+[Cache katepart/syntax/tads3.xml]
 author=
 extension=*.t;*.h
 hidden=false
@@ -2714,7 +2714,7 @@ section=Sources
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/tcl.xml]
+[Cache katepart/syntax/tcl.xml]
 author=
 extension=*.tcl;*.tk
 hidden=false
@@ -2728,7 +2728,7 @@ section=Scripts
 style=
 version=1.11
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/tcsh.xml]
+[Cache katepart/syntax/tcsh.xml]
 author=Matthew Woehlke (mw_triad@users.sourceforge.net)
 extension=*.csh;*.tcsh;csh.cshrc;csh.login;.tcshrc;.cshrc;.login
 hidden=false
@@ -2742,7 +2742,7 @@ section=Scripts
 style=
 version=0.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/template-toolkit.xml]
+[Cache katepart/syntax/template-toolkit.xml]
 author=Красимир Беров (k.berov@gmail.com)
 extension=*.tt*;
 hidden=false
@@ -2756,7 +2756,7 @@ section=Markup
 style=
 version=0.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/texinfo.xml]
+[Cache katepart/syntax/texinfo.xml]
 author=Daniel Franke (franke.daniel@gmail.com)
 extension=*.texi
 hidden=false
@@ -2770,7 +2770,7 @@ section=Markup
 style=
 version=0.2
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/textile.xml]
+[Cache katepart/syntax/textile.xml]
 author=Alexander Kabakov (kabakov.as@gmail.com)
 extension=*.textile
 hidden=false
@@ -2784,7 +2784,7 @@ section=Markup
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/tibasic.xml]
+[Cache katepart/syntax/tibasic.xml]
 author=
 extension=
 hidden=false
@@ -2798,7 +2798,7 @@ section=Scientific
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/txt2tags.xml]
+[Cache katepart/syntax/txt2tags.xml]
 author=
 extension=*.t2t
 hidden=false
@@ -2812,7 +2812,7 @@ section=Markup
 style=
 version=1.20
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/uscript.xml]
+[Cache katepart/syntax/uscript.xml]
 author=
 extension=*.uc
 hidden=false
@@ -2826,7 +2826,7 @@ section=Scripts
 style=
 version=0.92
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/vala.xml]
+[Cache katepart/syntax/vala.xml]
 author=Antoni Boucher (bouanto@hotmail.com)
 extension=*.vala
 hidden=false
@@ -2840,7 +2840,7 @@ section=Sources
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/valgrind-suppression.xml]
+[Cache katepart/syntax/valgrind-suppression.xml]
 author=Milian Wolff (mail@milianw.de)
 extension=*.supp;
 hidden=false
@@ -2854,7 +2854,7 @@ section=Other
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/varnish.xml]
+[Cache katepart/syntax/varnish.xml]
 author=Xavier Guerrin (xavier@tuxfamily.org)
 extension=*.vcl;
 hidden=false
@@ -2868,7 +2868,7 @@ section=Configuration
 style=
 version=0.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/vcard.xml]
+[Cache katepart/syntax/vcard.xml]
 author=Lukas Sommer
 extension=*.iCal;*.iCalendar;.ics;*.ifb;*.iFBf;*.vcal;*.vcalendar;*.vcard;*.vcf;
 hidden=false
@@ -2882,7 +2882,7 @@ section=Markup
 style=
 version=0.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/velocity.xml]
+[Cache katepart/syntax/velocity.xml]
 author=John Christopher (John@animalsinneed.net)
 extension=*.vm;
 hidden=false
@@ -2896,7 +2896,7 @@ section=Scripts
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/vera.xml]
+[Cache katepart/syntax/vera.xml]
 author=Sean O'Boyle (seanoboyle@intelligentdv.com)
 extension=*.vr;*.vri;*.vrh
 hidden=false
@@ -2910,7 +2910,7 @@ section=Hardware
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/verilog.xml]
+[Cache katepart/syntax/verilog.xml]
 author=Yevgen Voronenko (ysv22@drexel.edu), Ryan Dalzell (ryan@tullyroan.com)
 extension=*.v;*.V;*.vl
 hidden=false
@@ -2924,7 +2924,7 @@ section=Hardware
 style=
 version=1.09
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/vhdl.xml]
+[Cache katepart/syntax/vhdl.xml]
 author=Rocky Scaletta (rocky@purdue.edu), Stefan Endrullis (stefan@endrullis.de), Florent Ouchet (outchy@users.sourceforge.net), Chris Higgs (chiggs.99@gmail.com), Jan Michel (jan@mueschelsoft.de)
 extension=*.vhdl;*.vhd
 hidden=false
@@ -2938,7 +2938,7 @@ section=Hardware
 style=
 version=1.10
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/vrml.xml]
+[Cache katepart/syntax/vrml.xml]
 author=Volker Krause (vkrause@kde.org)
 extension=*.wrl
 hidden=false
@@ -2952,7 +2952,7 @@ section=Markup
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/winehq.xml]
+[Cache katepart/syntax/winehq.xml]
 author=
 extension=*.reg
 hidden=false
@@ -2966,7 +2966,7 @@ section=Configuration
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/wml.xml]
+[Cache katepart/syntax/wml.xml]
 author=Zachary Palmer (zep01@bahj.com), modif. by Ignacio Riquelme Morelle (shadowm2006@gmail.com) and Jonathan Schmidt-Dominé (devel@the-user.org)
 extension=*.cfg;*.pbl;*.CFG;*.PBL
 hidden=false
@@ -2980,7 +2980,7 @@ section=Markup
 style=
 version=0.42
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/xharbour.xml]
+[Cache katepart/syntax/xharbour.xml]
 author=Giancarlo Niccolai (giancarlo@niccolai.ws)
 extension=*.prg;*.PRG;*.ch
 hidden=false
@@ -2994,7 +2994,7 @@ section=Sources
 style=
 version=1.04
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/xml.xml]
+[Cache katepart/syntax/xml.xml]
 author=Wilbert Berendsen (wilbert@kde.nl)
 extension=*.docbook;*.xml;*.rc;*.daml;*.rdf;*.rss;*.xspf;*.xsd;*.svg;*.ui;*.kcfg;*.qrc;*.wsdl
 hidden=false
@@ -3008,7 +3008,7 @@ section=Markup
 style=
 version=2.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/xmldebug.xml]
+[Cache katepart/syntax/xmldebug.xml]
 author=
 extension=
 hidden=false
@@ -3022,7 +3022,7 @@ section=Markup
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/xorg.xml]
+[Cache katepart/syntax/xorg.xml]
 author=Jan Janssen (medhefgo@web.de)
 extension=xorg.conf
 hidden=false
@@ -3036,7 +3036,7 @@ section=Configuration
 style=
 version=1.01
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/xslt.xml]
+[Cache katepart/syntax/xslt.xml]
 author=Peter Lammich (views@gmx.de)
 extension=*.xsl;*.xslt
 hidden=false
@@ -3050,7 +3050,7 @@ section=Markup
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/xul.xml]
+[Cache katepart/syntax/xul.xml]
 author=Wilbert Berendsen (wilbert@kde.nl), Anders Lund (anders@alweb.dk), Joseph Wenninger (jowenn@kde.org), Whitehawk Stormchaser (zerokode@gmx.net), Marc Dassonneville (marc.dassonneville@gmail.com)
 extension=*.xul;*.xbl
 hidden=false
@@ -3064,7 +3064,7 @@ section=Markup
 style=
 version=0.11
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/yacas.xml]
+[Cache katepart/syntax/yacas.xml]
 author=
 extension=*.ys
 hidden=false
@@ -3078,7 +3078,7 @@ section=Scientific
 style=
 version=1.02
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/yacc.xml]
+[Cache katepart/syntax/yacc.xml]
 author=Jan Villat (jan.villat@net2000.ch)
 extension=*.y;*.yy
 hidden=false
@@ -3092,7 +3092,7 @@ section=Sources
 style=
 version=1.03
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/yaml.xml]
+[Cache katepart/syntax/yaml.xml]
 author=Dr Orlovsky MA (dr.orlovsky@gmail.com)
 extension=*.yaml;*.yml
 hidden=false
@@ -3106,7 +3106,7 @@ section=Markup
 style=
 version=1.1
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/zonnon.xml]
+[Cache katepart/syntax/zonnon.xml]
 author=
 extension=*.znn
 hidden=false
@@ -3120,7 +3120,7 @@ section=Sources
 style=
 version=1.0
 
-[Cache /home/simon/tmp/DONTSYNC/kate/build-emscripten-native/share/apps/katepart/syntax/zsh.xml]
+[Cache katepart/syntax/zsh.xml]
 author=Jonathan Kolberg (bulldog98@kubuntu-de.org)
 extension=*.sh;*.zsh;.zshrc;.zprofile;.zlogin;.zlogout;.profile
 hidden=false
