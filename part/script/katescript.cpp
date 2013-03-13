@@ -98,7 +98,6 @@ KateScript::~KateScript()
 
     // remove data...
     delete m_engine;
-    qDebug() << "Deleted engine: " << m_engine;
     delete m_document;
     delete m_view;
   }
@@ -175,7 +174,7 @@ bool KateScript::load()
   m_engine->globalObject().setProperty("read", m_engine->newFunction(Kate::Script::read));
   m_engine->globalObject().setProperty("require", m_engine->newFunction(Kate::Script::require));
   m_engine->globalObject().setProperty("require_guard", m_engine->newObject());
-  
+
   // export debug function
   m_engine->globalObject().setProperty("debug", m_engine->newFunction(Kate::Script::debug));
 
