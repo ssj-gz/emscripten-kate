@@ -1044,7 +1044,8 @@ bool KateViNormalMode::commandChange()
 
   OperationMode m = getOperationMode();
 
-  doc()->editStart();
+  doc()->setUndoMergeAllEdits(true);
+
   commandDelete();
 
   // if we deleted several lines, insert an empty line and put the cursor there
@@ -1053,7 +1054,6 @@ bool KateViNormalMode::commandChange()
     c.setLine( m_commandRange.startLine );
     c.setColumn(0);
   }
-  doc()->editEnd();
 
   if ( m == LineWise ) {
     updateCursor( c );
@@ -1096,7 +1096,7 @@ bool KateViNormalMode::commandChangeLine()
   c.setColumn( 0 );
   updateCursor( c );
 
-  doc()->editStart();
+  doc()->setUndoMergeAllEdits(true);
 
   // if count >= 2 start by deleting the whole lines
   if ( getCount() >= 2 ) {
@@ -1108,7 +1108,6 @@ bool KateViNormalMode::commandChangeLine()
   KateViRange r( c.line(), c.column(), c.line(), doc()->lineLength( c.line() )-1,
       ViMotion::InclusiveMotion );
   deleteRange( r, CharWise, true );
-  doc()->editEnd();
 
   // ... then enter insert mode
   if ( getOperationMode() == Block ) {
@@ -2458,6 +2457,18 @@ KateViRange KateViNormalMode::motionToNextBraceBlockStart()
   r.endColumn = 0;
   r.jump = true;
 
+  if (motionWillBeUsedWithCommand())
+  {
+    // Delete from cursor (inclusive) to the '{' (exclusive).
+    // If we are on the first column, then delete the entire current line.
+    r.motionType = ViMotion::ExclusiveMotion;
+    if (m_view->cursorPosition().column() != 0)
+    {
+      r.endLine--;
+      r.endColumn = doc()->lineLength(r.endLine);
+    }
+  }
+
   return r;
 }
 
@@ -2477,6 +2488,12 @@ KateViRange KateViNormalMode::motionToPreviousBraceBlockStart()
   r.endLine = line;
   r.endColumn = 0;
   r.jump = true;
+
+  if (motionWillBeUsedWithCommand())
+  {
+    // With a command, do not include the { or the cursor position.
+    r.motionType = ViMotion::ExclusiveMotion;
+  }
 
   return r;
 }
@@ -2498,6 +2515,18 @@ KateViRange KateViNormalMode::motionToNextBraceBlockEnd()
   r.endColumn = 0;
   r.jump = true;
 
+  if (motionWillBeUsedWithCommand())
+  {
+    // Delete from cursor (inclusive) to the '}' (exclusive).
+    // If we are on the first column, then delete the entire current line.
+    r.motionType = ViMotion::ExclusiveMotion;
+    if (m_view->cursorPosition().column() != 0)
+    {
+      r.endLine--;
+      r.endColumn = doc()->lineLength(r.endLine);
+    }
+  }
+
   return r;
 }
 
@@ -2517,6 +2546,11 @@ KateViRange KateViNormalMode::motionToPreviousBraceBlockEnd()
   r.endLine = line;
   r.endColumn = 0;
   r.jump = true;
+
+  if (motionWillBeUsedWithCommand())
+  {
+    r.motionType = ViMotion::ExclusiveMotion;
+  }
 
   return r;
 }
@@ -3045,10 +3079,10 @@ void KateViNormalMode::initializeCommands()
   ADDMOTION("%", motionToMatchingItem, IS_NOT_LINEWISE );
   ADDMOTION("`[a-zA-Z^><\\.\\[\\]]", motionToMark, REGEX_PATTERN );
   ADDMOTION("'[a-zA-Z^><]", motionToMarkLine, REGEX_PATTERN );
-  ADDMOTION("[[", motionToPreviousBraceBlockStart, 0 );
-  ADDMOTION("]]", motionToNextBraceBlockStart, 0 );
-  ADDMOTION("[]", motionToPreviousBraceBlockEnd, 0 );
-  ADDMOTION("][", motionToNextBraceBlockEnd, 0 );
+  ADDMOTION("[[", motionToPreviousBraceBlockStart, IS_NOT_LINEWISE );
+  ADDMOTION("]]", motionToNextBraceBlockStart, IS_NOT_LINEWISE );
+  ADDMOTION("[]", motionToPreviousBraceBlockEnd, IS_NOT_LINEWISE );
+  ADDMOTION("][", motionToNextBraceBlockEnd, IS_NOT_LINEWISE );
   ADDMOTION("*", motionToNextOccurrence, 0 );
   ADDMOTION("#", motionToPrevOccurrence, 0 );
   ADDMOTION("H", motionToFirstLineOfWindow, 0 );
