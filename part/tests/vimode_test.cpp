@@ -121,6 +121,10 @@ void ViModeTest::TestPressKey(QString str) {
           code = code - 'a' + Qt::Key_A;
         }
       }
+      if (key == "\n")
+      {
+        code = Qt::Key_Enter;
+      }
     }
     else {
       code = Qt::Key_Escape;
@@ -273,6 +277,18 @@ void ViModeTest::VisualModeTests() {
     // Testing undo behaviour with c and cc
     DoTest("foo", "ciwbar\\escu", "foo");
     DoTest("foo", "ccbar\\escu", "foo");
+
+    // Regression test for ][ in Visual Mode.
+    DoTest("foo {\n\n}", "lV][d", "");
+
+    // Misc tests for motions starting in front of the Visual Mode start point.
+    DoTest("{foo}", "lvb%x", "{");
+    DoTest("foo bar", "wvbfax", "foo r");
+    DoTest("(foo bar)", "wwv^%x", "(foo ");
+
+    // * and #
+    DoTest("foo foo", "v*x", "oo");
+    DoTest("foo foo", "wv#x", "oo");
 }
 
 void ViModeTest::InsertModeTests() {
@@ -359,6 +375,9 @@ void ViModeTest::InsertModeTests() {
   DoTest("foo\nbar", "ji\\ctrl-j","foo\n\nbar");
   DoTest("foobar", "A\\ctrl-j","foobar\n" );
   DoTest("foobar", "li\\ctrl-j\\ctrl-cli\\ctrl-j\\ctrl-cli\\ctrl-j\\ctrl-cli\\ctrl-j\\ctrl-cli\\ctrl-j\\ctrl-c","f\no\no\nb\na\nr");
+
+  // Test that our test driver can handle newlines during insert mode :)
+  DoTest("", "ia\nb", "a\nb");
 }
 
 void ViModeTest::NormalModeMotionsTest() {
@@ -778,6 +797,23 @@ void ViModeTest::NormalModeCommandsTest() {
   DoTest("", "5ofoo\\escgg`[r[", "\n[oo\nfoo\nfoo\nfoo\nfoo");
   DoTest("", "5ofoo\\escgg`]r]", "\nfoo\nfoo\nfoo\nfoo\nfo]");
   DoTest("", "5ofoo\\escgg`.r.", "\nfoo\nfoo\nfoo\nfoo\n.oo");
+  DoTest("foo", "yyp`[r[", "foo\n[oo");
+  DoTest("xyz\nfoo", "ja\nbar\\esc`[r[", "xyz\n[\nbaroo");
+  DoTest("foo", "lrayypgg`[r[", "fao\n[ao");
+  DoTest("foo", "l~u`[r[", "[oo");
+  DoTest("foo", "l~u`.r.", ".oo");
+  DoTest("foo", "l~u`]r]", "]oo");
+  DoTest("foo", "lia\\escu`[r[", "[oo");
+  DoTest("foo", "lia\\escu`.r.", ".oo");
+  DoTest("foo", "lia\\escu`]r]", "]oo");
+  DoTest("foo", "l~u~`[r[", "f[o");
+  DoTest("foo\nbar\nxyz", "jyypu`[r[", "foo\nbar\n[yz");
+  DoTest("foo\nbar\nxyz", "jyypu`.r.", "foo\nbar\n.yz");
+  DoTest("foo\nbar\nxyz", "jyypu`]r]", "foo\nbar\n]yz");
+  DoTest("foo\nbar\nxyz\n123", "jdju`[r[", "foo\n[ar\nxyz\n123");
+  DoTest("foo\nbar\nxyz\n123", "jdju`.r.", "foo\n.ar\nxyz\n123");
+  DoTest("foo\nbar\nxyz\n123", "jdju`]r]", "foo\nbar\n]yz\n123");
+  DoTest("foo\nbar\nxyz\n123", "jVj~u\\esc`[r[", "foo\n[ar\nxyz\n123", ShouldFail, "Vim is weird.");
 }
 
 

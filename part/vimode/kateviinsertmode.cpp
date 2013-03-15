@@ -25,6 +25,7 @@
 #include "kateviewinternal.h"
 #include "kateconfig.h"
 #include "katecompletionwidget.h"
+#include <katecompletiontree.h>
 #include "kateglobal.h"
 #include "katevikeyparser.h"
 
@@ -196,7 +197,13 @@ bool KateViInsertMode::commandCompleteNext()
   // inserted text instead of the typed keystrokes.
   m_viInputModeManager->setTextualRepeat();
   if(m_view->completionWidget()->isCompletionActive()) {
+    QModelIndex oldCompletion = m_view->completionWidget()->treeView()->selectionModel()->currentIndex();
     m_view->completionWidget()->cursorDown();
+    QModelIndex newCompletion = m_view->completionWidget()->treeView()->selectionModel()->currentIndex();
+    if (oldCompletion == newCompletion)
+    {
+      m_view->completionWidget()->top();
+    }
   } else {
     m_view->userInvokedCompletion();
   }
@@ -207,7 +214,18 @@ bool KateViInsertMode::commandCompletePrevious()
 {
   m_viInputModeManager->setTextualRepeat();
   if(m_view->completionWidget()->isCompletionActive()) {
+    QModelIndex oldCompletion = m_view->completionWidget()->treeView()->selectionModel()->currentIndex();
     m_view->completionWidget()->cursorUp();
+    QModelIndex newCompletion = m_view->completionWidget()->treeView()->selectionModel()->currentIndex();
+    if (oldCompletion == newCompletion)
+    {
+      kDebug(13070) << "flibble";
+      m_view->completionWidget()->bottom();
+    }
+    else
+    {
+      kDebug(13070) << "flobble";
+    }
   } else {
     m_view->userInvokedCompletion();
     m_view->completionWidget()->bottom();

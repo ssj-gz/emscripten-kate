@@ -137,9 +137,9 @@ KateCompletionWidget::KateCompletionWidget(KateView* parent)
   m_argumentHintTree->setParent(0, Qt::ToolTip);
   m_argumentHintTree->setModel(m_argumentHintModel);
 
-  // trigger completion on double click on completion list  
+  // trigger completion on double click on completion list
   connect(m_entryList, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(execute()));
-  
+
   connect(m_entryList->verticalScrollBar(), SIGNAL(valueChanged(int)), m_presentationModel, SLOT(placeExpandingWidgets()));
   connect(m_argumentHintTree->verticalScrollBar(), SIGNAL(valueChanged(int)), m_argumentHintModel, SLOT(placeExpandingWidgets()));
   connect(view(), SIGNAL(focusOut(KTextEditor::View*)), this, SLOT(viewFocusOut()));
@@ -156,7 +156,7 @@ KateCompletionWidget::KateCompletionWidget(KateView* parent)
   // No smart lock, no queued connects
   connect(view(), SIGNAL(cursorPositionChanged(KTextEditor::View*,KTextEditor::Cursor)), this, SLOT(cursorPositionChanged()));
   connect(view(), SIGNAL(verticalScrollPositionChanged(KTextEditor::View*,KTextEditor::Cursor)), this, SLOT(updatePositionSlot()));
- 
+
   /**
    * connect to all possible editing primitives
    */
@@ -679,26 +679,26 @@ void KateCompletionWidget::cursorPositionChanged( )
         continue;
 
       //kDebug()<<"range before _updateRange:"<< *range;
-  
+
       // this might invalidate the range, therefore re-check afterwards
       KTextEditor::Range rangeTE = m_completionRanges[model].range->toRange();
       KTextEditor::Range newRange = _updateRange(model, view(), rangeTE);
       if(!m_completionRanges.contains(model))
         continue;
-      
+
       // update value
       m_completionRanges[model].range->setRange (newRange);
-      
+
       //kDebug()<<"range after _updateRange:"<< *range;
       QString currentCompletion = _filterString(model,view(), *m_completionRanges[model].range, view()->cursorPosition());
       if(!m_completionRanges.contains(model))
         continue;
-      
+
       //kDebug()<<"after _filterString, currentCompletion="<< currentCompletion;
       bool abort = _shouldAbortCompletion(model,view(), *m_completionRanges[model].range, currentCompletion);
       if(!m_completionRanges.contains(model))
         continue;
-      
+
       //kDebug()<<"after _shouldAbortCompletion:abort="<<abort;
       if(view()->cursorPosition() < m_completionRanges[model].leftBoundary) {
         //kDebug() << "aborting because of boundary: cursor:"<<view()->cursorPosition()<<"completion_Range_left_boundary:"<<m_completionRanges[*it].leftBoundary;
@@ -878,7 +878,7 @@ KTextEditor::MovingRange * KateCompletionWidget::completionRange(KTextEditor::Co
     if (m_completionRanges.isEmpty()) return 0;
 
     KTextEditor::MovingRange* ret = m_completionRanges.begin()->range;
-    
+
     foreach(const CompletionRange &range, m_completionRanges)
       if(range.range->start() > ret->start())
         ret = range.range;
@@ -1080,10 +1080,10 @@ void KateCompletionWidget::cursorUp()
   bool wasPartiallyExpanded = model()->partiallyExpandedRow().isValid();
 
   if( m_inCompletionList ) {
-    if( !m_entryList->previousCompletion() )
-      switchList();
+    m_entryList->previousCompletion();
   }else{
-    m_argumentHintTree->previousCompletion();
+    if (!m_argumentHintTree->previousCompletion() )
+      switchList();
   }
 
   if(wasPartiallyExpanded != model()->partiallyExpandedRow().isValid())
@@ -1234,7 +1234,7 @@ void KateCompletionWidget::setAutomaticInvocationDelay(int delay) {
 void KateCompletionWidget::wrapLine (const KTextEditor::Cursor &)
 {
   m_lastInsertionByUser = !m_completionEditRunning;
-  
+
   // wrap line, be done
   m_automaticInvocationLine.clear();
   m_automaticInvocationTimer->stop();
@@ -1243,7 +1243,7 @@ void KateCompletionWidget::wrapLine (const KTextEditor::Cursor &)
 void KateCompletionWidget::unwrapLine (int)
 {
   m_lastInsertionByUser = !m_completionEditRunning;
-  
+
   // just removal
   m_automaticInvocationLine.clear();
   m_automaticInvocationTimer->stop();
@@ -1259,7 +1259,7 @@ void KateCompletionWidget::insertText (const KTextEditor::Cursor &position, cons
     m_automaticInvocationTimer->stop();
     return;
   }
-  
+
   if(m_automaticInvocationAt != position) {
     m_automaticInvocationLine.clear();
     m_lastInsertionByUser = !m_completionEditRunning;
@@ -1290,7 +1290,7 @@ void KateCompletionWidget::removeText (const KTextEditor::Range &)
 void KateCompletionWidget::editDone(KateEditInfo * edit)
 {
   return;
-  
+
   if(!edit->newText().join("\n").trimmed().isEmpty())
   m_lastInsertionByUser = edit->editSource() == Kate::UserInputEdit;
 
