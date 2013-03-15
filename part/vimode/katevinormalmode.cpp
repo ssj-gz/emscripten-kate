@@ -31,6 +31,8 @@
 #include "kateviewhelpers.h"
 #include <ktexteditor/attribute.h>
 #include "kateconfig.h"
+#include <kateundomanager.h>
+
 
 #include <QApplication>
 #include <QList>
@@ -75,6 +77,11 @@ KateViNormalMode::KateViNormalMode( KateViInputModeManager *viInputModeManager, 
 
   initYankHighlightAttrib();
   m_highlightedYank = NULL;
+  m_isUndo = false;
+  connect(doc()->undoManager(), SIGNAL(undoStart(KTextEditor::Document*)),
+          this, SLOT(undoBeginning()));
+  connect(doc()->undoManager(), SIGNAL(undoEnd(KTextEditor::Document*)),
+          this, SLOT(undoEnded()));
 }
 
 KateViNormalMode::~KateViNormalMode()
@@ -2054,8 +2061,6 @@ KateViRange KateViNormalMode::motionFindChar()
 
   KateViRange r;
 
-  r.startColumn = cursor.column();
-  r.startLine = cursor.line();
   r.endColumn = matchColumn;
   r.endLine = cursor.line();
 
@@ -2332,9 +2337,6 @@ KateViRange KateViNormalMode::motionToMatchingItem()
   }
 
   Cursor c( m_view->cursorPosition() );
-
-  r.startColumn = c.column();
-  r.startLine   = c.line();
 
   QString l = getLine();
   int n1 = l.indexOf( m_matchItemRegex, c.column() );
@@ -3384,22 +3386,18 @@ void KateViNormalMode::executeMapping()
 
 void KateViNormalMode::textInserted(KTextEditor::Document* document, Range range)
 {
-  kDebug() << "text inserted: " << range << " m_currentChangeEndMarker: " << m_currentChangeEndMarker;
-  const bool beginningMarkerIsBeingMovedByInserts = (m_viInputModeManager->getMarkPosition('[') == m_view->cursorPosition());
-  if (beginningMarkerIsBeingMovedByInserts)
-  {
-    // We've deleted during this insertion in such a way that the '[' marker is being automatically
-    // moved around by Kate's MovingCursor mechanism: manually put it behind the cursor,
-    // out of harm's way.
-    Cursor beforeInsertPoint = m_view->cursorPosition();
-    beforeInsertPoint.setColumn(beforeInsertPoint.column() - 1);
-    m_viInputModeManager->addMark(doc(), '[', beforeInsertPoint);
-  }
   const bool isInsertMode = m_viInputModeManager->getCurrentViMode() == InsertMode;
   const bool continuesInsertion = range.start().line() == m_currentChangeEndMarker.line() && range.start().column() == m_currentChangeEndMarker.column();
+  const bool beginsWithNewline = doc()->text(range)[0] == '\n';
   if (!continuesInsertion)
   {
-    m_viInputModeManager->addMark(doc(), '[', range.start());
+    Cursor newBeginMarkerPos = range.start();
+    if (beginsWithNewline && !isInsertMode)
+    {
+      // Presumably a linewise paste, in which case we ignore the leading '\n'
+      newBeginMarkerPos = Cursor(newBeginMarkerPos.line() + 1, 0);
+    }
+    m_viInputModeManager->addMark(doc(), '[', newBeginMarkerPos, false);
   }
   m_viInputModeManager->addMark(doc(), '.', range.start());
   Cursor editEndMarker = range.end();
@@ -3409,6 +3407,21 @@ void KateViNormalMode::textInserted(KTextEditor::Document* document, Range range
   }
   m_viInputModeManager->addMark(doc(), ']', editEndMarker);
   m_currentChangeEndMarker = range.end();
+  if (m_isUndo)
+  {
+    const bool addsMultipleLines = range.start().line() != range.end().line();
+    m_viInputModeManager->addMark(doc(), '[', Cursor(m_viInputModeManager->getMarkPosition('[').line(), 0));
+    if (addsMultipleLines)
+    {
+      m_viInputModeManager->addMark(doc(), ']', Cursor(m_viInputModeManager->getMarkPosition(']').line() + 1, 0));
+      m_viInputModeManager->addMark(doc(), '.', Cursor(m_viInputModeManager->getMarkPosition('.').line() + 1, 0));
+    }
+    else
+    {
+      m_viInputModeManager->addMark(doc(), ']', Cursor(m_viInputModeManager->getMarkPosition(']').line(), 0));
+      m_viInputModeManager->addMark(doc(), '.', Cursor(m_viInputModeManager->getMarkPosition('.').line(), 0));
+    }
+  }
 }
 
 void KateViNormalMode::textRemoved(KTextEditor::Document* document , Range range)
@@ -3426,8 +3439,28 @@ void KateViNormalMode::textRemoved(KTextEditor::Document* document , Range range
     m_currentChangeEndMarker = range.start();
   }
   m_viInputModeManager->addMark(doc(), ']', range.start());
-  kDebug() << "text removed: " << range;
+  if (m_isUndo)
+  {
+    // Slavishly follow Vim's weird rules: if an undo removes several lines, then all markers should
+    // be at the beginning of the line after the last line removed, else they should at the beginning
+    // of the line above that.
+    const int markerLineAdjustment = (range.start().line() != range.end().line()) ? 1 : 0;
+    m_viInputModeManager->addMark(doc(), '[', Cursor(m_viInputModeManager->getMarkPosition('[').line() + markerLineAdjustment, 0));
+    m_viInputModeManager->addMark(doc(), ']', Cursor(m_viInputModeManager->getMarkPosition(']').line() + markerLineAdjustment, 0));
+    m_viInputModeManager->addMark(doc(), '.', Cursor(m_viInputModeManager->getMarkPosition('.').line() + markerLineAdjustment, 0));
+  }
+
 }
+
+void KateViNormalMode::undoBeginning()
+{
+  m_isUndo = true;
+}
+
+void KateViNormalMode::undoEnded()
+{
+  m_isUndo = false;
+
 
 void KateViNormalMode::initYankHighlightAttrib()
 {
