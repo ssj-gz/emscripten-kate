@@ -3462,8 +3462,6 @@ void KateViNormalMode::undoEnded()
   m_isUndo = false;
 }
 
-}
-
 void KateViNormalMode::initYankHighlightAttrib()
 {
   // TODO - connect up to config changes.
