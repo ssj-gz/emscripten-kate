@@ -3460,7 +3460,7 @@ void KateViNormalMode::undoBeginning()
 void KateViNormalMode::undoEnded()
 {
   m_isUndo = false;
-
+}
 
 void KateViNormalMode::initYankHighlightAttrib()
 {
