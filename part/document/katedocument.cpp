@@ -141,13 +141,13 @@ KateDocument::KateDocument ( bool bSingleViewMode, bool bBrowserView,
   m_readWriteStateBeforeLoading (false)
 {
   setComponentData ( KateGlobal::self()->componentData () );
-  
+
   /**
    * avoid spamming plasma and other window managers with progress dialogs
    * we show such stuff inline in the views!
    */
   setProgressInfoEnabled (false);
-  
+
   QString pathName ("/Kate/Document/%1");
   pathName = pathName.arg (++dummy);
 
@@ -1867,6 +1867,10 @@ bool KateDocument::printDialog ()
 
 bool KateDocument::print ()
 {
+#ifdef EMSCRIPTEN
+  kDebug(13020) << "Printing not supported in Emscripten!";
+  return false;
+#endif
   return KatePrinter::print (this);
 }
 //END
@@ -1932,7 +1936,7 @@ bool KateDocument::openFile()
 
   // remember current encoding
   QString currentEncoding = encoding();
-  
+
   //
   // mime type magic to get encoding right
   //
@@ -1951,11 +1955,11 @@ bool KateDocument::openFile()
   // read dir config (if possible and wanted)
   // do this PRE-LOAD to get encoding info!
   readDirConfig ();
-  
+
   // perhaps we need to re-set again the user encoding
   if (m_reloading && m_userSetEncodingForNextReload && (currentEncoding != encoding()))
     setEncoding (currentEncoding);
-  
+
   bool success = m_buffer->openFile (localFilePath(), (m_reloading && m_userSetEncodingForNextReload));
 
   // disable view updates
@@ -1998,7 +2002,7 @@ bool KateDocument::openFile()
     //
     updateDocName  ();
   }
-  
+
   //
   // to houston, we are not modified
   //
@@ -2018,7 +2022,7 @@ bool KateDocument::openFile()
           , i18n ("The file %1 could not be loaded, as it was not possible to read from it.<br />Check if you have read access to this file.", this->url().pathOrUrl()));
     message->setWordWrap(true);
     postMessage(message);
-    
+
     // remember error
     setOpeningError(true);
     setOpeningErrorMessage(i18n ("The file %1 could not be loaded, as it was not possible to read from it.\n\nCheck if you have read access to this file.",this->url().pathOrUrl()));
@@ -2028,7 +2032,7 @@ bool KateDocument::openFile()
   if (m_buffer->brokenEncoding()) {
     // this file can't be saved again without killing it
     setReadWrite( false );
-    
+
     QPointer<KTextEditor::Message> message
       = new KTextEditor::Message(KTextEditor::Message::Warning
           , i18n ("The file %1 was opened with %2 encoding but contained invalid characters.<br />"
@@ -2049,7 +2053,7 @@ bool KateDocument::openFile()
   if (m_buffer->tooLongLinesWrapped()) {
     // this file can't be saved again without modifications
     setReadWrite( false );
-    
+
     QPointer<KTextEditor::Message> message
       = new KTextEditor::Message(KTextEditor::Message::Warning
           , i18n ("The file %1 was opened and contained lines longer than the configured Line Length Limit (%2 characters).<br />"
@@ -2187,7 +2191,7 @@ bool KateDocument::saveFile()
 
   // read our vars
   readVariables();
-  
+
   // remove file from dirwatch
   deactivateDirWatch ();
 
@@ -2574,7 +2578,7 @@ bool KateDocument::typeChars ( KateView *view, const QString &realChars )
   Q_FOREACH (QChar c, realChars)
     if (c.isPrint() || c == QChar::fromLatin1('\t'))
       chars.append (c);
-  
+
   if (chars.isEmpty())
     return false;
 
@@ -3653,7 +3657,7 @@ void KateDocument::updateDocName ()
 
   if (m_docNameNumber > 0)
     m_docName = QString(m_docName + " (%1)").arg(m_docNameNumber+1);
-  
+
   /**
    * avoid to emit this, if name doesn't change!
    */
@@ -3812,7 +3816,7 @@ bool KateDocument::documentReload()
 
     m_reloading = true;
     KateDocument::openUrl( url() );
-    
+
     // reset some flags only valid for one reload!
     m_userSetEncodingForNextReload = false;
 
@@ -4483,7 +4487,7 @@ void KateDocument::updateFileType (const QString &newType, bool user)
     {
           // remember that we got set by user
           m_fileTypeSetByUser = user;
-      
+
           m_fileType = newType;
 
           m_config->configStart();
@@ -4827,7 +4831,7 @@ void KateDocument::slotStarted (KIO::Job *job)
    */
   if (m_documentState == DocumentIdle)
     m_documentState = DocumentLoading;
-  
+
   /**
    * if loading:
    * - remember pre loading read-write mode
@@ -4840,7 +4844,7 @@ void KateDocument::slotStarted (KIO::Job *job)
      * remember state
      */
     m_readWriteStateBeforeLoading = isReadWrite ();
-    
+
     /**
      * perhaps show loading message, but wait one second
      */
@@ -4849,7 +4853,7 @@ void KateDocument::slotStarted (KIO::Job *job)
        * only read only if really remote file!
        */
       setReadWrite (false);
-      
+
       /**
        * perhaps some message about loading in one second!
        * remember job pointer, we want to be able to kill it!
@@ -4869,13 +4873,13 @@ void KateDocument::slotCompleted() {
     setReadWrite (m_readWriteStateBeforeLoading);
     delete m_loadingMessage;
   }
-  
+
   /**
    * Emit signal that we saved  the document, if needed
    */
   if (m_documentState == DocumentSaving || m_documentState == DocumentSavingAs)
     emit documentSavedOrUploaded (this, m_documentState == DocumentSavingAs);
-  
+
   /**
    * back to idle mode
    */
@@ -4892,7 +4896,7 @@ void KateDocument::slotCanceled() {
     setReadWrite (m_readWriteStateBeforeLoading);
     delete m_loadingMessage;
   }
-  
+
   /**
    * back to idle mode
    */
@@ -4908,7 +4912,7 @@ void KateDocument::slotTriggerLoadingMessage ()
    */
   if (m_documentState != DocumentLoading)
     return;
-  
+
   /**
    * create message about file loading in progress
    */
@@ -4916,7 +4920,7 @@ void KateDocument::slotTriggerLoadingMessage ()
   m_loadingMessage = new KTextEditor::Message(KTextEditor::Message::Information
           , i18n ("The file %1 is still loading.", this->url().pathOrUrl()));
   m_loadingMessage->setWordWrap(true);
-  
+
   /**
    * if around job: add cancel action
    */
@@ -4925,7 +4929,7 @@ void KateDocument::slotTriggerLoadingMessage ()
     connect (cancel, SIGNAL(triggered()), this, SLOT(slotAbortLoading()));
     m_loadingMessage->addAction (cancel);
   }
-  
+
   /**
    * really post message
    */
@@ -4939,7 +4943,7 @@ void KateDocument::slotAbortLoading ()
    */
   if (!m_loadingJob)
     return;
-  
+
   /**
    * abort loading if any job
    * signal results!
@@ -4964,7 +4968,7 @@ bool KateDocument::save()
     m_documentState = DocumentSaving;
   else
     m_documentState = DocumentSavingAs;
-  
+
   /**
    * call back implementation for real work
    */
@@ -4981,13 +4985,13 @@ bool KateDocument::saveAs( const KUrl &url )
    */
   if (!url.isValid())
     return false;
-  
+
   /**
    * no double save/load
    */
   if (m_documentState != DocumentIdle)
     return false;
-  
+
   /**
    * we enter the pre save as phase
    */
