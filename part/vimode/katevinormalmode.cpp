@@ -680,21 +680,23 @@ bool KateViNormalMode::commandReselectVisual()
 
   if ( c1.isValid() && c2.isValid() ) {
     m_viInputModeManager->getViVisualMode()->setStart( c1 );
-    updateCursor( c2 );
+    bool returnValue = false;
 
     switch ( m_viInputModeManager->getViVisualMode()->getLastVisualMode() ) {
     case VisualMode:
-      return commandEnterVisualMode();
+      returnValue = commandEnterVisualMode();
       break;
     case VisualLineMode:
-      return commandEnterVisualLineMode();
+      returnValue = commandEnterVisualLineMode();
       break;
     case VisualBlockMode:
-      return commandEnterVisualBlockMode();
+      returnValue = commandEnterVisualBlockMode();
       break;
     default:
       Q_ASSERT( "invalid visual mode" );
     }
+    m_viInputModeManager->getViVisualMode()->goToPos(c2);
+    return returnValue;
   } else {
     error("No previous visual selection");
   }
@@ -1156,7 +1158,9 @@ bool KateViNormalMode::commandYank()
 
   highlightYank(m_commandRange);
 
-  fillRegister( getChosenRegister( '0' ), yankedText, m );
+  QChar  chosen_register =  getChosenRegister( '0' );
+  fillRegister(chosen_register, yankedText, m );
+  yankToClipBoard(chosen_register, yankedText);
 
   return r;
 }
@@ -1172,7 +1176,9 @@ bool KateViNormalMode::commandYankLine()
   }
   KateViRange yankRange(linenum, 0, linenum + getCount() - 1, getLine(linenum + getCount() - 1).length(), ViMotion::InclusiveMotion);
   highlightYank(yankRange);
-  fillRegister( getChosenRegister( '0' ), lines, LineWise );
+  QChar  chosen_register =  getChosenRegister( '0' );
+  fillRegister(chosen_register, lines, LineWise );
+  yankToClipBoard(chosen_register, lines);
 
   return true;
 }
@@ -1205,7 +1211,9 @@ bool KateViNormalMode::commandYankToEOL()
 
   yankedText = getRange( m_commandRange, m );
 
-  fillRegister( getChosenRegister( '0' ), yankedText, m );
+  QChar  chosen_register =  getChosenRegister( '0' );
+  fillRegister(chosen_register,  yankedText, m );
+  yankToClipBoard(chosen_register, yankedText);
 
   return r;
 }
@@ -2910,7 +2918,7 @@ KateViRange KateViNormalMode::textObjectInnerCurlyBracket()
         // Shrink the endpoint of the range so that it ends at the end of the line above,
         // leaving the closing bracket on its own line.
         innerCurlyBracket.endLine--;
-        innerCurlyBracket.endColumn = doc()->line(innerCurlyBracket.endLine).length() - 1;
+        innerCurlyBracket.endColumn = doc()->line(innerCurlyBracket.endLine).length();
       }
     }
 
@@ -2952,7 +2960,7 @@ void KateViNormalMode::initializeCommands()
   ADDCMD("v", commandEnterVisualMode, 0 );
   ADDCMD("V", commandEnterVisualLineMode, 0 );
   ADDCMD("<c-v>", commandEnterVisualBlockMode, 0 );
-  ADDCMD("gv", commandReselectVisual, 0 );
+  ADDCMD("gv", commandReselectVisual, SHOULD_NOT_RESET );
   ADDCMD("o", commandOpenNewLineUnder, IS_CHANGE );
   ADDCMD("O", commandOpenNewLineOver, IS_CHANGE );
   ADDCMD("J", commandJoinLines, IS_CHANGE );

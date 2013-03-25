@@ -295,11 +295,43 @@ target_link_libraries( bug309093_test
   katepartinterfaces
 )
 
-########### bug 309093 test ###############
+########### bug 313759 test ###############
+
+set(bug313759_SRCS
+  bug313759.cpp
+  testutils.cpp
+)
+
+kde4_add_unit_test(bug313759_test TESTNAME kate-bug313759_test ${bug313759_SRCS})
+
+target_link_libraries(bug313759_test
+  ${KDE4_KDEUI_LIBS}
+  ${QT_QTTEST_LIBRARY}
+  ${KATE_TEST_LINK_LIBS}
+  katepartinterfaces
+)
+
+########### bug 313769 test ###############
 
 kde4_add_unit_test(bug313769_test TESTNAME kate-bug313769_test bug313769.cpp)
 
 target_link_libraries( bug313769_test
+  ${KDE4_KDEUI_LIBS}
+  ${QT_QTTEST_LIBRARY}
+  ${KATE_TEST_LINK_LIBS}
+  katepartinterfaces
+)
+
+########### bug 317111 test ###############
+
+set(bug317111_SRCS
+  bug317111.cpp
+  testutils.cpp
+)
+
+kde4_add_unit_test(bug317111_test TESTNAME kate-bug317111_test ${bug317111_SRCS})
+
+target_link_libraries( bug317111_test
   ${KDE4_KDEUI_LIBS}
   ${QT_QTTEST_LIBRARY}
   ${KATE_TEST_LINK_LIBS}

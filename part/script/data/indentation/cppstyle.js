@@ -54,9 +54,9 @@ require ("string.js");
 // ')' is for align dangling close bracket
 // ';' is for align `for' parts
 // TBD <others>
-triggerCharacters = "{}()<>/:;,#\\?|/%.";
+triggerCharacters = "{}()<>/:;,#\\?|/%.@";
 
-var debugMode = true;
+var debugMode = false;
 
 /// \todo Move to a separate library?
 function dbg()
@@ -93,6 +93,10 @@ function isInsideBraces(line, column, ch)
  *   \li \c hasComment -- boolean: \c true if comment present on the line, \c false otherwise
  *   \li \c before -- text before the comment
  *   \li \c after -- text of the comment
+ *
+ * \todo Make it smart and check highlighting style where \c '//' string is found.
+ * \todo Possible it would be quite reasonable to analyze a type of the comment:
+ * Is it C++ or Doxygen? Is it single or w/ some text before?
  */
 function splitByComment(text)
 {
@@ -109,19 +113,23 @@ function splitByComment(text)
     return {hasComment: found, before: before, after: after};
 }
 
+/**
+ * \brief Remove possible comment from text
+ * \todo Unused?
+ */
 function stripComment(text)
 {
     return splitByComment(text).before.rstrip();
 }
 
-/// Return \c true if attribute at given position is not a \e String or \e Comment
-function isNotStringOrComment(line, column)
+/// Return \c true if attribute at given position is a \e String or \e Comment
+function isStringOrComment(line, column)
 {
     // Check if we are not withning a string or a comment
     var c = new Cursor(line, column);
     var mode = document.attributeName(c);
-    dbg("isNotStringOrComment: Check mode @ " + c + ": " + mode);
-    return !(document.isString(c) || document.isComment(c));
+    dbg("isStringOrComment: Check mode @ " + c + ": " + mode);
+    return gMode == "Doxygen" || document.isString(c) || document.isComment(c);
 }
 
 /// Try to (re)align (to 60th position) inline comment if present
@@ -131,7 +139,7 @@ function alignInlineComment(line)
     var currentLineText = document.line(line);
     var sc = splitByComment(currentLineText);
     // Did we found smth and if so, make sure it is not a string or comment...
-    if (sc.hasComment && isNotStringOrComment(line, sc.before.length - 1))
+    if (sc.hasComment && !isStringOrComment(line, sc.before.length - 1))
     {
         var rbefore = sc.before.rtrim();
         /// \attention Kate has a BUG: even if everything is Ok and no realign
@@ -176,14 +184,14 @@ function alignInlineComment(line)
 function tryToKeepInlineComment(line)
 {
     // Make sure that there is some text still present on a prev line
-    // i.e. it was jsut splitted and same-line-comment must be moved back to it
+    // i.e. it was just splitted and same-line-comment must be moved back to it
     if (document.line(line - 1).trim().length == 0)
         return;
 
     // Check is there any comment on the current line
     var currentLineText = document.line(line);
     var sc = splitByComment(currentLineText);
-    if (sc.hasComment && isNotStringOrComment(line, sc.before.length - 1) && sc.after.length > 0)
+    if (sc.hasComment && !isStringOrComment(line, sc.before.length - 1) && sc.after.length > 0)
     {
         // Ok, here is few cases possible when ENTER pressed in different positions
         // |  |smth|was here; |        |// comment
@@ -397,7 +405,9 @@ function tryMultilineCommentStart_ch(line)
         result = filler.length;
     }
     if (result != -1)
+    {
         dbg("tryMultilineCommentStart_ch result="+result);
+    }
     return result;
 }
 
@@ -427,7 +437,9 @@ function tryMultilineCommentCont_ch(line)
         }
     }
     if (result != -1)
+    {
         dbg("tryMultilineCommentCont_ch result="+result);
+    }
     return result;
 }
 
@@ -466,7 +478,9 @@ function trySplitComment_ch(line)
         }
     }
     if (result != -1)
+    {
         dbg("trySplitComment_ch result="+result);
+    }
     return result;
 }
 
@@ -544,7 +558,9 @@ function tryMacroDefinition_ch(line)
     if (prevString.search(/^\s*#\s*define\s+.*\\$/) != -1)
         result = gIndentWidth;
     if (result != -1)
+    {
         dbg("tryMacroDefinition_ch result="+result);
+    }
     return result;
 }
 
@@ -555,7 +571,7 @@ function tryMacroDefinition_ch(line)
 function tryBeforeDanglingDelimiter_ch(line)
 {
     var result = -1;
-    dbg("text='"+document.line(line)+"'");
+    dbg("tryBeforeDanglingDelimiter_ch: text='"+document.line(line)+"'");
     var halfTabNeeded =
         // current line do not starts w/ a comment
         !document.line(line).ltrim().startsWith("//")
@@ -618,7 +634,9 @@ function tryPreprocessor_ch(line)
         }
     }
     if (result != -1)
+    {
         dbg("tryPreprocessor_ch result="+result);
+    }
     return result;
 }
 
@@ -679,8 +697,11 @@ function caretPressed(cursor)
  *     position.
  * \li just entered \c '/' is a 3rd in a sequence. If there is some text before and no after,
  *     it looks like inlined doxygen comment, so append \c '<' char after. Do nothing otherwise.
+ * \li if there is a <tt>'// '</tt> string right before just entered \c '/', form a
+ *     doxygen comment <tt>'///'</tt> or <tt>'///<'</tt> depending on presence of some text
+ *     on a line before the comment.
  *
- * \todo Due a BUG in a current version of Kate, this code doesn't work as expected!
+ * \todo Due the BUG #316809 in a current version of Kate, this code doesn't work as expected!
  * It always returns a <em>"NormalText"</em>!
  * \code
  * var cm = document.attributeName(cursor);
@@ -701,37 +722,46 @@ function trySameLineComment(cursor)
     var column = cursor.column;
 
     // Fisrt of all check that we r not withing a string
-    // BUG See note in a function's documentation
-    var cm = document.attributeName(cursor);
-    if (cm.indexOf("String") != -1)
+    // (previous char checked, i.e. not just entered, due the BUG #316809)
+    if (document.isString(line, column - 2))
        return;
 
-    var match = /^([^\/]*)(\/\/+)(.*)$/.exec(document.line(line));
-
-    if (match != null)                                      // Is matched?
+    var sc = splitByComment(document.line(line));
+    if (sc.hasComment)                                      // Is there any comment on a line?
     {
-        dbg("match_before  = '" + match[1] + "'");
-        dbg("match_comment = '" + match[2] + "'");
-        dbg("match_after   = '" + match[3] + "'");
-        if (match[2] == "///" && match[3].trim().length == 0)
+        // Make sure we r not in a comment already
+        if (document.isComment(line, document.firstColumn(line)))
+            return;
+        // If no text after the comment and it still not aligned
+        var text_len = sc.before.rtrim().length;
+        if (text_len != 0 && sc.after.length == 0 && text_len < gSameLineCommentStartAt)
         {
-            // 3rd case here!
-            var filler = (match[1].trim().length > 0)       // Is there any text before comment?
-                ? "< "                                      // turn it into inline-doxygen comment
-                : " ";                                      // just usual doxygen comment
-            document.insertText(cursor, filler);
+            // Align it!
+            document.insertText(
+                line
+              , column - 2
+              , String().fill(' ', gSameLineCommentStartAt - text_len)
+              );
+            document.insertText(line, gSameLineCommentStartAt + 2, ' ');
         }
-        else if (match[2] == "//" && 0 < match[1].trim().length && match[3].length == 0)
+        // If text in a comment equals to '/' or ' /' -- it looks like a 3rd '/' pressed
+        else if (sc.after == " /" || sc.after == "/")
         {
-            // 2nd case here! Check if padding required
-            if (match[1].length < gSameLineCommentStartAt)
-            {
-                var filler = String().fill(' ', gSameLineCommentStartAt - match[1].length) + "//";
-                document.editBegin();
-                document.removeText(line, column - 2, line, column);
-                document.insertText(line, column - 2, filler);
-                document.editEnd();
-            }
+            // Form a Doxygen comment!
+            document.removeText(line, column - sc.after.length, line, column);
+            document.insertText(line, column - sc.after.length, text_len != 0 ? "/< " : "/ ");
+        }
+        // If right trimmed text in a comment equals to '/' -- it seems user moves cursor
+        // one char left (through space) to add one more '/'
+        else if (sc.after.rtrim() == "/")
+        {
+            // Form a Doxygen comment!
+            document.removeText(line, column, line, column + sc.after.length);
+            document.insertText(line, column, text_len != 0 ? "< " : " ");
+        }
+        else if (text_len == 0 && sc.after.length == 0)
+        {
+            document.insertText(line, column, ' ');
         }
     }
 }
@@ -847,16 +877,68 @@ function tryCloseBracket(cursor, ch)
     var line = cursor.line;
     var column = cursor.column;
 
+    var braceCursor = Cursor.invalid();
+    if (ch != '>')
+    {
+        // TODO Make sure a given `ch` in the gBraceMap
+        braceCursor = document.anchor(line, column - 1, gBraceMap[ch]);
+        // TODO Otherwise, it seems we have a template parameters list...
+    }
+
     // Check if a given closing brace is a first char on a line
     // (i.e. it is 'dangling' brace)...
-    if (document.firstChar(line) == ch && document.firstColumn(line) == (column - 1))
+    if (document.firstChar(line) == ch && document.firstColumn(line) == (column - 1) && braceCursor.isValid())
     {
-        var braceCursor = Cursor.invalid();
-        if (ch != '>')
-            braceCursor = document.anchor(line, column - 1, gBraceMap[ch]);
-            // TODO Otherwise, it seems we have a template parameters list...
-        if (braceCursor.isValid())
-            result = document.firstColumn(braceCursor.line) + 2;
+        // Move to one half-TAB right, if anything but not closing '}', else
+        // align to the corresponding open char
+        result = document.firstColumn(braceCursor.line) + (ch != '}' ? 2 : 0);
+        dbg("tryCloseBracket: setting result="+result);
+    }
+
+    // Check if ';' required after closing '}'
+    if (ch == '}' && braceCursor.isValid())
+    {
+        var is_check_needed = false;
+        // Check if corresponding anchor is a class/struct/union/enum,
+        // (possible keyword located on same or prev line)
+        // and check for trailing ';'...
+        var anchoredString = document.line(braceCursor.line);
+        dbg("tryCloseBracket: anchoredString='"+anchoredString+"'");
+        var regex = /^(\s*)(class|struct|union|enum).*$/;
+        var r = regex.exec(anchoredString);
+        if (r != null)
+        {
+            dbg("tryCloseBracket: same line");
+            is_check_needed = true;
+        }
+        else (!is_check_needed && 0 < braceCursor.line)     // Is there any line before?
+        {
+            dbg("tryCloseBracket: cheking prev line");
+
+            // Ok, lets check it!
+            anchoredString = document.line(braceCursor.line - 1);
+            dbg("tryCloseBracket: anchoredString-1='"+anchoredString+"'");
+            r = regex.exec(anchoredString);
+            if (r != null)
+            {
+                is_check_needed = true;
+                dbg("tryCloseBracket: prev line");
+            }
+        }
+        dbg("tryCloseBracket: is_check_needed="+is_check_needed);
+        if (is_check_needed)
+        {
+            var is_ok = document.line(line)
+              .substring(column, document.lineLength(line))
+              .ltrim()
+              .startsWith(';')
+              ;
+            if (!is_ok)
+            {
+                document.insertText(line, column, ';');
+                view.setCursorPosition(line, column + 1);
+            }
+        }
     }
 
     return result;
@@ -865,7 +947,12 @@ function tryCloseBracket(cursor, ch)
 /**
  * \brief Indent new scope block
  *
- * ... try to unindent to be precise...
+ * ... try to unindent to be precise... First of all check that open
+ * \c '{' is a first symbol on a line, and if it doesn't, make sure
+ * there is a space before, except if previous char is not a \c '{'.
+ * Otherwise, look at the previous line for dangling <tt>')'</tt> or
+ * a line started w/ one of flow control keywords.
+ *
  */
 function tryBlock(cursor)
 {
@@ -873,18 +960,37 @@ function tryBlock(cursor)
     var line = cursor.line;
     var column = cursor.column;
 
-    // Check for a dangling close brace on a previous line
-    // (this may mean that `for' or `if' or `while' w/ looong parameters list on it)
-    if (document.firstChar(line - 1) == ')')
-        result = Math.floor(document.firstColumn(line - 1) / gIndentWidth) * gIndentWidth;
+    // Make sure we r not in a comment or string
+    dbg("tryBlock: isStringOrComment(line, column - 2)="+isStringOrComment(line, column - 2))
+    if (isStringOrComment(line, column - 2))
+        return result;
+
+    if (document.firstColumn(line) == (column - 1) && document.firstChar(line) == '{')
+    {
+        // Check for a dangling close brace on a previous line
+        // (this may mean that `for' or `if' or `while' w/ looong parameters list on it)
+        if (document.firstChar(line - 1) == ')')
+            result = Math.floor(document.firstColumn(line - 1) / gIndentWidth) * gIndentWidth;
+        else
+        {
+            // Otherwise, check for a keyword on the previous line and
+            // indent the started block to it...
+            var prevString = document.line(line - 1);
+            var r = /^(\s*)((catch|if|for|while)\s*\(|do|else|try|(default|case\s+.*)\s*:).*$/.exec(prevString);
+            if (r != null)
+                result = r[1].length;
+        }
+    }
     else
     {
-        // Otherwise, check for a keyword on the previous line and
-        // indent the started block to it...
-        var prevString = document.line(line - 1);
-        var r = /^(\s*)((catch|if|for|while)\s*\(|do|else|try|(default|case\s+.*)\s*:).*$/.exec(prevString);
-        if (r != null)
-            result = r[1].length;
+        // '{' is not a first char. Check for previous one...
+        if (1 < column)
+        {
+            var prevChar = document.charAt(line, column - 2);
+            dbg("tryBlock: prevChar='"+prevChar+"'");
+            if (prevChar != ' ' && prevChar != '{' && prevChar != '(')
+                document.insertText(line, column - 1, ' ');
+        }
     }
     return result;
 }
@@ -942,13 +1048,33 @@ function tryColon(cursor)
     }
     else
     {
-        var currentString = document.line(line);
-        if (currentString.search(/^\s*((public|protected|private)\s*(slots|Q_SLOTS)?|(signals|Q_SIGNALS)\s*):\s*$/) != -1)
+        var currentLine = document.line(line);
+        if (currentLine.search(/^\s*((public|protected|private)\s*(slots|Q_SLOTS)?|(signals|Q_SIGNALS)\s*):\s*$/) != -1)
         {
             var definitionCursor = document.anchor(line, 0, '{');
             if (definitionCursor.isValid())
             {
                 result = document.firstVirtualColumn(definitionCursor.line);
+                dbg("tryColon: result="+result);
+                if (0 < line)                               // Is there any line before?
+                {
+                    // Check if previous line is not empty and not starts w/ '{'
+                    var prevLine = document.line(line - 1).trim()
+                    if (prevLine.length && !prevLine.startsWith("{"))
+                    {
+                        // Cuz a new line will be added in place of current, returning
+                        // result will not affect indentation. So do it manually.
+                        var firstColumn = document.firstColumn(line);
+                        var padding = "";
+                        if (firstColumn < result)
+                            padding = String().fill(' ', result - firstColumn);
+                        else if (result < firstColumn)
+                            document.removeText(line, 0, line, firstColumn - result);
+                        // Add an empty line before the current
+                        document.insertText(line, 0, "\n" + padding);
+                        result = 0;
+                    }
+                }
             }
         }
     }
@@ -1049,6 +1175,30 @@ function tryBackslash(cursor)
 }
 
 /**
+ * \brief Handle a <tt>@</tt> symbol
+ *
+ * Possible user wants to add a Doxygen group
+ */
+function tryDoxygenGrouping(cursor)
+{
+    var line = cursor.line;
+    var column = cursor.column;
+    var firstColumn = document.firstColumn(line);
+    // Check the symbol before the just entered
+    var looks_like_doxgorup = isStringOrComment(line, column - 2)// ")
+      && firstColumn == (column - 4)
+      && document.line(line).ltrim().startsWith("// ")
+      ;
+    if (looks_like_doxgorup)
+    {
+        document.removeText(line, column - 2, line, column - 1);
+        var padding = String().fill(' ', firstColumn);
+        document.insertText(line, column - 1, "{\n" + padding + "\n" + padding + "//@}");
+        view.setCursorPosition(line + 1, document.lineLength(line + 1));
+    }
+}
+
+/**
  * \brief Process one character
  *
  * NOTE Cursor positioned right after just entered character and has +1 in column.
@@ -1090,7 +1240,7 @@ function processChar(line, ch)
         case '?':
         case '|':
         case '%':
-        case '/':
+        case '/':                                           // TODO Useless! Code review needed.
         case '.':
             result = tryOperator(cursor, ch);               // Possible need to align some operator
             break;
@@ -1114,6 +1264,9 @@ function processChar(line, ch)
             break;
         case '\\':
             tryBackslash(cursor);
+            break;
+        case '@':
+            tryDoxygenGrouping(cursor);
             break;
         default:
             break;                                          // Nothing to do...
@@ -1182,9 +1335,11 @@ function findSingleLineCommentBlockEnd(line)
         if (text.length == 0) continue;                     // Skip empty lines...
         if (!text.startsWith("//")) break;                  // Yeah! Smth was found finally.
     }
+    var currentLineText = document.line(line).ltrim();      // Get text of the found line
+    while (currentLineText.length == 0)                     // Skip empty lines if any
+        currentLineText = document.line(line).ltrim();
     // Make sure it is not another one multiline comment, and if so,
     // going to find it's end as well...
-    var currentLineText = document.line(line).ltrim();
     if (currentLineText.startsWith("/*"))
         line = findMultiLineCommentBlockEnd(line);
     else if (document.lines() <= line)
@@ -1238,13 +1393,25 @@ function alignInsideBraces(line)
     // lets check that current line starts w/ '*' also!
     // NOTE Yep, it is expected (hardcoeded) that multiline comment has
     // all lines strarted w/ a star symbol!
-    else if (document.isComment(line, 0) && currentLineText.startsWith("*"))
+    // TODO BUG Kate has a bug: when multiline code snippet gets inserted into
+    // a multilibe comment block (like Doxygen's @code/@endcode)
+    // document.isComment() returns true *only& for the first line of it!
+    // So some other way needs to be found to indent comments properly...
+    // TODO DAMN... it doesn't work that way also... for snippets longer than 2 lines.
+    // I suppose kate first insert text, then indent it, and after that highlight it
+    // So indenters based on a higlighting info will not work! BUT THEY DEFINITELY SHOULD!
+    else if (currentLineText.startsWith("*") && document.isComment(line, 0))
     {
         dbg("found middle of a multiline comment");
         // Yep, go to find a next non-comment line...
         nextNonCommentLine = findMultiLineCommentBlockEnd(line);
         middleOfMultilineBlock = true;
     }
+    dbg("line="+line);
+    dbg("document.isComment(line, 0)="+document.isComment(line, 0));
+    dbg("document.defStyleNum(line, 0)="+document.defStyleNum(line-1, 0));
+    dbg("currentLineText='"+currentLineText+"'");
+    dbg("middleOfMultilineBlock="+middleOfMultilineBlock);
 
     if (nextNonCommentLine == 0)                            // End of comment not found?
         // ... possible due temporary invalid code...
@@ -1254,15 +1421,16 @@ function alignInsideBraces(line)
     if (nextNonCommentLine != -1)
     {
         // Yep, lets try to get desired indent for next non-comment line
-        dbg("** next non comment line is "+nextNonCommentLine);
-        dbg("** going to get its' indentation...");
         var desiredIndent = indentLine(nextNonCommentLine);
-        dbg("** got desired indentation for next non comment line: "+desiredIndent);
         if (desiredIndent < 0)
-            return desiredIndent;                           // Have no idea how to indent this comment!
+        {
+            // Have no idea how to indent this comment! So try to align it
+            // as found line:
+            desiredIndent = document.firstColumn(nextNonCommentLine);
+        }
         // TODO Make sure that next non-comment line do not starts
         // w/ 'special' chars...
-        return desiredIndent + middleOfMultilineBlock;
+        return desiredIndent + (middleOfMultilineBlock|0);
     }
 
     var brackets = [
@@ -1423,5 +1591,9 @@ function indent(line, indentWidth, ch)
 
     return indentLine(line);
 }
+
+/**
+ * \todo Better to use \c defStyleNum() instead of \c attributeName() and string comparision
+ */
 
 // kate: space-indent on; indent-width 4; replace-tabs on;

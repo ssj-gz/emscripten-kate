@@ -442,9 +442,8 @@ bool KateViewManager::createView ( KTextEditor::Document *doc )
   viewCreated(view);
 
 #ifdef KActivities_FOUND
-  if (!m_activityResources.contains(view)) {
-    m_activityResources[view] = new KActivities::ResourceInstance(view->window()->winId(), view);
-  }
+  Q_ASSERT(!m_activityResources.contains(view)); // view was just created -> cannot be in hash
+  m_activityResources[view] = new KActivities::ResourceInstance(view->window()->winId(), view);
   m_activityResources[view]->setUri(doc->url());
 #endif
 
@@ -885,6 +884,10 @@ void KateViewManager::restoreViewConfiguration (const KConfigGroup& config)
   qDeleteAll( m_viewSpaceList );
   m_viewSpaceList.clear();
   m_activeStates.clear();
+  
+#ifdef KActivities_FOUND
+  m_activityResources.clear();
+#endif
 
   // reset lru history, too!
   m_lruViews.clear();
