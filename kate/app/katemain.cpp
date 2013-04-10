@@ -400,7 +400,23 @@ int main(int argc, char *argv[])
         EmscriptenQtSDL::setAttemptedLocalEventLoopCallback(EmscriptenQtSDL::TRIGGER_ASSERT);
         return EmscriptenQtSDL::run(800, 600, argc, argv);
 }
+// TODO - eventually delete these, or come up with some other solution.
+#include <QtGui/html5canvasinterface.h>
+int Html5CanvasInterface::handleForMainCanvas()
+{
+}
+void Html5CanvasInterface::drawCanvasOnMainCanvas(int, int, int)
+{
+}
+int Html5CanvasInterface::createCanvas(int, int)
+{
+}
+void Html5CanvasInterface::fillSolidRect(int, int, int, int, double, double, double, double)
+{
+}
 #endif
+
+
 
 // kate: space-indent on; indent-width 2; replace-tabs on;
 
